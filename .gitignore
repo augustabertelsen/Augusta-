@@ -1,0 +1,10 @@
+# Gradle
+.gradle/
+build/
+
+# Data files and config.txt
+data/
+config.txt
+
+# IntelliJ stuff
+.idea/
