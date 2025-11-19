@@ -43,7 +43,7 @@ public class Page {
     }
 
     public List<String> getWords() {
-        return words;
+        return Collections.unmodifiableList(words);
     }
 
 }

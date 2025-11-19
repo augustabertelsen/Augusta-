@@ -63,10 +63,9 @@ public class InvertedIndex {
     // If not -> return an empty list -> can loop safely without null-checks
     public List<Page> lookUp(String word) {
         if (pagesContaining.containsKey(word)) {
-            return pagesContaining.get(word);
+            return new ArrayList<>(pagesContaining.get(word));
         }
-        List<Page> emptyList = new ArrayList<>();
-        return emptyList;
+        return new ArrayList<>();
     }
 
 
