@@ -16,109 +16,109 @@ import com.sun.net.httpserver.HttpServer;
 
 public class OldWebServer {
 
-// constants -> WebServer
-  static final int PORT = 8080;
-  static final int BACKLOG = 0;
-  static final Charset CHARSET = StandardCharsets.UTF_8;
+    // constants -> WebServer
+    static final int PORT = 8080;
+    static final int BACKLOG = 0;
+    static final Charset CHARSET = StandardCharsets.UTF_8;
 
-// raw pages storage -> PageCollection
-  List<List<String>> pages = new ArrayList<>();
+    // raw pages storage -> PageCollection
+    List<List<String>> pages = new ArrayList<>();
 
-// server field -> WebServer
-  HttpServer server;
+    // server field -> WebServer
+    HttpServer server;
 
-  OldWebServer(int port, String filename) throws IOException {
+    OldWebServer(int port, String filename) throws IOException {
 
-// read file + split into pages -> PageCollection
-    try {
-      List<String> lines = Files.readAllLines(Paths.get(filename));
-      var lastIndex = lines.size();
-      for (var i = lines.size() - 1; i >= 0; --i) {
-        if (lines.get(i).startsWith("*PAGE")) {
-          pages.add(lines.subList(i, lastIndex));
-          lastIndex = i;
+        // read file + split into pages -> PageCollection
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filename));
+            var lastIndex = lines.size();
+            for (var i = lines.size() - 1; i >= 0; --i) {
+                if (lines.get(i).startsWith("*PAGE")) {
+                    pages.add(lines.subList(i, lastIndex));
+                    lastIndex = i;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-      }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
 
 // ordering of pages -> PageCollection
-    Collections.reverse(pages);
+        Collections.reverse(pages);
 
 // HttpServer setup -> WebServer
-    server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
+        server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
 
 // static file endpoints -> WebServer
-    server.createContext("/", io -> respond(io, 200, "text/html", getFile("web/index.html")));
-    server.createContext("/search", io -> search(io)); 
-    server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
-    server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
-    server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
+        server.createContext("/", io -> respond(io, 200, "text/html", getFile("web/index.html")));
+        server.createContext("/search", io -> search(io));
+        server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
+        server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
+        server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
 
 // server start + banner -> WebServer
-    server.start();
-    String msg = " WebServer running on http://localhost:" + port + " ";
-    System.out.println("╭"+"─".repeat(msg.length())+"╮");
-    System.out.println("│"+msg+"│");
-    System.out.println("╰"+"─".repeat(msg.length())+"╯");
-  }
+        server.start();
+        String msg = " WebServer running on http://localhost:" + port + " ";
+        System.out.println("╭" + "─".repeat(msg.length()) + "╮");
+        System.out.println("│" + msg + "│");
+        System.out.println("╰" + "─".repeat(msg.length()) + "╯");
+    }
 
-// receives HTTP search request -> QueryHandler
-  void search(HttpExchange io) {
-    var searchTerm = io.getRequestURI().getRawQuery().split("=")[1];
+    // receives HTTP search request -> QueryHandler
+    void search(HttpExchange io) {
+        var searchTerm = io.getRequestURI().getRawQuery().split("=")[1];
 
 // calls actual search logic -> SearchEngine
-    var response = new ArrayList<String>();
-    for (var page : search(searchTerm)) {
+        var response = new ArrayList<String>();
+        for (var page : search(searchTerm)) {
 
 // JSON formatting for response -> QueryHandler
-      response.add(String.format("{\"url\": \"%s\", \"title\": \"%s\"}",
-        page.get(0).substring(6), page.get(1)));
-    }
+            response.add(String.format("{\"url\": \"%s\", \"title\": \"%s\"}",
+                    page.get(0).substring(6), page.get(1)));
+        }
 
 // write HTTP response -> WebServer 
-    var bytes = response.toString().getBytes(CHARSET);
-    respond(io, 200, "application/json", bytes);
-  }
-
-// naive search algorithm -> SearchEngine
-  List<List<String>> search(String searchTerm) {
-    var result = new ArrayList<List<String>>();
-    for (var page : pages) {
-      if (page.contains(searchTerm)) {
-        result.add(page);
-      }
+        var bytes = response.toString().getBytes(CHARSET);
+        respond(io, 200, "application/json", bytes);
     }
-    return result;
-  }
 
-// eading static file bytes -> WebServer 
-  byte[] getFile(String filename) {
-    try {
-      return Files.readAllBytes(Paths.get(filename));
-    } catch (IOException e) {
-      e.printStackTrace();
-      return new byte[0];
+    // naive search algorithm -> SearchEngine
+    List<List<String>> search(String searchTerm) {
+        var result = new ArrayList<List<String>>();
+        for (var page : pages) {
+            if (page.contains(searchTerm)) {
+                result.add(page);
+            }
+        }
+        return result;
     }
-  }
 
-// writing HTTP response -> WebServer
-  void respond(HttpExchange io, int code, String mime, byte[] response) {
-    try {
-      io.getResponseHeaders()
-          .set("Content-Type", String.format("%s; charset=%s", mime, CHARSET.name()));
-      io.sendResponseHeaders(200, response.length);
-      io.getResponseBody().write(response);
-    } catch (Exception e) {
-    } finally {
-      io.close();
+    // reading static file bytes -> WebServer
+    byte[] getFile(String filename) {
+        try {
+            return Files.readAllBytes(Paths.get(filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new byte[0];
+        }
     }
-  }
 
-// program start -> Main
-  public static void main(final String... args) throws IOException {
-    var filename = Files.readString(Paths.get("config.txt")).strip();
-    new OldWebServer(PORT, filename);
-  }
+    // writing HTTP response -> WebServer
+    void respond(HttpExchange io, int code, String mime, byte[] response) {
+        try {
+            io.getResponseHeaders()
+                    .set("Content-Type", String.format("%s; charset=%s", mime, CHARSET.name()));
+            io.sendResponseHeaders(200, response.length);
+            io.getResponseBody().write(response);
+        } catch (Exception e) {
+        } finally {
+            io.close();
+        }
+    }
+
+    // program start -> Main
+    public static void main(final String... args) throws IOException {
+        var filename = Files.readString(Paths.get("config.txt")).strip();
+        new OldWebServer(PORT, filename);
+    }
 }

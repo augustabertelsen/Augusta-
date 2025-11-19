@@ -24,19 +24,19 @@ class WebServer {
     private HttpServer server;
     private QueryHandler handler;
 
-public WebServer(int port, QueryHandler handler){
+    public WebServer(int port, QueryHandler handler) {
 
- // pseudo code:
-    //     store handler
-    //     create HttpServer with port + BACKLOG
-    //     register static file routes
-    //     register /search route → call handler.handleSearch(...)
-    //     start server
-    //     print startup banner
+        // pseudo code:
+        //     store handler
+        //     create HttpServer with port + BACKLOG
+        //     register static file routes
+        //     register /search route → call handler.handleSearch(...)
+        //     start server
+        //     print startup banner
 
-}
+    }
 
-//methods psuedo code: 
+    //methods psuedo code:
     getFile(filename) {
         // read file bytes and return them
     }
@@ -49,11 +49,6 @@ public WebServer(int port, QueryHandler handler){
 }
 
 
-
-
-
-
-
 //OldWebServer code:
 
 // public class WebServer {
@@ -62,7 +57,7 @@ public WebServer(int port, QueryHandler handler){
 //     static final int PORT = 8080;
 //     static final int BACKLOG = 0;
 //     static final Charset CHARSET = StandardCharsets.UTF_8;
-    
+
 //     // server field
 //     HttpServer server;
 
@@ -80,7 +75,7 @@ public WebServer(int port, QueryHandler handler){
 //     server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
 //     server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
 //     server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
-    
+
 
 //      // server start + banner
 //         server.start();
@@ -108,8 +103,7 @@ public WebServer(int port, QueryHandler handler){
 //     }
 
 
-
-// // writing HTTP response 
+// // writing HTTP response
 //   void respond(HttpExchange io, int code, String mime, byte[] response) {
 //     try {
 //       io.getResponseHeaders()
