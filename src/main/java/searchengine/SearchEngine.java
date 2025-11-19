@@ -1,57 +1,49 @@
+// Provides the search logic + Decides how to use invertedIndexs data structure to preform searches 
+// Uses the InvertedIndex to find pages matching a search term
+
+// Middle layer between webServer/QueryHandler (gets users search word) and InvertedIndex (know which page the word belongs to)
+
 package searchengine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchEngine {
-  
+    //uses to find pages fast
+    private InvertedIndex index;
     
+    // provides access to all pages and their raw data (maybe remove)
+    private PageCollection collection;
 
- // handle search requests
-  void search(HttpExchange io) {
-    // extract query string from '?q=...'
-    var searchTerm = io.getRequestURI().getRawQuery().split("=")[1];
-
-    // list to accumulate JSON objects
-    var response = new ArrayList<String>();
-
-    // iterate through matching pages
-    for (var page : search(searchTerm)) {
-      // format each result as JSON fragment
-      response.add(String.format(
-        "{\"url\": \"%s\", \"title\": \"%s\"}",
-        page.get(0).substring(6),  // page URL part after '*PAGE '
-        page.get(1)                // title line
-      ));
-    }
-
-    // encode JSON array into bytes
-    var bytes = response.toString().getBytes(CHARSET);
-
-    // send HTTP response
-    respond(io, 200, "application/json", bytes);
-  }
-
-
-
-
-
- // search pages for a term
-  List<List<String>> search(String searchTerm) {
-    // result list
-    var result = new ArrayList<List<String>>();
-    // linear scan through pages
-    for (var page : pages) {
-      // check if any line contains the term
-      if (page.contains(searchTerm)) {
-        result.add(page);
-      }
-    }
-    // return matches
-    return result;
-  }
-
+//Constructor builds the search engine -> DOES NOT perform search
+//Needs InvertedIndex to perfom lookups 
+public SearchEngine(InvertedIndex index){
+    this.index = index;
+}
   
+    public List<Page> search(String searchTerm){
+        //String cleanSearchTerm = cleanTerm(searchTerm);
+        return index.lookUp(searchTerm); //change to (cleanSearchTerm)
+    }
 
+    //Helper method - NOT DONE
+    private void cleanTerm(String searchTerm){
+        // to lowercase 
+        // trim
+        // remove puncuation
+    }
 
 }
+
+// Code from OldWebServer
+    // // search algorithm:
+    //   List<List<String>> search(String searchTerm) {
+    //     var result = new ArrayList<List<String>>();
+    //     for (var page : pages) {
+    //       if (page.contains(searchTerm)) {
+    //         result.add(page);
+    //       }
+    //     }
+    //     return result;
+    //   }
+
+
