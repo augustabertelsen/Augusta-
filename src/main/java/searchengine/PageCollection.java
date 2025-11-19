@@ -55,8 +55,7 @@ public class PageCollection {
     // Other classes can read the list and iterate over the pages, 
     // they cannot change it -> no adding, removing, or modifying the list. 
     public List<Page> getPages() {
-        List<Page> wrappedPages = Collections.unmodifiableList(pages);
-        return wrappedPages;
+        return Collections.unmodifiableList(pages);
     }
 
     public String getFilename() {   //might not be necessary? 
@@ -64,27 +63,3 @@ public class PageCollection {
     }
 
 }
-
-
-// Code from OldWebServer:
-
-//  // raw pages storage
-//   List<List<String>> pages = new ArrayList<>();
-
-
-//   // read file + split into pages
-//   try {
-//     List<String> lines = Files.readAllLines(Paths.get(filename));
-//     var lastIndex = lines.size();
-//     for (var i = lines.size() - 1; i >= 0; --i) {
-//       if (lines.get(i).startsWith("*PAGE")) {
-//         pages.add(lines.subList(i, lastIndex));
-//         lastIndex = i;
-//       }
-//     }
-//   } catch (FileNotFoundException e) {
-//     e.printStackTrace();
-//   }
-
-//   //ordering of pages
-//   Collections.reverse(pages);
