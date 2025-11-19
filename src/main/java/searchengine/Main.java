@@ -19,6 +19,7 @@ public class Main {
         SearchEngine searchEngine = new SearchEngine(index);
 
         // Start the web server -> using the search engine
+        // WebServer server = new WebServer(8080, searchEngine);
     }
 }
 
