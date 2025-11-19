@@ -26,10 +26,11 @@ public SearchEngine(InvertedIndex index){
     }
 
     //Helper method - NOT DONE
-    private void cleanTerm(String searchTerm){
+    private String cleanTerm(String searchTerm){
         // to lowercase 
         // trim
         // remove puncuation
+        // return clean String 
     }
 
 }
