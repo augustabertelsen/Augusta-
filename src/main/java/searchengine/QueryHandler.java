@@ -52,6 +52,8 @@ public class QueryHandler {
 
         // convert String to byte
         // return byte
+        
+        return result.getBytes();
     }
 
 
