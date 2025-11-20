@@ -13,63 +13,60 @@ import java.util.List;
 public class QueryHandler {
     private SearchEngine searchEngine;
 
-public QueryHandler(SearchEngine searchEngine){
-    this.searchEngine = searchEngine;
-}
+    public QueryHandler(SearchEngine searchEngine) {
+        this.searchEngine = searchEngine;
+    }
 
-// main entry point called by WebServer
+    // main entry point called by WebServer
     //extracts the search term form HTTP request
     // passes the term to SearchEngine 
     // convert list og Pages to JSON 
     // return bytes 
-public byte[] handleSearch(HttpExchange io){
+    public byte[] handleSearch(HttpExchange io) {
         String searchTerm = io.getRequestURI().getRawQuery().split("=")[1];
         List<Page> termPages = searchEngine.search(searchTerm);
         List<String> jsonStrings = new ArrayList<>();
-            
-            // Each page must become a small JSON object before they can be combined
-            // A JSON object string is just text that follows JSON rules. 
-            // Goal is for it to look like: {"url": "...", "title": "..."}
-            for(Page page : termPages){
-                String url = page.getUrl();
-                String title = page.getTitle();
-                String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
 
-                //temporary storage before structure 
-                jsonStrings.add(json);
-            }
+        // Each page must become a small JSON object before they can be combined
+        // A JSON object string is just text that follows JSON rules.
+        // Goal is for it to look like: {"url": "...", "title": "..."}
+        for (Page page : termPages) {
+            String url = page.getUrl();
+            String title = page.getTitle();
+            String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
+
+            //temporary storage before structure
+            jsonStrings.add(json);
+        }
 
         //Now we create one JSON array Stringthat is correctly structured
         String result = "[ ";
-        for(int i = 0; i <= jsonStrings.size()-1; i++){
+        for (int i = 0; i <= jsonStrings.size() - 1; i++) {
             result += jsonStrings.get(i);
 
-            if(i < jsonStrings.size()-1){
+            if (i < jsonStrings.size() - 1) {
                 result += ", ";
             }
         }
         result += " ]";
-    
-    // convert String to byte
-    // return byte
+
+        // convert String to byte
+        // return byte
     }
 
 
 }
 //NOTE ON JSON STRING LIST TO ONE JSON ARRAY String : 
 // JSON string list creates:
-    // {"url":"A","title":"A"}
-    // {"url":"B","title":"B"}
-    // {"url":"C","title":"C"}
+// {"url":"A","title":"A"}
+// {"url":"B","title":"B"}
+// {"url":"C","title":"C"}
 // JSON array string  creates:
-    // [{"url":"A","title":"A"}, {"url":"B","title":"B"}, {"url":"C","title":"C"}]
-    // NOT AN ARRAY!!! -> its a single string (JSON array)
+// [{"url":"A","title":"A"}, {"url":"B","title":"B"}, {"url":"C","title":"C"}]
+// NOT AN ARRAY!!! -> its a single string (JSON array)
 
 
-
-
-
-// OldWebServer 
+// OldWebServer
 
 // //receives HTTP search request
 //   void search(HttpExchange io) {

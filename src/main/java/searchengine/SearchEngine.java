@@ -10,23 +10,23 @@ import java.util.List;
 public class SearchEngine {
     //uses to find pages fast
     private InvertedIndex index;
-    
+
     // // provides access to all pages and their raw data (maybe remove)
     // private PageCollection collection;
 
-//Constructor builds the search engine -> DOES NOT perform search
+    //Constructor builds the search engine -> DOES NOT perform search
 //Needs InvertedIndex to perfom lookups 
-public SearchEngine(InvertedIndex index){
-    this.index = index;
-}
-  
-    public List<Page> search(String searchTerm){
+    public SearchEngine(InvertedIndex index) {
+        this.index = index;
+    }
+
+    public List<Page> search(String searchTerm) {
         //String cleanSearchTerm = cleanTerm(searchTerm);
         return index.lookUp(searchTerm); //change to (cleanSearchTerm)
     }
 
     //Helper method - NOT DONE
-    private String cleanTerm(String searchTerm){
+    private String cleanTerm(String searchTerm) {
         // to lowercase 
         // trim
         // remove puncuation
@@ -36,15 +36,15 @@ public SearchEngine(InvertedIndex index){
 }
 
 // Code from OldWebServer
-    // // search algorithm:
-    //   List<List<String>> search(String searchTerm) {
-    //     var result = new ArrayList<List<String>>();
-    //     for (var page : pages) {
-    //       if (page.contains(searchTerm)) {
-    //         result.add(page);
-    //       }
-    //     }
-    //     return result;
-    //   }
+// // search algorithm:
+//   List<List<String>> search(String searchTerm) {
+//     var result = new ArrayList<List<String>>();
+//     for (var page : pages) {
+//       if (page.contains(searchTerm)) {
+//         result.add(page);
+//       }
+//     }
+//     return result;
+//   }
 
 
