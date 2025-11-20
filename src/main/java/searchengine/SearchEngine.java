@@ -5,7 +5,6 @@
  */
 // Provides the search logic + Decides how to use invertedIndexs data structure to preform searches 
 // Uses the InvertedIndex to find pages matching a search term
-
 // Middle layer between webServer/QueryHandler (gets users search word) and InvertedIndex (know which page the word belongs to)
 
 package searchengine;
@@ -26,18 +25,26 @@ public class SearchEngine {
     }
 
     public List<Page> search(String searchTerm) {
-        // String cleanSearchTerm = cleanTerm(searchTerm);
-        return index.lookUp(searchTerm); // change to (cleanSearchTerm)
+        //uses helpermethod cleanSeachTerm() that return the original searchTerm with out uppercase, whitespace and punctuation 
+        String cleanSearchTerm = cleanSearchTerm(searchTerm);
+        return index.lookUp(cleanSearchTerm); 
     }
 
-
     // Helper method - NOT DONE
-    private String cleanTerm(String searchTerm) {
-        // to lowercase
-        String seachTermLowerCase = seachTerm.toLowerCase();
-        // trim
-        // remove puncuation
-        // return clean String
+    private String cleanSearchTerm(String searchTerm) {
+        // change upper case letters to lowee case and removes whitespace from bothe ends of string 
+        String cleanSearchTerm = seachTerm.toLowerCase().trim();
+        // variable with lengt of searchword
+        int wordLengt = cleanSearchTerm.length();
+        // variable containing last character of word
+        char lastCharacter = cleanSearchTerm.charAt(wordLengt-1);
+
+        // if the last character is not a letter return cleanSeachTerme minus last character else return cleanSeachTerme
+        if(!Character.isLetter(lastCharacter)){
+            return cleanSearchTerm.substring(0,wordlengt-1);
+        } else { 
+            return cleanSearchTerm;
+        }
     }
 
 }
