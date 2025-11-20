@@ -52,7 +52,7 @@ public class QueryHandler {
 
         // convert String to byte
         // return byte
-        
+        result = result.getBytes();
         return result.getBytes();
     }
 
