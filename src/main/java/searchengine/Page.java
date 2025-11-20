@@ -40,7 +40,7 @@ public class Page {
     }
 
     public List<String> getWords() {
-        return Collections.unmodifiableList(words);
+        return Collections.unmodifiableList(words); // make sure to return unmodifiable list so returned list cant be modified by other classes
     }
 
 }
