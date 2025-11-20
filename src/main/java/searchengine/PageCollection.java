@@ -31,7 +31,7 @@ public class PageCollection {
 // Each pageView (/pageCopy) becomes a Page object, and all Pages are stored in pages List then reversed to restore the correct order.
 
     public PageCollection(String filename) throws IOException {
-        this.filename = filename;
+        // this.filename = filename;
 
         this.pages = new ArrayList<>();
         List<String> lines = Files.readAllLines(Paths.get(filename));

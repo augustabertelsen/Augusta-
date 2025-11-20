@@ -69,4 +69,6 @@ public class InvertedIndex {
     }
 
 
+
+    // for more words use method retain all 
 }
