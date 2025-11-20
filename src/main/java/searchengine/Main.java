@@ -28,4 +28,20 @@ public class Main {
 //     new WebServer(PORT, filename);
 //   }
 
+//public class Main {
+//    public static void main(String[] args) {
+//        Application app = new Application();
+//        app.start();
+//    }
+//}
+//
+//public class Application {
+//    public void start() {
+//        PageCollection collection = new PageCollection("datafile.txt");
+//        InvertedIndex index = new InvertedIndex(collection.getPages());
+//        SearchEngine searchEngine = new SearchEngine(index);
+//        WebServer server = new WebServer(8080, searchEngine);
+//        server.start();
+//    }
+//}
 
