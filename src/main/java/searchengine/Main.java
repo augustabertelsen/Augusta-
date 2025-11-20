@@ -1,17 +1,47 @@
+// Starts the application. Reads config, creates all components, wires them together, and launches the WebServer.
+
+
 package searchengine;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-    
-    // read config.txt to get filename
-    var filename = Files.readString(Paths.get("config.txt")).strip();
-    // create server instance
-    new WebServer(PORT, filename);
-  }
+// Logic that belongs in Main:
+        // Load all pages -> using PageCollection
+        PageCollection collection = new PageCollection("datafile.txt");
+        List<Page> allPages = collection.getPages();
 
+        // Build the inverted index -> using all the pages
+        InvertedIndex index = new InvertedIndex(allPages);
 
+        // Create the search engine -> using the index
+        SearchEngine searchEngine = new SearchEngine(index);
 
+        // Start the web server -> using the search engine
+        // WebServer server = new WebServer(8080, searchEngine);
     }
+}
+
+// //Old code from :
+//     var filename = Files.readString(Paths.get("config.txt")).strip();
+//     new WebServer(PORT, filename);
+//   }
+
+//public class Main {
+//    public static void main(String[] args) {
+//        Application app = new Application();
+//        app.start();
+//    }
+//}
+//
+//public class Application {
+//    public void start() {
+//        PageCollection collection = new PageCollection("datafile.txt");
+//        InvertedIndex index = new InvertedIndex(collection.getPages());
+//        SearchEngine searchEngine = new SearchEngine(index);
+//        WebServer server = new WebServer(8080, searchEngine);
+//        server.start();
+//    }
+//}
+
