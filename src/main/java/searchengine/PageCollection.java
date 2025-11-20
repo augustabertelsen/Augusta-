@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PageCollection{
     private List<Page> pages;
-    private String filename;    //might not be necessary? 
+    // private String filename;    //might not be necessary? 
 
 // when writing: 
     // new PageCollection("datafile.txt")
@@ -59,9 +59,9 @@ public PageCollection(String filename) throws IOException{
       return wrappedPages;
     }
 
-    public String getFilename() {   //might not be necessary? 
-        return filename;
-    }
+    // public String getFilename() {   //might not be necessary? 
+    //     return filename;
+    // }
 
 }
 

@@ -5,12 +5,8 @@
 
 package searchengine;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -37,11 +33,12 @@ public WebServer(int port, QueryHandler handler){
 }
 
 //methods psuedo code: 
-    getFile(filename) {
+    private void getFile(){
+        //parameter: file name
         // read file bytes and return them
     }
 
-    respond() {
+    private void respond() {
         // set headers
         // write response bytes
         // close exchange

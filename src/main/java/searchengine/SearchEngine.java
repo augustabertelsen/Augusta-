@@ -11,8 +11,8 @@ public class SearchEngine {
     //uses to find pages fast
     private InvertedIndex index;
     
-    // provides access to all pages and their raw data (maybe remove)
-    private PageCollection collection;
+    // // provides access to all pages and their raw data (maybe remove)
+    // private PageCollection collection;
 
 //Constructor builds the search engine -> DOES NOT perform search
 //Needs InvertedIndex to perfom lookups 
