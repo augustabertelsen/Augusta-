@@ -5,6 +5,8 @@
 
 package searchengine;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -20,12 +22,29 @@ class WebServer {
     private HttpServer server;
     private QueryHandler handler;
 
-    public WebServer(int port, QueryHandler handler) {
+    public WebServer(int port, QueryHandler handler) throws IOException {
+        //store handler
+        this.handler = handler;
 
-        // pseudo code:
-        //     store handler
-        //     create HttpServer with port + BACKLOG
+        //HttpServer setup 
+
+        //create HttpServer with port + BACKLOG
+        server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
+
         //     register static file routes
+        server.createContext("/", io -> respond(io, 200, "text/html", getFile("web/index.html")));
+        server.createContext("/search", io -> search(io)); 
+        server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
+        server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
+        server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
+
+
+
+        server.createContext("/search", io -> handler.handleSearch(io)); 
+
+        // /search is the HTTP endpoint the browser calls to ask your server to perform a search.
+
+
         //     register /search route → call handler.handleSearch(...)
         //     start server
         //     print startup banner
@@ -58,8 +77,6 @@ class WebServer {
 
 //     // server field
 //     HttpServer server;
-
-//     // needs field: QueryHandler handler
 
 
 // public WebServer(int port, String filename)throws IOException{
