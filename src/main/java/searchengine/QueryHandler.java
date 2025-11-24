@@ -24,14 +24,23 @@ public class QueryHandler {
     // return bytes 
     public byte[] handleSearch(HttpExchange io) {
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+        List<Page> termPages = new List<Page>();
+         for (int i = 0; i<searchterm.size()-1; i++) {
+                termPages.add(searchEngine.search(searchTerm.get(i)));
 
-        for (String word: searchTerm) {
-            if (word.equals("OR")) {
-                int 
-            }
+         }
 
-        }
-        List<Page> termPages = searchEngine.search(searchTerm);
+        //code for SearchEngine class: 
+        // if (page.containsAll(searchTerms) {
+        // result.add(page)})
+        //note -- SE class will have to be altered to accept a string
+
+        //for (String word: searchTerm) {
+          //  if (word.equals("OR")) {
+            //    int 
+            //}}
+
+        
         List<String> jsonStrings = new ArrayList<>();
 
         // Each page must become a small JSON object before they can be combined
