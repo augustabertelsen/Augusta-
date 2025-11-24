@@ -1,12 +1,3 @@
-// Loads all pages from the data file, splits the file into separate page blocks,
-// parses each into a Page object, and stores them. 
-// The only class that "understands" the structure of the source file.
-// Reads the file -> Split it into individual pages -> Create Page objects and store them.
-
-// Handles file loading and page creation, while the index only handles fast word to page lookup.
-// Avoids mixing data loading with search logic.
-
-
 package searchengine;
 
 import java.io.IOException;
@@ -16,33 +7,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class is responsible for loading all pages from a data file, splitting the file 
+ * into separate page blocks, parsing each into a Page object, and storing them.
+ */
 public class PageCollection {
-    private List<Page> pages;
-    // private String filename;    //might not be necessary? 
+    private final List<Page> pages;
 
-// when writing: 
-    // new PageCollection("datafile.txt")
-
-// The constructor loads every line of the file, starts at bottom, goes backward to find each `*PAGE` marker, 
-// and slices out the lines that belong to that page.
-    // pageView: pageView is a subList view, not a real independent list -> shows which lines belong to the current page. (Safer)
-    // pageCopy: new independent list -> copies lines in pageView so each Page object
-    // NOTE: maybe both are not needed?
-// Each pageView (/pageCopy) becomes a Page object, and all Pages are stored in pages List then reversed to restore the correct order.
-
-    public PageCollection(String filename) throws IOException {
-        // this.filename = filename;
-
-        this.pages = new ArrayList<>();
-        List<String> lines = Files.readAllLines(Paths.get(filename));
-        var lastIndex = lines.size();
-        for (var i = lines.size() - 1; i >= 0; --i) {
-            if (lines.get(i).startsWith("*PAGE")) {
-                List<String> pageView = lines.subList(i, lastIndex);  //subList view: a window that points to the original list -> not a new independent list
-                List<String> pageCopy = new ArrayList<>();
-                for (String line : pageView) {
-                    pageCopy.add(line);
-                }
+    /**
+     * Creates a new PageCollection by loading and parsing pages from the specified file.
+     * <p>
+     * The file is expected to contain page blocks, where each page starts with a line 
+     * beginning with "*PAGE". The constructor reads the entire file, identifies page 
+     * boundaries, and creates Page objects for each block.
+     * @param filePath the path to the data file containing page information.
+     * @throws IOException if the file cannot be read or does not exist.
+     */
+    public PageCollection(String filePath) throws IOException {
+        pages = new ArrayList<>();
+        List<String> allLinesFromFile = Files.readAllLines(Paths.get(filePath));
+        var lastIndex = allLinesFromFile.size();
+        for (var i = allLinesFromFile.size() - 1; i >= 0; --i) {
+            if (allLinesFromFile.get(i).startsWith("*PAGE")) {
+                List<String> pageView = allLinesFromFile.subList(i, lastIndex);  //subList view: a window that points to the original list
+                List<String> pageCopy = new ArrayList<>(pageView); // create a new independent list containing only the page
                 Page page = new Page(pageCopy);
                 pages.add(page);
                 lastIndex = i;
@@ -51,15 +39,10 @@ public class PageCollection {
         Collections.reverse(pages);
     }
 
-    // getters
-    // Other classes can read the list and iterate over the pages, 
-    // they cannot change it -> no adding, removing, or modifying the list. 
+    /**
+     * @return an unmodifiable list containing all pages in this collection.
+     */
     public List<Page> getPages() {
         return Collections.unmodifiableList(pages);
     }
-
-    // public String getFilename() {   //might not be necessary? 
-    //     return filename;
-    // }
-
 }
