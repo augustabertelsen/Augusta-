@@ -24,11 +24,14 @@ public class QueryHandler {
     // return bytes 
     public byte[] handleSearch(HttpExchange io) {
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
-        List<Page> termPages = new List<Page>();
-         for (int i = 0; i<searchterm.size()-1; i++) {
-                termPages.add(searchEngine.search(searchTerm.get(i)));
+        List<String> finalSearchTerms = new List<String>();
+        List<Page> termPages = searchEngine(finalSearchTerms);
 
-         }
+        if (searchterm.contains("OR")) {
+
+        }
+        else {}
+    
 
         //code for SearchEngine class: 
         // if (page.containsAll(searchTerms) {
