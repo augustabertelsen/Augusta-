@@ -24,8 +24,8 @@ public class QueryHandler {
     // return bytes 
     public byte[] handleSearch(HttpExchange io) {
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
-        List<String> finalSearchTerms = new List<String>();
-        List<Page> termPages = searchEngine(finalSearchTerms);
+        //List<String> finalSearchTerms = new List<String>();
+        List<Page> termPages = new List<Pages>();
 
         if (searchterm.contains("OR")) {
             for (String word: searchTerm) {
@@ -34,11 +34,14 @@ public class QueryHandler {
                     termPages.add(searchEngine(word));}
         }
 
-        else{}
+        else{
+
+            termPages = searchEngine(searchTerm);
+                }
     
 
         //code for SearchEngine class: 
-        // if (page.containsAll(finalSearchTerms) {
+        // if (page.containsAll(searchTerm) {
         // result.add(page)})
         //note -- SE class will have to be altered to accept a string
 
