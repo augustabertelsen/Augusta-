@@ -23,7 +23,14 @@ public class QueryHandler {
     // convert list og Pages to JSON 
     // return bytes 
     public byte[] handleSearch(HttpExchange io) {
-        String searchTerm = io.getRequestURI().getRawQuery().split("=")[1];
+        List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+
+        for (String word: searchTerm) {
+            if (word.equals("OR")) {
+                int 
+            }
+
+        }
         List<Page> termPages = searchEngine.search(searchTerm);
         List<String> jsonStrings = new ArrayList<>();
 
