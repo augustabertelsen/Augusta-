@@ -28,13 +28,17 @@ public class QueryHandler {
         List<Page> termPages = searchEngine(finalSearchTerms);
 
         if (searchterm.contains("OR")) {
-
+            for (String word: searchTerm) {
+                if (!word.equals("OR")) { 
+                    if (!termPages.contains(searchEngine(word))){
+                    termPages.add(searchEngine(word));}
         }
-        else {}
+
+        else{}
     
 
         //code for SearchEngine class: 
-        // if (page.containsAll(searchTerms) {
+        // if (page.containsAll(finalSearchTerms) {
         // result.add(page)})
         //note -- SE class will have to be altered to accept a string
 
@@ -76,7 +80,7 @@ public class QueryHandler {
     }
 
 
-}
+}}}
 //NOTE ON JSON STRING LIST TO ONE JSON ARRAY String : 
 // JSON string list creates:
 // {"url":"A","title":"A"}
