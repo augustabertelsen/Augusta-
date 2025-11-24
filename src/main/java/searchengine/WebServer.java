@@ -49,9 +49,13 @@ class WebServer {
         // /search is the HTTP endpoint the browser calls to ask your server to perform a search.
 
 
-        //     register /search route → call handler.handleSearch(...)
-        //     start server
-        //     print startup banner
+        // server start + banner
+        server.start();
+        String msg = " WebServer running on http://localhost:" + port + " ";
+        System.out.println("╭"+"─".repeat(msg.length())+"╮");
+        System.out.println("│"+msg+"│");
+        System.out.println("╰"+"─".repeat(msg.length())+"╯");
+
 
     }
 
@@ -78,7 +82,7 @@ class WebServer {
 
     // The parameters:
         // HttpExchange oi: the request + response object from the server
-        // int cde: HTTP status number (200, 404, 500) -> standard? 
+        // int code: HTTP status number (200, 404, 500) -> standard? 
         // String mime: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc. 
         // byte[] response: the actual data that is sent back
 
