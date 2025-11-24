@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -39,7 +41,7 @@ class WebServer {
         server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
         server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
 
-        // /search is not a file — it triggers real search logic.
+        // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
         server.createContext("/search", io -> respond(io, 200, "application/json", handler.handleSearch(io))); 
 
@@ -53,24 +55,45 @@ class WebServer {
 
     }
 
+    // getFile() reads the file at the given filename and returns its contents as a byte[].
+    // If the file can’t be read, it returns an empty byte array instead of crashing. 
 
     private byte[] getFile(String filename){
-        //parameter: file name
-        // read file bytes and return them
-        return;
+            // try/catch prevents the server from crashing if the file is missing
+            try { 
+            // correctly loads a file into a byte[]  (Files and Paths are standard java object classes)
+            return Files.readAllBytes(Paths.get(filename));
+            } catch (IOException e) {
+            e.printStackTrace();
+            // safely returns an empty response instead of null
+            return new byte[0];
+        }
     }
+    //CHANGE: Only the method signature changed
 
+    
 
-    // HttpExchange exchange: the request + response object from the server
-    // int statusCode: HTTP status number (200, 404, 500)
-    // String mimeType: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc. 
-    // byte[] responseBytes: the actual data you will send back
+    // respond() sets the correct HTTP headers and status code, then writes the given byte[] response to the client.
+    // After sending the data, it safely closes the HttpExchange to complete the request.
 
-    private void respond(HttpExchange exchange,int statusCode, String mimeType, byte[] responseByte) {
-        // set headers
-        // write response bytes
-        // close exchange
+    // The parameters:
+        // HttpExchange oi: the request + response object from the server
+        // int cde: HTTP status number (200, 404, 500) -> standard? 
+        // String mime: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc. 
+        // byte[] response: the actual data that is sent back
+
+    private void respond(HttpExchange io,int code, String mime, byte[] response) {
+        try (io) {
+        io.getResponseHeaders()
+            .set("Content-Type", String.format("%s; charset=%s", mime, CHARSET.name()));
+        io.sendResponseHeaders(code, response.length);
+        io.getResponseBody().write(response);
+            } catch (Exception e) {
+            }
     }
+    //CHANGES: now uses the code parameter instead of a hard-coded 200 when sending the HTTP status.
+    //try-with-resources (try(io)) block so the HttpExchange is closed automatically and safely.
+
 }
 
 
