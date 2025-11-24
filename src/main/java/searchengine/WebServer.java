@@ -10,9 +10,9 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-// PSEUDO CODE:
 
 class WebServer {
     private static final int PORT = 8080;
@@ -31,16 +31,18 @@ class WebServer {
         //create HttpServer with port + BACKLOG
         server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
 
-        //     register static file routes
+        
+        
+        // The static routes (/, CSS, JS, favicon) just return files, so they don’t need QueryHandler -> uses getFile to get byte for respond 
         server.createContext("/", io -> respond(io, 200, "text/html", getFile("web/index.html")));
-        server.createContext("/search", io -> search(io)); 
         server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
         server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
         server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
 
+        // /search is not a file — it triggers real search logic.
+        // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
+        server.createContext("/search", io -> respond(io, 200, "application/json", handler.handleSearch(io))); 
 
-
-        server.createContext("/search", io -> handler.handleSearch(io)); 
 
         // /search is the HTTP endpoint the browser calls to ask your server to perform a search.
 
@@ -52,18 +54,26 @@ class WebServer {
     }
 
 
-//methods psuedo code: 
-    private void getFile(){
+    private byte[] getFile(String filename){
         //parameter: file name
         // read file bytes and return them
+        return;
     }
 
-    private void respond() {
+
+    // HttpExchange exchange: the request + response object from the server
+    // int statusCode: HTTP status number (200, 404, 500)
+    // String mimeType: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc. 
+    // byte[] responseBytes: the actual data you will send back
+
+    private void respond(HttpExchange exchange,int statusCode, String mimeType, byte[] responseByte) {
         // set headers
         // write response bytes
         // close exchange
     }
 }
+
+
 
 
 //OldWebServer code:
