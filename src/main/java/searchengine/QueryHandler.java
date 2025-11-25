@@ -54,6 +54,13 @@ public class QueryHandler {
         // return byte
         result = result.getBytes();
         return result.getBytes();
+
+        // handleSearch() should return a UTF-8 encoded byte[] containing the full JSON response.
+        // What needs to be done:
+            // Keep the final JSON as a String; do not overwrite it with bytes
+            // At the very end, convert the JSON string to byte[] once using UTF-8
+            // Return that byte[], not the String
+
     }
 
 
