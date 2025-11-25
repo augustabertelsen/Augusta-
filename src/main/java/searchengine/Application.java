@@ -22,7 +22,7 @@ public class Application {
         SearchEngine searchEngine = new SearchEngine(index);
         QueryHandler queryHandler = new QueryHandler(searchEngine);
         WebServer server = new WebServer(8080, queryHandler);
-        //server.start(); // Commented out since it's not yet working (due to the WebServer class not being finished)
+        
     }
 
     /**

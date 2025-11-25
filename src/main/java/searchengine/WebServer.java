@@ -90,6 +90,7 @@ class WebServer {
         io.sendResponseHeaders(code, response.length);
         io.getResponseBody().write(response);
             } catch (Exception e) {
+                // write catch block
             }
     }
     //CHANGES: now uses the code parameter instead of a hard-coded 200 when sending the HTTP status.

@@ -30,18 +30,17 @@ public class SearchEngine {
         return index.lookUp(cleanSearchTerm); 
     }
 
-    // Helper method - NOT DONE
-    private String cleanSearchTerm(String searchTerm) {
+        private String cleanSearchTerm(String searchTerm) {
         // change upper case letters to lowee case and removes whitespace from bothe ends of string 
-        String cleanSearchTerm = seachTerm.toLowerCase().trim();
+        String cleanSearchTerm = searchTerm.toLowerCase().trim();
         // variable with lengt of searchword
-        int wordLengt = cleanSearchTerm.length();
+        int wordLength = cleanSearchTerm.length();
         // variable containing last character of word
-        char lastCharacter = cleanSearchTerm.charAt(wordLengt-1);
+        char lastCharacter = cleanSearchTerm.charAt(wordLength-1);
 
         // if the last character is not a letter return cleanSeachTerme minus last character else return cleanSeachTerme
         if(!Character.isLetter(lastCharacter)){
-            return cleanSearchTerm.substring(0,wordlengt-1);
+            return cleanSearchTerm.substring(0,wordLength-1);
         } else { 
             return cleanSearchTerm;
         }
