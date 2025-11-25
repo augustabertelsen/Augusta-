@@ -35,7 +35,6 @@ public class QueryHandler {
         }
 
         else{
-
             termPages = searchEngine(searchTerm);
                 }
     
