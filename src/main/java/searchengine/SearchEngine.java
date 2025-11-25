@@ -1,61 +1,56 @@
-/**
-
- * This is a JavaDoc comment.
-
- */
-// Provides the search logic + Decides how to use invertedIndexs data structure to preform searches 
-// Uses the InvertedIndex to find pages matching a search term
-// Middle layer between webServer/QueryHandler (gets users search word) and InvertedIndex (know which page the word belongs to)
-
-package searchengine;
-
+ import java.util.ArrayList;
 import java.util.List;
 
+import searchengine.InvertedIndex;
+import searchengine.Page;
+    
 public class SearchEngine {
-    // uses to find pages fast
-    private InvertedIndex index;
 
-    // // provides access to all pages and their raw data (maybe remove)
-    // private PageCollection collection;
+   private InvertedIndex index;
 
-    // Constructor builds the search engine -> DOES NOT perform search
-    // Needs InvertedIndex to perfom lookups
-    public SearchEngine(InvertedIndex index) {
-        this.index = index;
-    }
-
-    public List<Page> search(String searchTerm) {
-        //uses helpermethod cleanSeachTerm() that return the original searchTerm with out uppercase, whitespace and punctuation 
-        String cleanSearchTerm = cleanSearchTerm(searchTerm);
-        return index.lookUp(cleanSearchTerm); 
-    }
-
-        private String cleanSearchTerm(String searchTerm) {
-        // change upper case letters to lowee case and removes whitespace from bothe ends of string 
-        String cleanSearchTerm = searchTerm.toLowerCase().trim();
-        // variable with lengt of searchword
-        int wordLength = cleanSearchTerm.length();
-        // variable containing last character of word
-        char lastCharacter = cleanSearchTerm.charAt(wordLength-1);
-
-        // if the last character is not a letter return cleanSeachTerme minus last character else return cleanSeachTerme
-        if(!Character.isLetter(lastCharacter)){
-            return cleanSearchTerm.substring(0,wordLength-1);
-        } else { 
-            return cleanSearchTerm;
-        }
-    }
-
+public SearchEngine(InvertedIndex index) {
+    this.index = index;
 }
 
-// Code from OldWebServer
-// // search algorithm:
-// List<List<String>> search(String searchTerm) {
-// var result = new ArrayList<List<String>>();
-// for (var page : pages) {
-// if (page.contains(searchTerm)) {
-// result.add(page);
-// }
-// }
-// return result;
-// }
+public byte[] handleSearch(HttpExchange io) {
+        List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+        handler = new QueryHandler(searchTerm);
+
+         List<Page> termPages = new List<Pages>();
+        //takes the List<List<String>> provided by QueryHandler and searches for pages which contain all of the Strings in each List<String> and returns them as a List<Page>
+
+        
+       //search index for pages containing all terms in term list and return as termPages
+
+         List<String> jsonStrings = new ArrayList<>();
+
+        // Each page must become a small JSON object before they can be combined
+        // A JSON object string is just text that follows JSON rules.
+        // Goal is for it to look like: {"url": "...", "title": "..."}
+        for (Page page : termPages) {
+            String url = page.getUrl();
+            String title = page.getTitle();
+            String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
+
+            //temporary storage before structure
+            jsonStrings.add(json);
+        }
+
+        //Now we create one JSON array Stringthat is correctly structured
+        String result = "[ ";
+        for (int i = 0; i <= jsonStrings.size() - 1; i++) {
+            result += jsonStrings.get(i);
+
+            if (i < jsonStrings.size() - 1) {
+                result += ", ";
+            }
+        }
+
+        result += " ]";
+
+        // convert String to byte
+        // return byte
+        result = result.getBytes();
+        return result.getBytes();
+
+}}
