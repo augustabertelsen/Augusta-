@@ -31,11 +31,11 @@ public class QueryHandler {
             for (String word: searchTerm) {
                 if (!word.equals("OR")) { 
                     if (!termPages.contains(searchEngine(word))){
-                    termPages.add(searchEngine(word));}
+                    termPages.add(searchEngine.search(word));}
         }
 
         else{
-            termPages = searchEngine(searchTerm);
+            termPages = searchEngine.search(searchTerm);
                 }
     
 
