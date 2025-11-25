@@ -23,8 +23,33 @@ public class QueryHandler {
     // convert list og Pages to JSON 
     // return bytes 
     public byte[] handleSearch(HttpExchange io) {
-        String searchTerm = io.getRequestURI().getRawQuery().split("=")[1];
-        List<Page> termPages = searchEngine.search(searchTerm);
+        List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+        //List<String> finalSearchTerms = new List<String>();
+        List<Page> termPages = new List<Pages>();
+
+        if (searchterm.contains("OR")) {
+            for (String word: searchTerm) {
+                if (!word.equals("OR")) { 
+                    if (!termPages.contains(searchEngine(word))){
+                    termPages.add(searchEngine(word));}
+        }
+
+        else{
+            termPages = searchEngine(searchTerm);
+                }
+    
+
+        //code for SearchEngine class: 
+        // if (page.containsAll(searchTerm) {
+        // result.add(page)})
+        //note -- SE class will have to be altered to accept a string
+
+        //for (String word: searchTerm) {
+          //  if (word.equals("OR")) {
+            //    int 
+            //}}
+
+        
         List<String> jsonStrings = new ArrayList<>();
 
         // Each page must become a small JSON object before they can be combined
@@ -64,7 +89,7 @@ public class QueryHandler {
     }
 
 
-}
+}}}
 //NOTE ON JSON STRING LIST TO ONE JSON ARRAY String : 
 // JSON string list creates:
 // {"url":"A","title":"A"}
