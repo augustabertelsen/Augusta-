@@ -28,11 +28,9 @@ public class SearchQueryEngineHandler {
             }
 
         }
+}
 
-    
-
-
-}private String cleanSearchTerm(String searchTerm) {
+private String cleanSearchTerm(String searchTerm) {
         // change upper case letters to lowee case and removes whitespace from bothe ends of string 
         String cleanSearchTerm = searchTerm.toLowerCase().trim();
         // variable with lengt of searchword
@@ -46,3 +44,5 @@ public class SearchQueryEngineHandler {
         } else { 
             return cleanSearchTerm;
         }}
+
+    }
