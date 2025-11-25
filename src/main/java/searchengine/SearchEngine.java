@@ -15,7 +15,9 @@ public SearchEngine(InvertedIndex index) {
 public byte[] handleSearch(HttpExchange io) {
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
         handler = new QueryHandler(searchTerm);
-        //takes the LIst<List<String>> provided by QueryHandler and searches for pages which contain all of each List<String> and returns them as a List<Page>
+
+         List<Page> termPages = new List<Pages>();
+        //takes the List<List<String>> provided by QueryHandler and searches for pages which contain all of the Strings in each List<String> and returns them as a List<Page>
 
         
        //search index for pages containing all terms in term list and return as termPages
