@@ -46,9 +46,6 @@ class WebServer {
         server.createContext("/search", io -> respond(io, 200, "application/json", handler.handleSearch(io))); 
 
 
-        // /search is the HTTP endpoint the browser calls to ask your server to perform a search.
-
-
         // server start + banner
         server.start();
         String msg = " WebServer running on http://localhost:" + port + " ";
