@@ -2,7 +2,7 @@ import java.util.List;
 
 public class QueryHandler {
 
-    public 
+    public QueryHandler(List<String> searchTerm) {
     
     List<List<String>> termList = new List<List<String>>();
 
@@ -23,6 +23,8 @@ public class QueryHandler {
             }
 
         }
+
+        return termlist;
 }
 
 private String cleanSearchTerm(String searchTerm) {

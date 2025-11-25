@@ -7,6 +7,7 @@ import searchengine.Page;
 public class SearchEngine {
 
    private InvertedIndex index;
+   private List<List<String>> termList;
 
 public SearchEngine(InvertedIndex index) {
     this.index = index;
