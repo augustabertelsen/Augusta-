@@ -27,7 +27,7 @@ public class QueryHandler {
         //List<String> finalSearchTerms = new List<String>();
         List<Page> termPages = new List<Pages>();
 
-        if (searchterm.contains("OR")) {
+        if (searchTerm.contains("OR")) {
             for (String word: searchTerm) {
                 if (!word.equals("OR")) { 
                     if (!termPages.contains(searchEngine(word))){
