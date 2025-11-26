@@ -20,13 +20,13 @@ public class OldQueryHandler {
 
     private final OldSearchEngine searchEngine;
 
-    // CHANGED: Keep constructor shape, but only take SearchEngine as originally intended.
+
     public OldQueryHandler(OldSearchEngine searchEngine) {
-        // CHANGED: Store the provided SearchEngine in the field.
+
         this.searchEngine = searchEngine;
     }
 
-    // CHANGED: This is now the main entry point
+    
     public byte[] handleSearch(HttpExchange io) {
         // CHANGED: Get the raw query string from the URL (e.g. "q=dogs").
         String rawQuery = io.getRequestURI().getRawQuery();
