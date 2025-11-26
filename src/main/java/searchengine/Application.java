@@ -18,9 +18,13 @@ public class Application {
     public void start() throws IOException {
         String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
         PageCollection collection = new PageCollection(dataFilePath);
-        InvertedIndex index = new InvertedIndex(collection.getPages());
-        SearchEngine searchEngine = new SearchEngine(index);
-        QueryHandler queryHandler = new QueryHandler(searchEngine);
+        // InvertedIndex index = new InvertedIndex(collection.getPages());
+        // SearchEngine searchEngine = new SearchEngine(index);
+
+        // CHANGED: pass pages directly to SearchEngine
+        OldSearchEngine searchEngine = new OldSearchEngine(collection.getPages());
+
+        OldQueryHandler queryHandler = new OldQueryHandler(searchEngine);
         WebServer server = new WebServer(8080, queryHandler);
         
     }

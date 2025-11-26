@@ -1,95 +1,255 @@
-//  bridge between WebServer and SearchEngine 
-// handles search requests: it extracts the query from the HTTP request, calls the SearchEngine, 
-// and translates the Page results into JSON for the WebServer.
-
+/**
+ * Takes an incoming HTTP search request and turns it into a JSON response.
+ * <p>
+ * INPUT: an HttpExchange that contains a URL like ".../search?q=dogs".
+ * QueryHandler reads the "q" value ("dogs"), asks SearchEngine for matching pages,
+ * and then builds one JSON string with all those pages.
+ * OUTPUT: a byte[] that contains the JSON result, ready to be sent back over HTTP.
+ */
 
 package searchengine;
 
-import com.sun.net.httpserver.HttpExchange;
-
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryHandler {
-    private SearchEngine searchEngine;
+import com.sun.net.httpserver.HttpExchange;
 
-    public QueryHandler(SearchEngine searchEngine) {
+
+public class OldQueryHandler {
+
+    private final OldSearchEngine searchEngine;
+
+    // CHANGED: Keep constructor shape, but only take SearchEngine as originally intended.
+    public OldQueryHandler(OldSearchEngine searchEngine) {
+        // CHANGED: Store the provided SearchEngine in the field.
         this.searchEngine = searchEngine;
     }
 
-    // main entry point called by WebServer
-    //extracts the search term form HTTP request
-    // passes the term to SearchEngine 
-    // convert list og Pages to JSON 
-    // return bytes 
+    // CHANGED: This is now the main entry point
     public byte[] handleSearch(HttpExchange io) {
-        List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
-        //List<String> finalSearchTerms = new List<String>();
-        List<Page> termPages = new List<Pages>();
+        // CHANGED: Get the raw query string from the URL (e.g. "q=dogs").
+        String rawQuery = io.getRequestURI().getRawQuery();
 
-        if (searchTerm.contains("OR")) {
-            for (String word: searchTerm) {
-                if (!word.equals("OR")) { 
-                    if (!termPages.contains(searchEngine(word))){
-                    termPages.add(searchEngine.search(word));}
+        // ADDED: If there is no query at all, return an empty JSON array.
+        if (rawQuery == null || rawQuery.isEmpty()) {
+            String emptyJson = "[]";
+            return emptyJson.getBytes(StandardCharsets.UTF_8);
         }
 
-        else{
-            termPages = searchEngine.search(searchTerm);
-                }
-    
+        // CHANGED: now it's a String not a List.
+        // Split rawQuery into key and value, and store only the value as searchTerm.
+        String[] parts = rawQuery.split("=", 2);
+        String searchTerm = parts.length > 1 ? parts[1] : "";
 
-        //code for SearchEngine class: 
-        // if (page.containsAll(searchTerm) {
-        // result.add(page)})
-        //note -- SE class will have to be altered to accept a string
+        // ADDED: Decode URL encoding so "big+dog" becomes "big dog".
+        searchTerm = java.net.URLDecoder.decode(searchTerm, StandardCharsets.UTF_8);
 
-        //for (String word: searchTerm) {
-          //  if (word.equals("OR")) {
-            //    int 
-            //}}
+        // CHANGED: Keep name 'termPages' but fix its type and initialization. Old: List<Page> termPages = new List<Pages>();
+        List<Page> termPages = new ArrayList<>();
 
-        
+        // CHANGED: For now, ignore "OR" logic and just do a simple single-term search.
+        // We keep the idea that SearchEngine does the actual searching.
+        // Old idea: termPages = searchEngine.search(searchTerm);
+        termPages = searchEngine.search(searchTerm);
+
         List<String> jsonStrings = new ArrayList<>();
 
-        // Each page must become a small JSON object before they can be combined
-        // A JSON object string is just text that follows JSON rules.
-        // Goal is for it to look like: {"url": "...", "title": "..."}
+        // Loop through termPages and build small JSON objects from each Page.
         for (Page page : termPages) {
+            //  Use Page getters instead of raw lists.
             String url = page.getUrl();
             String title = page.getTitle();
             String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
-
-            //temporary storage before structure
             jsonStrings.add(json);
         }
 
-        //Now we create one JSON array Stringthat is correctly structured
-        String result = "[ ";
-        for (int i = 0; i <= jsonStrings.size() - 1; i++) {
-            result += jsonStrings.get(i);
+        // CHANGED: Kept name 'result', but now build it using a StringBuilder first.
+        StringBuilder resultBuilder = new StringBuilder();
 
+        // CHANGED: Start JSON array with '['.
+        resultBuilder.append("[");
+
+        // CHANGED: Copy old behavior: join JSON strings with ", ".
+        for (int i = 0; i < jsonStrings.size(); i++) {
+            resultBuilder.append(jsonStrings.get(i));
             if (i < jsonStrings.size() - 1) {
-                result += ", ";
+                resultBuilder.append(", ");
             }
         }
-        result += " ]";
 
-        // convert String to byte
-        // return byte
-        result = result.getBytes();
-        return result.getBytes();
+        // CHANGED: Close JSON array with ']'.
+        resultBuilder.append("]");
 
-        // handleSearch() should return a UTF-8 encoded byte[] containing the full JSON response.
-        // What needs to be done:
-            // Keep the final JSON as a String; do not overwrite it with bytes
-            // At the very end, convert the JSON string to byte[] once using UTF-8
-            // Return that byte[], not the String
+        // CHANGED: Turn builder into final String named 'result' (same name as old code).
+        String result = resultBuilder.toString();
 
+        // CHANGED: Old code overwrote result with bytes (wrong type).
+        // New: convert String result to byte[] once and return it.
+        return result.getBytes(StandardCharsets.UTF_8);
     }
 
 
-}}}
+
+       // REMOVED: All the old broken code with:
+    //  - List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+    //  - List<Page> termPages = new List<Pages>();
+    //  - if (searchTerm.contains("OR")) { ... }
+    // Because:
+    //  - getRawQuery().split("=") returns a String[], so assigning it to List<String> and then calling
+    //    contains(...) on it does not work.
+    //  - new List<Pages>() cannot be instantiated (List is an interface, and 'Pages' is not a valid type).
+    //  - the unfinished OR-logic mixed together with JSON-building made the method too complex and still non-working.
+    //
+    // If you later want OR / AND logic, add it cleanly by:
+    //  - Parsing the query string into one or more search term Strings,
+    //  - Calling searchEngine.search(...) for each term (or term group),
+    //  - Merging / combining the resulting Page lists as needed,
+    //  - Then running the same JSON-building code on the final list of Pages.
+}
+
+
+
+
+
+
+// Old query handler:
+
+
+// public byte[] handleSearch(HttpExchange io) {
+//         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+//         //List<String> finalSearchTerms = new List<String>();
+//         List<Page> termPages = new List<Pages>();
+
+//         if (searchTerm.contains("OR")) {
+//             for (String word: searchTerm) {
+//                 if (!word.equals("OR")) { 
+//                     if (!termPages.contains(searchEngine(word))){
+//                     termPages.add(searchEngine.search(word));}
+//         }
+
+//         else{
+//             termPages = searchEngine.search(searchTerm);
+//                 }
+    
+
+//         //code for SearchEngine class: 
+//         // if (page.containsAll(searchTerm) {
+//         // result.add(page)})
+//         //note -- SE class will have to be altered to accept a string
+
+//         //for (String word: searchTerm) {
+//           //  if (word.equals("OR")) {
+//             //    int 
+//             //}}
+
+        
+//         List<String> jsonStrings = new ArrayList<>();
+
+//         // Each page must become a small JSON object before they can be combined
+//         // A JSON object string is just text that follows JSON rules.
+//         // Goal is for it to look like: {"url": "...", "title": "..."}
+//         for (Page page : termPages) {
+//             String url = page.getUrl();
+//             String title = page.getTitle();
+//             String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
+
+//             //temporary storage before structure
+//             jsonStrings.add(json);
+//         }
+
+//         //Now we create one JSON array Stringthat is correctly structured
+//         String result = "[ ";
+//         for (int i = 0; i <= jsonStrings.size() - 1; i++) {
+//             result += jsonStrings.get(i);
+
+//             if (i < jsonStrings.size() - 1) {
+//                 result += ", ";
+//             }
+//         }
+//         result += " ]";
+
+//         // convert String to byte
+//         // return byte
+//         result = result.getBytes();
+//         return result.getBytes();
+
+//         // handleSearch() should return a UTF-8 encoded byte[] containing the full JSON response.
+//         // What needs to be done:
+//             // Keep the final JSON as a String; do not overwrite it with bytes
+//             // At the very end, convert the JSON string to byte[] once using UTF-8
+//             // Return that byte[], not the String
+
+//     }public byte[] handleSearch(HttpExchange io) {
+//         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
+//         //List<String> finalSearchTerms = new List<String>();
+//         List<Page> termPages = new List<Pages>();
+
+//         if (searchTerm.contains("OR")) {
+//             for (String word: searchTerm) {
+//                 if (!word.equals("OR")) { 
+//                     if (!termPages.contains(searchEngine(word))){
+//                     termPages.add(searchEngine.search(word));}
+//         }
+
+//         else{
+//             termPages = searchEngine.search(searchTerm);
+//                 }
+    
+
+//         //code for SearchEngine class: 
+//         // if (page.containsAll(searchTerm) {
+//         // result.add(page)})
+//         //note -- SE class will have to be altered to accept a string
+
+//         //for (String word: searchTerm) {
+//           //  if (word.equals("OR")) {
+//             //    int 
+//             //}}
+
+        
+//         List<String> jsonStrings = new ArrayList<>();
+
+//         // Each page must become a small JSON object before they can be combined
+//         // A JSON object string is just text that follows JSON rules.
+//         // Goal is for it to look like: {"url": "...", "title": "..."}
+//         for (Page page : termPages) {
+//             String url = page.getUrl();
+//             String title = page.getTitle();
+//             String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
+
+//             //temporary storage before structure
+//             jsonStrings.add(json);
+//         }
+
+//         //Now we create one JSON array Stringthat is correctly structured
+//         String result = "[ ";
+//         for (int i = 0; i <= jsonStrings.size() - 1; i++) {
+//             result += jsonStrings.get(i);
+
+//             if (i < jsonStrings.size() - 1) {
+//                 result += ", ";
+//             }
+//         }
+//         result += " ]";
+
+//         // convert String to byte
+//         // return byte
+//         result = result.getBytes();
+//         return result.getBytes();
+
+//         // handleSearch() should return a UTF-8 encoded byte[] containing the full JSON response.
+//         // What needs to be done:
+//             // Keep the final JSON as a String; do not overwrite it with bytes
+//             // At the very end, convert the JSON string to byte[] once using UTF-8
+//             // Return that byte[], not the String
+
+//     }
+
+
+
+
+
 //NOTE ON JSON STRING LIST TO ONE JSON ARRAY String : 
 // JSON string list creates:
 // {"url":"A","title":"A"}
