@@ -1,10 +1,28 @@
 /**
- * Takes an incoming HTTP search request and turns it into a JSON response.
- * <p>
- * INPUT: an HttpExchange that contains a URL like ".../search?q=dogs".
- * QueryHandler reads the "q" value ("dogs"), asks SearchEngine for matching pages,
- * and then builds one JSON string with all those pages.
- * OUTPUT: a byte[] that contains the JSON result, ready to be sent back over HTTP.
+ * OldQueryHandler takes an incoming HTTP search request and turns it into a JSON response.
+ * OldQueryHandler is not a search because it never decides which pages match the term; 
+ * it only reads the HTTP request, forwards the term to OldSearchEngine, and formats the results as JSON.
+ *
+ * INPUT:
+ * - Receives an HttpExchange for a URL like ".../search?q=dogs".
+ * - Reads the raw query string (for example "q=dogs").
+ * - Extracts the value after "q=" (the search term, for example "dogs").
+ * - Sends this search term to OldSearchEngine by calling searchEngine.search(searchTerm).
+ *
+ * PROCESS:
+ * - Gets back a List<Page> from OldSearchEngine containing all matching pages.
+ * - For each Page, builds a small JSON object with its URL and title.
+ * - Joins all these JSON objects into one JSON array string.
+ *
+ * OUTPUT:
+ * - Converts the final JSON string into a byte[] (UTF‑8).
+ * - Returns that byte[] so WebServer can send it as the HTTP response body.
+ *
+ * CHANGES FROM ORIGINAL VERSION:
+ * - No longer mixes broken OR-logic and JSON building in the same place.
+ * - Uses correct types when reading the query string (String, not List<String>).
+ * - OldQueryHandler now only handles HTTP details and JSON formatting;
+ *   OldSearchEngine is responsible for deciding which pages match the search term.
  */
 
 package searchengine;

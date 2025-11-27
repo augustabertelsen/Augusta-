@@ -1,10 +1,36 @@
 /**
- * Knows about all pages and finds the ones that match a search word.
- * <p>
- * INPUT: a search term as a String (for example "dogs").
- * SearchEngine cleans the term (lowercase, remove simple punctuation), looks through
- * every Page it knows, and picks the pages that contain that word.
- * OUTPUT: a List<Page> containing only the pages that match the search term.
+ * OldSearchEngine knows about all pages and decides which pages match a search word.
+ * It is a search because it goes through every page and selects only those whose word list contains the (cleaned) search term.
+ * 
+ * INPUT:
+ * - Receives one search term as a String (for example "dogs" or "Dogs!").
+ *
+ * PROCESS:
+ * - Cleans the term:
+ *   - Converts it to lowercase.
+ *   - Trims extra spaces.
+ *   - Removes simple punctuation at the end (for example "!" in "Dogs!").
+ * - For each Page:
+ *   - Looks at page.getWords().
+ *   - If the cleaned term is in that word list, the Page is added to the result.
+ *
+ * OUTPUT:
+ * - Returns a List<Page> containing only the pages that match the cleaned search term.
+ *
+ * EXAMPLE:
+ * - Search term: " Dogs!  " → cleanSearchTerm → "dogs".
+ * - Pages:
+ *   - Page A words: ["cats", "dogs", "mice"]
+ *   - Page B words: ["birds", "fish"]
+ * - Result: only Page A is returned, because only Page A contains "dogs". 
+ *
+ * CHANGES FROM THE ORIGINAL VERSION:
+ * - The old implementation used an InvertedIndex to find pages.
+ * - Now OldSearchEngine stores a List<Page> directly and does a simple linear search
+ *   over page.getWords() for the cleaned term.
+ * - The cleanSearchTerm helper is kept, so the cleaning behavior (lowercase, trim,
+ *   strip simple punctuation) stays the same, but the search logic is simpler and
+ *   easier to understand.
  */
 
 package searchengine;
@@ -12,12 +38,6 @@ package searchengine;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CHANGED: Updated description to match new behavior (no inverted index).
- * Knows about a list of pages and can find pages that match a single search word.
- * INPUT: a raw search term like "Dogs!".
- * OUTPUT: a List<Page> that contains only the pages whose words contain "dogs".
- */
 // CHANGED: We keep the class name SearchEngine; this replaces OldSearchEngine’s behavior.
 public class OldSearchEngine {
 
@@ -84,14 +104,17 @@ public class OldSearchEngine {
         }
     }
 
-    // REMOVED: Old version that depended on InvertedIndex.
+    // REMOVED (commented) ORIGINAL INDEX-BASED IMPLEMENTATION:
     // public List<Page> search(String searchTerm) {
     //     String cleanSearchTerm = cleanSearchTerm(searchTerm);
     //     return index.lookUp(cleanSearchTerm);
     // }
+    //
+    // REMOVED: `private InvertedIndex index;` field and all javadoc that said
+    // "Uses the InvertedIndex to find pages" because we now search via pages list only.
+}
 
  
-}
 
 
 
