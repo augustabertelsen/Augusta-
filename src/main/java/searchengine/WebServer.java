@@ -22,9 +22,9 @@ class WebServer {
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     private HttpServer server;
-    private QueryHandler handler;
+    private OldQueryHandler handler;
 
-    public WebServer(int port, QueryHandler handler) throws IOException {
+    public WebServer(int port, OldQueryHandler handler) throws IOException {
         //store handler
         this.handler = handler;
 

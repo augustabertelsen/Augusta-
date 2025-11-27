@@ -1,44 +1,49 @@
-import java.util.List;
+// package searchengine;
 
-public class QueryHandler {
+// import java.util.List;
 
-    public QueryHandler(List<String> searchTerm) {
+// public class QueryHandler {
+
+
+//     public QueryHandler(List<String> searchTerm) { }
     
-    List<List<String>> termList = new List<List<String>>();
 
-        List<String> list1 = new List<String>();
-        List<String> list2 = new List<String>();
-        termList.add(list1);
-        termList.add(list2);
+        
+//     List<List<String>> termList = new List<List<String>>();
 
-        currentList = list1;
+//         List<String> list1 = new List<String>();
+//         List<String> list2 = new List<String>();
+//         termList.add(list1);
+//         termList.add(list2);
 
-        for (String word: searchTerm) {
-            if (!word.equals("OR")) {
-                currentList.add(cleanSearchTerm(word));
-            }
+//         currentList = list1;
 
-            else {
-                currentList = list2;
-            }
+//         for (String word: searchTerm) {
+//             if (!word.equals("OR")) {
+//                 currentList.add(cleanSearchTerm(word));
+//             }
 
-        }
+//             else {
+//                 currentList = list2;
+//             }
 
-        return termlist;
-}
+//         }
 
-private String cleanSearchTerm(String searchTerm) {
-        // change upper case letters to lowee case and removes whitespace from bothe ends of string 
-        String cleanSearchTerm = searchTerm.toLowerCase().trim();
-        // variable with lengt of searchword
-        int wordLength = cleanSearchTerm.length();
-        // variable containing last character of word
-        char lastCharacter = cleanSearchTerm.charAt(wordLength-1);
+//         return termlist;
+// }
 
-        // if the last character is not a letter return cleanSeachTerme minus last character else return cleanSeachTerme
-        if(!Character.isLetter(lastCharacter)){
-            return cleanSearchTerm.substring(0,wordLength-1);
-        } else { 
-            return cleanSearchTerm;
-        }} 
-}
+// private String cleanSearchTerm(String searchTerm) {
+//         // change upper case letters to lowee case and removes whitespace from bothe ends of string 
+//         String cleanSearchTerm = searchTerm.toLowerCase().trim();
+//         // variable with lengt of searchword
+//         int wordLength = cleanSearchTerm.length();
+//         // variable containing last character of word
+//         char lastCharacter = cleanSearchTerm.charAt(wordLength-1);
+
+//         // if the last character is not a letter return cleanSeachTerme minus last character else return cleanSeachTerme
+//         if(!Character.isLetter(lastCharacter)){
+//             return cleanSearchTerm.substring(0,wordLength-1);
+//         } else { 
+//             return cleanSearchTerm;
+//         }} 
+
