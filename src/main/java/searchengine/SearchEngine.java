@@ -96,45 +96,46 @@ public class OldQueryHandler {
 
     public List<Page> search(List<List<String>> termlist){
         // ADDED: Create result list to collect matching pages.
-        result = new ArrayList<>();
+        result = new List<Page>();
+        pagesWithEachWord = new List<List<Page>>();
        
         // loop through the list of list of string aka termlist
         for (List list : termlist){
-            List<List<Pages>> currentResultList = new ArrayList();
+            //List<List<Pages>> currentResultList = new ArrayList();
 
             // if the list in the list is not empty
             if(!list.isEmpty()){
                 // loop through the words in that list
                 for(String word: list){
                     //list to store pages whit that word 
-                    List<Pages> pagesWhitWord = new ArrayList();
+                    List<Pages> pagesWithWord = new ArrayList();
                     //look op word in index and add the pages containing that word to the list of pages pages whit word 
-                    pagesWhitWord = index.lookUp(word);
+                    pagesWithWord = index.lookUp(word);
+                    pagesWithEachWord.add(pagesWithWord);
                     // if the list pageswhit word is not empty, add that list to the list of list of pages 
-                    if (!pagesWhitWord.isEmpty()){
-                        currentResultList.add(pagesWhitWord);
+                    /*if (!pagesWithWord.isEmpty()){
+                        currentResultList.add(pagesWithWord);
                     }
                     else {
-                        
 
-
-                    }
-
-
+                    }*/
                 }
 
-                if(!currentResultList.isEmpty()){
+                listResult = pagesWithEachWord[1];
+
+                for (i=1; i<pagesWithEachWord.length()-1; i++) {
+                    listResult = listResult.retainAll(pagesWithEachWord[i]);
+                }
+
+                result += listResult;
+
+                /*if(!currentResultList.isEmpty()){
                     int sizeOfCurrentResultList = currentResultList.size();
                     
 
-                }
-                
-
-
+                }*/
 
             }
-
-
         }
         
 
