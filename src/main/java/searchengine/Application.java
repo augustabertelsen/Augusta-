@@ -19,11 +19,11 @@ public class Application {
         String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
         PageCollection collection = new PageCollection(dataFilePath);
         InvertedIndex index = new InvertedIndex(collection.getPages());
-        SearchEngine searchEngine = new SearchEngine(index);
+        SearchEngine search = new SearchEngine(index);
 
         // CHANGED: pass pages directly to SearchEngine
         //SearchEngine searchEngine = new SearchEngine(collection.getPages());
-        WebServer server = new WebServer(8080, SearchEngine);
+        WebServer server = new WebServer(8080, search);
         
     }
 
