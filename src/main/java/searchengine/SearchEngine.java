@@ -69,13 +69,13 @@ public class SearchEngine {
     }
 
     public List<Page> search(List<List<String>> termlist){
-        // ADDED: Create result list to collect matching pages.
+        // Create result list to collect matching pages.
         result = new ArrayList<Page>();
         
        
         // loop through the list of list of string aka termlist
         for (List list : termlist){
-            //List<List<Pages>> currentResultList = new ArrayList();
+            // Create a list of list of pages - 
             List<List<Page>>pagesWithEachWord = new ArrayList<List<Page>>();
             // if the list in the list is not empty
             if(!list.isEmpty()){
