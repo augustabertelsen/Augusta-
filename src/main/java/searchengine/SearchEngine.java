@@ -95,10 +95,48 @@ public class OldQueryHandler {
     }
 
     public List<Page> search(List<List<String>> termlist){
-        // CHANGED: Reuse the old helper: clean the term (lowercase, trim, strip trailing punctuation).
-
         // ADDED: Create result list to collect matching pages.
         result = new ArrayList<>();
+       
+        // loop through the list of list of string aka termlist
+        for (List list : termlist){
+            List<List<Pages>> currentResultList = new ArrayList();
+
+            // if the list in the list is not empty
+            if(!list.isEmpty()){
+                // loop through the words in that list
+                for(String word: list){
+                    //list to store pages whit that word 
+                    List<Pages> pagesWhitWord = new ArrayList();
+                    //look op word in index and add the pages containing that word to the list of pages pages whit word 
+                    pagesWhitWord = index.lookUp(word);
+                    // if the list pageswhit word is not empty, add that list to the list of list of pages 
+                    if (!pagesWhitWord.isEmpty()){
+                        currentResultList.add(pagesWhitWord);
+                    }
+                    else {
+                        
+
+
+                    }
+
+
+                }
+
+                if(!currentResultList.isEmpty()){
+                    int sizeOfCurrentResultList = currentResultList.size();
+                    
+
+                }
+                
+
+
+
+            }
+
+
+        }
+        
 
         // ADDED: Loop through every page we know.
         for (Page page : pages) {
