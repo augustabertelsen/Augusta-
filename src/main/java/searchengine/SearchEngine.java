@@ -94,13 +94,7 @@ public class OldQueryHandler {
                         pagesWithEachWord.clear();
                         break;
                     }
-                    // if the list pageswhit word is not empty, add that list to the list of list of pages 
-                    /*if (!pagesWithWord.isEmpty()){
-                        currentResultList.add(pagesWithWord);
-                    }
-                    else
-
-                    }*/
+                    // if the list pageswhit word is not empty, add that list to the list of list of pages
                     
                 }
                 if (!pagesWithEachWord.isEmpty()){
@@ -116,15 +110,7 @@ public class OldQueryHandler {
             else {
                 //Task 2 - throw error message 
             
-            }
-
-                /*if(!currentResultList.isEmpty()){
-                    int sizeOfCurrentResultList = currentResultList.size();
-                    
-
-                }*/
-
-            }
+            }}
         }
         
 
