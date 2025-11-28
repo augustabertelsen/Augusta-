@@ -22,10 +22,8 @@ public class Application {
         // SearchEngine searchEngine = new SearchEngine(index);
 
         // CHANGED: pass pages directly to SearchEngine
-        OldSearchEngine searchEngine = new OldSearchEngine(collection.getPages());
-
-        OldQueryHandler queryHandler = new OldQueryHandler(searchEngine);
-        WebServer server = new WebServer(8080, queryHandler);
+        SearchEngine searchEngine = new SearchEngine(collection.getPages());
+        WebServer server = new WebServer(8080, SearchEngine);
         
     }
 

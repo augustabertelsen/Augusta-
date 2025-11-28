@@ -1,49 +1,61 @@
-// package searchengine;
+package searchengine;
 
-// import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-// public class QueryHandler {
+public class QueryHandler {
 
-
-//     public QueryHandler(List<String> searchTerm) { }
+     List<List<String>> termList;
     
 
+    public QueryHandler(List<String> searchTerm) {
+   
+      termList = new List<List<String>>();  
+    }
+
+    public List handleQuery(){
+        List<String> list1 = new List<String>();
+        List<String> list2 = new List<String>();
+        termList.add(list1);
+        termList.add(list2);
+
+        currentList = list1;
+
+        for (String word: searchTerm) {
+            if (!word.equals("OR")) {
+                currentList.add(cleanSearchTerm(word));
         
-//     List<List<String>> termList = new List<List<String>>();
+            }
 
-//         List<String> list1 = new List<String>();
-//         List<String> list2 = new List<String>();
-//         termList.add(list1);
-//         termList.add(list2);
+            else {
+                currentList = list2;
+            }
 
-//         currentList = list1;
+        }
+        return termlist;
+    }
 
-//         for (String word: searchTerm) {
-//             if (!word.equals("OR")) {
-//                 currentList.add(cleanSearchTerm(word));
-//             }
+   
+    private String cleanSearchTerm(String searchTerm) {
+        // CHANGED: Same behavior as before – lower case and trim whitespace.
+        String cleanSearchTerm = searchTerm.toLowerCase().trim();
 
-//             else {
-//                 currentList = list2;
-//             }
+        // CHANGED: If the cleaned term is now empty, just return it to avoid charAt errors.
+        if (cleanSearchTerm.isEmpty()) {
+            return cleanSearchTerm;
+        }
 
-//         }
+        // CHANGED: Compute length and last character.
+        int wordLength = cleanSearchTerm.length();
+        char lastCharacter = cleanSearchTerm.charAt(wordLength - 1);
 
-//         return termlist;
-// }
+        // CHANGED: If last char is not a letter, strip it off; otherwise return as-is.
+        if (!Character.isLetter(lastCharacter)) {
+            return cleanSearchTerm.substring(0, wordLength - 1);
+        } else {
+            return cleanSearchTerm;
+        }
+    }
 
-// private String cleanSearchTerm(String searchTerm) {
-//         // change upper case letters to lowee case and removes whitespace from bothe ends of string 
-//         String cleanSearchTerm = searchTerm.toLowerCase().trim();
-//         // variable with lengt of searchword
-//         int wordLength = cleanSearchTerm.length();
-//         // variable containing last character of word
-//         char lastCharacter = cleanSearchTerm.charAt(wordLength-1);
-
-//         // if the last character is not a letter return cleanSeachTerme minus last character else return cleanSeachTerme
-//         if(!Character.isLetter(lastCharacter)){
-//             return cleanSearchTerm.substring(0,wordLength-1);
-//         } else { 
-//             return cleanSearchTerm;
-//         }} 
-
+    
+}
