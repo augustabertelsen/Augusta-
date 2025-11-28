@@ -8,13 +8,12 @@ import com.sun.net.httpserver.HttpExchange;
 
 import searchengine.Page;
 
-public class OldQueryHandler {
+public class SearchEngine {
 
 // CHANGED: Instead of an InvertedIndex, we now store all pages directly.
-    private final List<Page> pages;
+    private List<Page> pages;
     private List<Page> result;
 
-    private final OldSearchEngine searchEngine;
     private InvertedIndex index;
     private List<List<String>> termList;
 
