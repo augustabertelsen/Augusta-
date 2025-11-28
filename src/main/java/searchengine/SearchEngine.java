@@ -33,6 +33,8 @@ import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import searchengine.Page;
+
 public class OldQueryHandler {
 
 // CHANGED: Instead of an InvertedIndex, we now store all pages directly.
@@ -51,8 +53,8 @@ public class OldQueryHandler {
     public byte[] handleSearch(HttpExchange io) {
 
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
-        QueryHandler handler = new QueryHandler(searchTerm);
-        termList = handler.handleQuery();
+        QueryHandler handler = new QueryHandler();
+        termList = handler.handleQuery(searchTerm);
 
         List<Page> termPages = new ArrayList<>();
 
@@ -96,38 +98,51 @@ public class OldQueryHandler {
 
     public List<Page> search(List<List<String>> termlist){
         // ADDED: Create result list to collect matching pages.
-        result = new List<Page>();
-        pagesWithEachWord = new List<List<Page>>();
+        result = new ArrayList<Page>();
+        
        
         // loop through the list of list of string aka termlist
         for (List list : termlist){
             //List<List<Pages>> currentResultList = new ArrayList();
-
+            List<List<Page>>pagesWithEachWord = new ArrayList<List<Page>>();
             // if the list in the list is not empty
             if(!list.isEmpty()){
                 // loop through the words in that list
                 for(String word: list){
                     //list to store pages whit that word 
-                    List<Pages> pagesWithWord = new ArrayList();
+                    List<Page> pagesWithWord = new ArrayList();
                     //look op word in index and add the pages containing that word to the list of pages pages whit word 
                     pagesWithWord = index.lookUp(word);
-                    pagesWithEachWord.add(pagesWithWord);
+
+                    if (!pagesWithWord.isEmpty()) {
+                    pagesWithEachWord.add(pagesWithWord);}
+
+                    else {
+                        pagesWithEachWord.clear();
+                        break;
+                    }
                     // if the list pageswhit word is not empty, add that list to the list of list of pages 
                     /*if (!pagesWithWord.isEmpty()){
                         currentResultList.add(pagesWithWord);
                     }
-                    else {
+                    else
 
                     }*/
+                    
                 }
-
-                listResult = pagesWithEachWord[1];
+                if (!pagesWithEachWord.isEmpty()){
+                listResult = pagesWithEachWord(0);
 
                 for (i=1; i<pagesWithEachWord.length()-1; i++) {
-                    listResult = listResult.retainAll(pagesWithEachWord[i]);
+                    listResult = listResult.retainAll(pagesWithEachWord(i));
                 }
 
-                result += listResult;
+                result.add(listResult);
+            }
+
+            else {
+                
+            }
 
                 /*if(!currentResultList.isEmpty()){
                     int sizeOfCurrentResultList = currentResultList.size();
