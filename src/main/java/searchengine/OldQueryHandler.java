@@ -23,7 +23,7 @@
  * - Uses correct types when reading the query string (String, not List<String>).
  * - OldQueryHandler now only handles HTTP details and JSON formatting;
  *   OldSearchEngine is responsible for deciding which pages match the search term.
- */
+ 
 
 package searchengine;
 
@@ -286,4 +286,4 @@ public class OldQueryHandler {
 
 // //JSON formatting for response 
 //       response.add(String.format("{\"url\": \"%s\", \"title\": \"%s\"}",
-//         page.get(0).substring(6), page.get(1)));
+//         page.get(0).substring(6), page.get(1)));*/

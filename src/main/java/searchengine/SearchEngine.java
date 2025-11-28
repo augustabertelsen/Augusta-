@@ -1,30 +1,3 @@
- /**
- * OldQueryHandler takes an incoming HTTP search request and turns it into a JSON response.
- * OldQueryHandler is not a search because it never decides which pages match the term; 
- * it only reads the HTTP request, forwards the term to OldSearchEngine, and formats the results as JSON.
- *
- * INPUT:
- * - Receives an HttpExchange for a URL like ".../search?q=dogs".
- * - Reads the raw query string (for example "q=dogs").
- * - Extracts the value after "q=" (the search term, for example "dogs").
- * - Sends this search term to OldSearchEngine by calling searchEngine.search(searchTerm).
- *
- * PROCESS:
- * - Gets back a List<Page> from OldSearchEngine containing all matching pages.
- * - For each Page, builds a small JSON object with its URL and title.
- * - Joins all these JSON objects into one JSON array string.
- *
- * OUTPUT:
- * - Converts the final JSON string into a byte[] (UTF‑8).
- * - Returns that byte[] so WebServer can send it as the HTTP response body.
- *
- * CHANGES FROM ORIGINAL VERSION:
- * - No longer mixes broken OR-logic and JSON building in the same place.
- * - Uses correct types when reading the query string (String, not List<String>).
- * - OldQueryHandler now only handles HTTP details and JSON formatting;
- *   OldSearchEngine is responsible for deciding which pages match the search term.
- */
-
 package searchengine;
 
 import java.nio.charset.StandardCharsets;
@@ -32,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
+
+import searchengine.Page;
 
 public class OldQueryHandler {
 
@@ -51,8 +26,8 @@ public class OldQueryHandler {
     public byte[] handleSearch(HttpExchange io) {
 
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
-        QueryHandler handler = new QueryHandler(searchTerm);
-        termList = handler.handleQuery();
+        QueryHandler handler = new QueryHandler();
+        termList = handler.handleQuery(searchTerm);
 
         List<Page> termPages = new ArrayList<>();
 
@@ -96,45 +71,46 @@ public class OldQueryHandler {
 
     public List<Page> search(List<List<String>> termlist){
         // ADDED: Create result list to collect matching pages.
-        result = new ArrayList<>();
+        result = new ArrayList<Page>();
+        
        
         // loop through the list of list of string aka termlist
         for (List list : termlist){
-            List<List<Pages>> currentResultList = new ArrayList();
-
+            //List<List<Pages>> currentResultList = new ArrayList();
+            List<List<Page>>pagesWithEachWord = new ArrayList<List<Page>>();
             // if the list in the list is not empty
             if(!list.isEmpty()){
                 // loop through the words in that list
                 for(String word: list){
                     //list to store pages whit that word 
-                    List<Pages> pagesWhitWord = new ArrayList();
+                    List<Page> pagesWithWord = new ArrayList();
                     //look op word in index and add the pages containing that word to the list of pages pages whit word 
-                    pagesWhitWord = index.lookUp(word);
-                    // if the list pageswhit word is not empty, add that list to the list of list of pages 
-                    if (!pagesWhitWord.isEmpty()){
-                        currentResultList.add(pagesWhitWord);
-                    }
+                    pagesWithWord = index.lookUp(word);
+
+                    if (!pagesWithWord.isEmpty()) {
+                    pagesWithEachWord.add(pagesWithWord);}
+
                     else {
-                        
-
-
+                        pagesWithEachWord.clear();
+                        break;
                     }
-
-
-                }
-
-                if(!currentResultList.isEmpty()){
-                    int sizeOfCurrentResultList = currentResultList.size();
+                    // if the list pageswhit word is not empty, add that list to the list of list of pages
                     
-
                 }
-                
+                if (!pagesWithEachWord.isEmpty()){
+                listResult = pagesWithEachWord(0);
 
+                for (i=1; i<pagesWithEachWord.length()-1; i++) {
+                    listResult = listResult.retainAll(pagesWithEachWord(i));
+                }
 
-
+                result.add(listResult);
             }
 
-
+            else {
+                //Task 2 - throw error message 
+            
+            }}
         }
         
 
