@@ -22,11 +22,11 @@ class WebServer {
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     private HttpServer server;
-    private OldQueryHandler handler;
+    private SearchEngine search;
 
-    public WebServer(int port, OldQueryHandler handler) throws IOException {
+    public WebServer(int port, SearchEngine search) throws IOException {
         //store handler
-        this.handler = handler;
+        this.search = search;
 
         //HttpServer setup 
 
@@ -43,7 +43,7 @@ class WebServer {
 
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
-        server.createContext("/search", io -> respond(io, 200, "application/json", handler.handleSearch(io))); 
+        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io))); 
 
 
         // server start + banner

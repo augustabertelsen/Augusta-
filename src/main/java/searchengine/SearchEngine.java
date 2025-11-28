@@ -33,9 +33,7 @@ import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
-
 public class OldQueryHandler {
-
 
 // CHANGED: Instead of an InvertedIndex, we now store all pages directly.
     private final List<Page> pages;
@@ -50,32 +48,15 @@ public class OldQueryHandler {
         this.index = index;
     }
 
-    
     public byte[] handleSearch(HttpExchange io) {
-        // CHANGED: Get the raw query string from the URL (e.g. "q=dogs").
+
         List<String> searchTerm = io.getRequestURI().getRawQuery().split("=");
         QueryHandler handler = new QueryHandler(searchTerm);
         termList = handler.handleQuery();
 
- // ADDED: If there is no query at all, return an empty JSON array.
-        // if (rawQuery == null || rawQuery.isEmpty()) {
-        //     String emptyJson = "[]";
-        //     return emptyJson.getBytes(StandardCharsets.UTF_8);
-        // }
-
-
- // CHANGED: Keep the method name 'search', but implement it as a linear scan over pages.
-    // INPUT: searchTerm as a String (e.g. "Dogs!").
-    // OUTPUT: all pages whose words contain the cleaned search term.
-
-
-        // CHANGED: Keep name 'termPages' but fix its type and initialization. Old: List<Page> termPages = new List<Pages>();
         List<Page> termPages = new ArrayList<>();
 
-        // CHANGED: For now, ignore "OR" logic and just do a simple single-term search.
-        // We keep the idea that SearchEngine does the actual searching.
-        // Old idea: termPages = searchEngine.search(searchTerm);
-        termPages = searchEngine.search(searchTerm);
+        termPages = search(termList);
 
         List<String> jsonStrings = new ArrayList<>();
 
@@ -128,7 +109,6 @@ public class OldQueryHandler {
             }
         }
 
-        // ADDED: Return all matching pages.
         return result;
     }
 
