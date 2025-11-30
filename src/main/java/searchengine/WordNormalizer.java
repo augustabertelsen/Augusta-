@@ -7,7 +7,7 @@ private WordNormalizer(){
 }
 
 
-public static String normalilze(String searchTerm){
+public static String normalize(String searchTerm){
     if(searchTerm == null){
         return "";
     }
@@ -25,7 +25,6 @@ public static String normalilze(String searchTerm){
         }
     
 }
-
 
 
 

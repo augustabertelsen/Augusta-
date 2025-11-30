@@ -35,22 +35,25 @@ public class QueryHandler {
         return termlist;
     }
 
-    private String cleanSearchTerm(String searchTerm) {
 
-        String cleanSearchTerm = searchTerm.toLowerCase().trim();
+// use WordNormalizer instead -> String normalized = WordNormalizer.normalize(token);
+    
+    // private String cleanSearchTerm(String searchTerm) {
 
-        if (cleanSearchTerm.isEmpty()) {
-            return cleanSearchTerm;
-        }
+    //     String cleanSearchTerm = searchTerm.toLowerCase().trim();
 
-        int wordLength = cleanSearchTerm.length();
-        char lastCharacter = cleanSearchTerm.charAt(wordLength - 1);
+    //     if (cleanSearchTerm.isEmpty()) {
+    //         return cleanSearchTerm;
+    //     }
 
-        if (!Character.isLetter(lastCharacter)) {
-            return cleanSearchTerm.substring(0, wordLength - 1);
-        } else {
-            return cleanSearchTerm;
-        }
-    }
+    //     int wordLength = cleanSearchTerm.length();
+    //     char lastCharacter = cleanSearchTerm.charAt(wordLength - 1);
+
+    //     if (!Character.isLetter(lastCharacter)) {
+    //         return cleanSearchTerm.substring(0, wordLength - 1);
+    //     } else {
+    //         return cleanSearchTerm;
+    //     }
+    // }
 
 }
