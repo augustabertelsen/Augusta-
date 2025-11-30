@@ -1,16 +1,10 @@
-// flips structure from Page retrieves word to be Word retrieves list Pages (Therefore inverted)
-
-
-// Builds a fast lookup map from word into pages. 
-// Each word stores the list of Pages where it appears: 
-// "cat" -> [Page1, Page4, Page9]
-// "java" -> [Page2]
-
-// PageCollection loads pages -> InvertedIndex makes searching fast
-// Combining would mix two different responsibilities
-
-// Precomputes everything once so searches become instant
-// Otherwise we would need to: loop through every page, loop through every word on every page, check for matches every user search (slow)
+// Stores, in pagesContaining, which Page objects contain which cleaned word. It remembers, 
+// for each cleaned word, which Page objects contain that word.   It goes through every Page in
+// allPages, cleans every word with WordNormalizer, and fills the pagesContaining map; later 
+// lookUp(word) cleans the input word and returns the Pages that match, so SearchEngine can 
+// very quickly find all pages that contain a given word, instead of scanning every page every time.
+// Input: List<Page> allPages from PageCollection.
+// Output: A List<Page> of pages that contain the cleaned word.
 
 
 package searchengine;
@@ -70,17 +64,6 @@ public class InvertedIndex {
     }
 
 }
-
-// // If the word exists -> return list of its pages
-//     // If not -> return an empty list -> can loop safely without null-checks
-//     public List<Page> lookUp(String word) {
-//         if (pagesContaining.containsKey(word)) {
-//             return new ArrayList<>(pagesContaining.get(word)); // make sure to return copy of lists so the originals cant be modified by other classes
-//         }
-//         return new ArrayList<>();
-//     }
-
-
 
 
 
