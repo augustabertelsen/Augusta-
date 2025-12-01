@@ -1,12 +1,15 @@
-// Stores, in pagesContaining, which Page objects contain which cleaned word. It remembers, 
-// for each cleaned word, which Page objects contain that word.   It goes through every Page in
-// allPages, cleans every word with WordNormalizer, and fills the pagesContaining map; later 
-// lookUp(word) cleans the input word and returns the Pages that match, so SearchEngine can 
-// very quickly find all pages that contain a given word, instead of scanning every page every time.
 
-// Input: List<Page> allPages from PageCollection.
-// Output: A List<Page> of pages that contain the cleaned word.
-
+/**
+ * Builds and stores a fast lookup structure that maps each normalized word
+ * to the list of pages containing the word(s). All words in all pages are
+ * cleaned using WordNormalizer, and the internal index records each
+ * page under its normalized terms. Calling lookUp(word) normalizes
+ * the input and returns all pages that contain the word(s), avoiding the need
+ * to scan every page on each search.
+ *
+ * Input:  a list of Page objects (allPages).  
+ * Output: a list of pages containing the normalized search word(s).
+ */
 
 package searchengine;
 
@@ -19,7 +22,8 @@ import java.util.Map;
 public class InvertedIndex {
 
     //Map: Key: search word, Value: the list of pages that contain that word
-    private Map<String, List<Page>> pagesContaining;
+    // private final because it should never be reassigned but can still be updated
+    private final Map<String, List<Page>> pagesContaining;
 
 
     public InvertedIndex(List<Page> allPages) {
@@ -43,7 +47,7 @@ public class InvertedIndex {
              }
              List<Page> pagesForWord = pagesContaining.get(normalized);
              if(pagesForWord == null){
-                pagesForWord = new ArrayList<Page>();
+                pagesForWord = new ArrayList<>();           // VS reconmended ArrayList<>() instead of ArrayList<Page>() -> redundant 
                 pagesContaining.put(normalized, pagesForWord);
              }
              if (!pagesForWord.contains(page)) {
