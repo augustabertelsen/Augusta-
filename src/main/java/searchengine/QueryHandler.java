@@ -37,12 +37,13 @@ public class QueryHandler {
         List<String> list1 = new ArrayList<String>();
         termList.add(list1);
         List<String> currentList = list1;
+        WordNormalizer normalizer = new WordNormalizer();
 
         for (int i = 0; i < searchTerm.size(); i++) {
             String currentWord = searchTerm.get(i);
 
             if (!currentWord.equals("OR")) {
-                currentList.add(cleanSearchTerm(currentWord));
+                currentList.add(normalizer.normalize(currentWord));
 
             }
 
