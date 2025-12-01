@@ -5,23 +5,22 @@ import java.util.List;
 
 public class QueryHandler {
 
-    List<List<String>> termList;
 
     public QueryHandler() {
 
-        termList = new ArrayList<List<String>>();
     }
 
-    public List handleQuery(List<String> searchTerm) {
-
+    public List<List<String>> handleQuery(List<String> searchTerm) {
+        List<List<String>> termList = new ArrayList<List<String>>();
         List<String> list1 = new ArrayList<String>();
         termList.add(list1);
+        List<String> currentList = list1;
 
-        currentList = list1;
+        for (int i = 0; i < searchTerm.size(); i++) {
+            String currentWord = searchTerm.get(i);
 
-        for (String word : searchTerm) {
-            if (!word.equals("OR")) {
-                currentList.add(cleanSearchTerm(word));
+            if (!currentWord.equals("OR")) {
+                currentList.add(cleanSearchTerm(currentWord));
 
             }
 
@@ -32,7 +31,7 @@ public class QueryHandler {
             }
 
         }
-        return termlist;
+        return termList;
     }
 
 

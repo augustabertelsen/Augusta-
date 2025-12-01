@@ -33,7 +33,9 @@
  *   easier to understand.
  */
 
-/*package searchengine;
+
+
+package searchengine;
 
 import java.util.ArrayList;
 import java.util.List;

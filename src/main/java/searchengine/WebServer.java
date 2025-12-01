@@ -40,10 +40,12 @@ class WebServer {
         server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
         server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
         server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
+        
 
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
         server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io))); 
+       
 
 
         // server start + banner
