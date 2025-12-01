@@ -5,7 +5,6 @@
  * Pages where the word occurs more often get a higher score.
  */
 
-
 package searchengine;
 
 import java.util.List;
