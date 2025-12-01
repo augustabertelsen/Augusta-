@@ -83,7 +83,7 @@ public class SearchEngine {
 
             for (int i = 0; i < termList.size(); i++) {
                 List<String> currentList = termList.get(i);
-                List<List<Page>> listWhitListOfPagesForEachWord = new ArrayList<List<Page>>();
+                List<List<Page>> listWithListOfPagesForEachWord = new ArrayList<List<Page>>();
 
                 if (!currentList.isEmpty()) {
                     List<Page> pagesWithWord = new ArrayList<Page>();
@@ -93,25 +93,25 @@ public class SearchEngine {
                         pagesWithWord = index.lookUp(currentWord);
 
                         if (!pagesWithWord.isEmpty()) {
-                            listWhitListOfPagesForEachWord.add(pagesWithWord);
+                            listWithListOfPagesForEachWord.add(pagesWithWord);
                         }
 
                         else {
-                            listWhitListOfPagesForEachWord.clear();
+                            listWithListOfPagesForEachWord.clear();
                             break;
                         }
                     }
                 }
 
-                if (!listWhitListOfPagesForEachWord.isEmpty()) {
+                if (!listWithListOfPagesForEachWord.isEmpty()) {
 
                     List<Page> listResult = new ArrayList<Page>();
                     // FOR CHARLIE: added get, also in the next part.
-                    listResult = listWhitListOfPagesForEachWord.get(0);
+                    listResult = listWithListOfPagesForEachWord.get(0);
 
-                    for (int iii = 1; iii < listWhitListOfPagesForEachWord.size(); iii++) {
+                    for (int iii = 1; iii < listWithListOfPagesForEachWord.size(); iii++) {
                         List<Page> currentListOfPages = new ArrayList<Page>();
-                        currentListOfPages = listWhitListOfPagesForEachWord.get(iii);
+                        currentListOfPages = listWithListOfPagesForEachWord.get(iii);
 
                         listResult.retainAll(currentListOfPages);
                     }
