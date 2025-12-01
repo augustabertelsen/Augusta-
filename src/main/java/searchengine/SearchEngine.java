@@ -41,12 +41,13 @@ public class SearchEngine {
      */
     public byte[] handleSearch(HttpExchange io) {
         String rawQueery = io.getRequestURI().getRawQuery().split("=")[1];
-        String[] searchWordArray = rawQueery.split("+");
+        String[] searchWordArray = rawQueery.split("+"); 
         List<String> searchTerm = new ArrayList<String>(Arrays.asList(searchWordArray));
         QueryHandler handler = new QueryHandler();
         List<List<String>> termList = handler.handleQuery(searchTerm);
 
         List<Page> termP = search(termList);
+        // TODO: use scoring method to rank pages in termP based on termList (Task 5)
         byte[] finalResult = finalResultBuilder(termP);
         return finalResult;
     }

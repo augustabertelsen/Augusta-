@@ -15,12 +15,13 @@ public class WordNormalizer {
     
 // private empty constructor because it prevents anyone from creating an instance of 
 // a "utility class" that only provides static methods.
-private WordNormalizer(){
+WordNormalizer(){
 }
 
 
-// public static so any class can use the normalization logic without creating an object, 
-// since the method belongs to the utility itself rather than an instance.
+
+// Declared static, it belongs to the class itself, not to any particular object.  
+// Static methods can be called as WordNormalizer.normalize(...) without creating a new WordNormalizer().
 // -> String normalized = WordNormalizer.normalize(word);
 
 public static String normalize(String searchTerm){
