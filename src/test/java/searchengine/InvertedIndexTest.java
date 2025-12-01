@@ -28,26 +28,6 @@ public class InvertedIndexTest {
         assertTrue(result.contains(pageA));
     }
     
-    @Test
-    void lookUpNormalizedWord(){
-        Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "Government, President, USA"
-        ));
-
-        List<Page> allPages = Arrays.asList(pageA);
-        InvertedIndex index = new InvertedIndex(allPages);
-
-        List<Page> result1 = index.lookUp("PRESIDENT!");
-        List<Page> result2 = index.lookUp("president");
-        List<Page> result3 = index.lookUp("Predsident.");
-
-        assertTrue(result1.size() == 1 && result1.contains(pageA));
-        assertTrue(result2.size() == 1 && result1.contains(pageA));
-        assertTrue(result3.size() == 1 && result1.contains(pageA));
-    }
-    
     @Test 
     void lookUpWordInMultiplePages(){
         Page pageA = new Page(List.of(
@@ -75,6 +55,26 @@ public class InvertedIndexTest {
         assertTrue(result.contains(pageC));
         assertFalse(result.contains(pageB));
         assertEquals(2, result.size());
+    }
+
+    @Test
+    void lookUpNormalizedWord(){
+        Page pageA = new Page(List.of(
+            "*PAGE:http://example.com/A",
+            "Title A",
+            "Government, President, USA"
+        ));
+
+        List<Page> allPages = Arrays.asList(pageA);
+        InvertedIndex index = new InvertedIndex(allPages);
+
+        List<Page> result1 = index.lookUp("PRESIDENT!");
+        List<Page> result2 = index.lookUp("president");
+        List<Page> result3 = index.lookUp("Predsident.");
+
+        assertTrue(result1.size() == 1 && result1.contains(pageA));
+        assertTrue(result2.size() == 1 && result1.contains(pageA));
+        assertTrue(result3.size() == 1 && result1.contains(pageA));
     }
 
     @Test 
@@ -110,11 +110,24 @@ public class InvertedIndexTest {
         assertNotEquals(null, result);
         assertTrue(result.isEmpty());
         assertEquals(0, result.size());
-
     }
 
+    @Test
+    void lookUpReturnsOnePageForRepeatedWord(){
+        Page pageA = new Page(List.of(
+            "*PAGE:http://example.com/A",
+            "Title A",
+            "government", "government", "president"
+        ));
 
+        List<Page> allPages = Arrays.asList(pageA);
+        InvertedIndex index = new InvertedIndex(allPages);
 
+        List<Page> result = index.lookUp("government");
+
+        assertTrue(result.contains(pageA));
+        assertEquals(1, result.size());
+    }
 
 
 
