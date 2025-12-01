@@ -9,15 +9,36 @@ import com.sun.net.httpserver.HttpExchange;
 
 import searchengine.Page;
 
+/**
+ * This class is responsible for accepting a query from the server, splitting it 
+ * into a list of strings and calling the QueryHandler class on that list. SearchEngine
+ * then takes the resulting List<List<String>> list of search terms and uses the InvertedIndex to compile
+ * a list of pages which match each search term. It then loops through these pages and converts each one 
+ * to a JSON compliant format, which is returned.  
+ */
+ 
+
 public class SearchEngine {
 
     private InvertedIndex index;
 
+/**
+ * Creates a new SearchEngine with an InvertedIndex object which organises a set of files. 
+ * @param index an InvertedIndex object which the class will use to find pages that match the search terms. 
+ */
     public SearchEngine(InvertedIndex index) {
 
         this.index = index;
     }
 
+    /**
+     * Extracts the search terms from the raw query and adds them to an array list, which the 
+     * handleQuery() method of QueryHandler can then be called upon. The List<List<String>> 
+     * returned by this method then has the search() method called upon it, and the resulting 
+     * List<Page> has the finalResultBuilder() method called upon it, which produces an array of bytes.  
+     * @param io the request from the server. 
+     * @return an array of bytes.
+     */
     public byte[] handleSearch(HttpExchange io) {
         String rawQueery = io.getRequestURI().getRawQuery().split("=")[1];
         String[] searchWordArray = rawQueery.split("+");
@@ -30,6 +51,13 @@ public class SearchEngine {
         return finalResult;
     }
 
+    /**
+     * For every page in the List<Page> compiled by the search() method, this method builds a small JSON object. 
+     * It then creates an array of these JSON strings and converts that array to a String. 
+     * Finally, this String is converted to an array of bytes. 
+     * @param termPages the list of Pages compiled by the search() method. 
+     * @return an array of bytes.
+     */
 
     public byte[] finalResultBuilder(List<Page>termPages){ 
 
@@ -73,7 +101,15 @@ public class SearchEngine {
     // New: convert String result to byte[] once and return it.
     return result.getBytes(StandardCharsets.UTF_8);
 }
-
+    /**
+     * This method receives as a parameter a list of search terms. For each word in one of these search terms, 
+     * the method creates a list of pages which include that word using the lookUp() method of the InvertedIndex
+     * object, and adds all of these lists of pages to a list. It then takes the first list of pages in this list
+     * and then loops through the rest, using the retailAll() java method to keep only the pages which 'match' 
+     * every word in teh search term. This list of pages is returned. 
+     * @param termList the list of list of Strings, or list of search terms, produced by the QueryHandler.
+     * @return a list of pages which correspond to one of these search terms. 
+     */
     public List<Page> search(List<List<String>> termList) {
         // Create result list to collect matching pages.
         List<Page> result = new ArrayList<Page>();
