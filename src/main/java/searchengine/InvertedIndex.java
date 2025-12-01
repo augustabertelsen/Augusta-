@@ -3,6 +3,7 @@
 // allPages, cleans every word with WordNormalizer, and fills the pagesContaining map; later 
 // lookUp(word) cleans the input word and returns the Pages that match, so SearchEngine can 
 // very quickly find all pages that contain a given word, instead of scanning every page every time.
+
 // Input: List<Page> allPages from PageCollection.
 // Output: A List<Page> of pages that contain the cleaned word.
 
