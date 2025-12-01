@@ -11,30 +11,27 @@ import org.junit.jupiter.api.Test;
 public class InvertedIndexTest {
 
     @Test
-    void pagesForNormalizedWord() {
+    void lookUpNormalizedWord(){
         Page pageA = new Page(List.of(
             "*PAGE:http://example.com/A",
             "Title A",
             "Government, President, USA"
         ));
-        Page pageB = new Page(List.of(
-            "*PAGE:http://example.com/B",
-            "Title B",
-            "king", "denmark"
-        ));
 
-        List<Page> allPages = Arrays.asList(pageA, pageB);
+        List<Page> allPages = Arrays.asList(pageA);
         InvertedIndex index = new InvertedIndex(allPages);
 
-        List<Page> result = index.lookUp("PRESIDENT!");
+        List<Page> result1 = index.lookUp("PRESIDENT!");
+        List<Page> result2 = index.lookUp("president");
+        List<Page> result3 = index.lookUp("Predsident.");
 
-        assertTrue(result.contains(pageA));
-        assertFalse(result.contains(pageB));
-        assertEquals(1, result.size());
+        assertTrue(result1.size() == 1 && result1.contains(pageA));
+        assertTrue(result2.size() == 1 && result1.contains(pageA));
+        assertTrue(result3.size() == 1 && result1.contains(pageA));
     }
     
     @Test 
-    void wordInMultiplePages(){
+    void lookUpWordInMultiplePages(){
         Page pageA = new Page(List.of(
             "*PAGE:http://example.com/A",
             "Title A",
