@@ -35,10 +35,12 @@
 
 
 
-package searchengine;
+package searchengine.OldFiles;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import searchengine.Page;
 
 // CHANGED: We keep the class name SearchEngine; this replaces OldSearchEngine’s behavior.
 public class OldSearchEngine {
