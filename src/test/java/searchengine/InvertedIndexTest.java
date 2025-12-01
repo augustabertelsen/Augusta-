@@ -5,6 +5,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -93,7 +94,24 @@ public class InvertedIndexTest {
         assertEquals(1, result.size());
     }
 
-    
+    @Test 
+    void lookUpReturnEmptyPageForUnknownWord(){
+        Page pageA = new Page(List.of(
+            "*PAGE:http://example.com/A",
+            "Title A",
+            "government"
+        ));
+
+        List<Page> allPages = Arrays.asList(pageA);
+        InvertedIndex index = new InvertedIndex(allPages);
+
+        List<Page> result = index.lookUp("laugh");
+
+        assertNotEquals(null, result);
+        assertTrue(result.isEmpty());
+        assertEquals(0, result.size());
+
+    }
 
 
 
