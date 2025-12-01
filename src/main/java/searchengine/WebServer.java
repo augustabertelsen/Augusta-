@@ -17,16 +17,17 @@ import com.sun.net.httpserver.HttpServer;
 
 
 class WebServer {
-    private static final int PORT = 8080;
     private static final int BACKLOG = 0;
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     private HttpServer server;
     private SearchEngine search;
+    private final int port;
 
     public WebServer(int port, SearchEngine search) throws IOException {
         //store handler
         this.search = search;
+        this.port = port;
 
         //HttpServer setup 
 
@@ -44,18 +45,15 @@ class WebServer {
 
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
-        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io))); 
-       
+        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io)));
+    }
 
-
-        // server start + banner
+    public void start() {
         server.start();
         String msg = " WebServer running on http://localhost:" + port + " ";
         System.out.println("╭"+"─".repeat(msg.length())+"╮");
         System.out.println("│"+msg+"│");
         System.out.println("╰"+"─".repeat(msg.length())+"╯");
-
-
     }
 
     // getFile() reads the file at the given filename and returns its contents as a byte[].
