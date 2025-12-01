@@ -29,10 +29,12 @@ public class PageCollection {
         var lastIndex = allLinesFromFile.size();
         for (var i = allLinesFromFile.size() - 1; i >= 0; --i) {
             if (allLinesFromFile.get(i).startsWith("*PAGE")) {
-                List<String> pageView = allLinesFromFile.subList(i, lastIndex);  //subList view: a window that points to the original list
-                List<String> pageCopy = new ArrayList<>(pageView); // create a new independent list containing only the page
-                Page page = new Page(pageCopy);
-                pages.add(page);
+                List<String> pageLinesView = allLinesFromFile.subList(i, lastIndex);  //subList view: a window that points to the original list
+                List<String> pageLines = new ArrayList<>(pageLinesView); // create a new independent list containing only the page
+                if (isValidPage(pageLines)) {
+                    Page page = new Page(pageLines);
+                    pages.add(page);
+                }
                 lastIndex = i;
             }
         }
