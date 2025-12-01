@@ -1,3 +1,4 @@
+package searchengine.OldFiles;
 /**
  * OldQueryHandler takes an incoming HTTP search request and turns it into a JSON response.
  * OldQueryHandler is not a search because it never decides which pages match the term; 
@@ -26,87 +27,87 @@
  * */
  
 
-package searchengine;
+// package searchengine;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+// import java.nio.charset.StandardCharsets;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import com.sun.net.httpserver.HttpExchange;
-
-
-public class OldQueryHandler {
-
-    private final OldSearchEngine searchEngine;
+// import com.sun.net.httpserver.HttpExchange;
 
 
-    public OldQueryHandler(OldSearchEngine searchEngine) {
+// public class OldQueryHandler {
 
-        this.searchEngine = searchEngine;
-    }
+//     private final OldSearchEngine searchEngine;
+
+
+//     public OldQueryHandler(OldSearchEngine searchEngine) {
+
+//         this.searchEngine = searchEngine;
+//     }
 
     
-    public byte[] handleSearch(HttpExchange io) {
-        // CHANGED: Get the raw query string from the URL (e.g. "q=dogs").
-        String rawQuery = io.getRequestURI().getRawQuery();
+//     public byte[] handleSearch(HttpExchange io) {
+//         // CHANGED: Get the raw query string from the URL (e.g. "q=dogs").
+//         String rawQuery = io.getRequestURI().getRawQuery();
 
-        // ADDED: If there is no query at all, return an empty JSON array.
-        if (rawQuery == null || rawQuery.isEmpty()) {
-            String emptyJson = "[]";
-            return emptyJson.getBytes(StandardCharsets.UTF_8);
-        }
+//         // ADDED: If there is no query at all, return an empty JSON array.
+//         if (rawQuery == null || rawQuery.isEmpty()) {
+//             String emptyJson = "[]";
+//             return emptyJson.getBytes(StandardCharsets.UTF_8);
+//         }
 
-        // CHANGED: now it's a String not a List.
-        // Split rawQuery into key and value, and store only the value as searchTerm.
-        String[] parts = rawQuery.split("=", 2);
-        String searchTerm = parts.length > 1 ? parts[1] : "";
+//         // CHANGED: now it's a String not a List.
+//         // Split rawQuery into key and value, and store only the value as searchTerm.
+//         String[] parts = rawQuery.split("=", 2);
+//         String searchTerm = parts.length > 1 ? parts[1] : "";
 
-        // ADDED: Decode URL encoding so "big+dog" becomes "big dog".
-        searchTerm = java.net.URLDecoder.decode(searchTerm, StandardCharsets.UTF_8);
+//         // ADDED: Decode URL encoding so "big+dog" becomes "big dog".
+//         searchTerm = java.net.URLDecoder.decode(searchTerm, StandardCharsets.UTF_8);
 
-        // CHANGED: Keep name 'termPages' but fix its type and initialization. Old: List<Page> termPages = new List<Pages>();
-        List<Page> termPages = new ArrayList<>();
+//         // CHANGED: Keep name 'termPages' but fix its type and initialization. Old: List<Page> termPages = new List<Pages>();
+//         List<Page> termPages = new ArrayList<>();
 
-        // CHANGED: For now, ignore "OR" logic and just do a simple single-term search.
-        // We keep the idea that SearchEngine does the actual searching.
-        // Old idea: termPages = searchEngine.search(searchTerm);
-        termPages = searchEngine.search(searchTerm);
+//         // CHANGED: For now, ignore "OR" logic and just do a simple single-term search.
+//         // We keep the idea that SearchEngine does the actual searching.
+//         // Old idea: termPages = searchEngine.search(searchTerm);
+//         termPages = searchEngine.search(searchTerm);
 
-        List<String> jsonStrings = new ArrayList<>();
+//         List<String> jsonStrings = new ArrayList<>();
 
-        // Loop through termPages and build small JSON objects from each Page.
-        for (Page page : termPages) {
-            //  Use Page getters instead of raw lists.
-            String url = page.getUrl();
-            String title = page.getTitle();
-            String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
-            jsonStrings.add(json);
-        }
+//         // Loop through termPages and build small JSON objects from each Page.
+//         for (Page page : termPages) {
+//             //  Use Page getters instead of raw lists.
+//             String url = page.getUrl();
+//             String title = page.getTitle();
+//             String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
+//             jsonStrings.add(json);
+//         }
 
-        // CHANGED: Kept name 'result', but now build it using a StringBuilder first.
-        StringBuilder resultBuilder = new StringBuilder();
+//         // CHANGED: Kept name 'result', but now build it using a StringBuilder first.
+//         StringBuilder resultBuilder = new StringBuilder();
 
-        // CHANGED: Start JSON array with '['.
-        resultBuilder.append("[");
+//         // CHANGED: Start JSON array with '['.
+//         resultBuilder.append("[");
 
-        // CHANGED: Copy old behavior: join JSON strings with ", ".
-        for (int i = 0; i < jsonStrings.size(); i++) {
-            resultBuilder.append(jsonStrings.get(i));
-            if (i < jsonStrings.size() - 1) {
-                resultBuilder.append(", ");
-            }
-        }
+//         // CHANGED: Copy old behavior: join JSON strings with ", ".
+//         for (int i = 0; i < jsonStrings.size(); i++) {
+//             resultBuilder.append(jsonStrings.get(i));
+//             if (i < jsonStrings.size() - 1) {
+//                 resultBuilder.append(", ");
+//             }
+//         }
 
-        // CHANGED: Close JSON array with ']'.
-        resultBuilder.append("]");
+//         // CHANGED: Close JSON array with ']'.
+//         resultBuilder.append("]");
 
-        // CHANGED: Turn builder into final String named 'result' (same name as old code).
-        String result = resultBuilder.toString();
+//         // CHANGED: Turn builder into final String named 'result' (same name as old code).
+//         String result = resultBuilder.toString();
 
-        // CHANGED: Old code overwrote result with bytes (wrong type).
-        // New: convert String result to byte[] once and return it.
-        return result.getBytes(StandardCharsets.UTF_8);
-    }
+//         // CHANGED: Old code overwrote result with bytes (wrong type).
+//         // New: convert String result to byte[] once and return it.
+//         return result.getBytes(StandardCharsets.UTF_8);
+//     }
 
 
 
@@ -125,7 +126,7 @@ public class OldQueryHandler {
     //  - Calling searchEngine.search(...) for each term (or term group),
     //  - Merging / combining the resulting Page lists as needed,
     //  - Then running the same JSON-building code on the final list of Pages.
-}
+// }
 
 
 
