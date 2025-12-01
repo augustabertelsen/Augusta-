@@ -11,6 +11,14 @@ import org.junit.jupiter.api.Test;
 
 public class InvertedIndexTest {
 
+
+/**
+ * Verifies that looking up a simple, lowercase word with no punctuation
+ * returns exactly the single page that contains that word.
+ * Ensures basic matching works when no normalization, multiple pages, 
+ * multiple search words challenges are present.
+ */
+
     @Test 
     void lookUpSingleWordSinglePage(){
         Page pageA = new Page(List.of(
@@ -28,6 +36,14 @@ public class InvertedIndexTest {
         assertTrue(result.contains(pageA));
     }
     
+
+/**
+ * Verifies that when searching for one word across multiple pages,
+ * lookUp returns only the pages that contain that word.
+ * Confirms correct filtering and excludes pages without the word.
+ * Does not take normalization or multiple word search into account.
+ */ 
+
     @Test 
     void lookUpWordInMultiplePages(){
         Page pageA = new Page(List.of(
@@ -57,6 +73,14 @@ public class InvertedIndexTest {
         assertEquals(2, result.size());
     }
 
+
+ /**
+ * Verifies that lookUp() correctly normalizes the search word
+ * (case, punctuation) and still returns the page containing 
+ * the matching normalized term.
+ * Does not tage multiple words or multiple pages into account.
+*/
+
     @Test
     void lookUpNormalizedWord(){
         Page pageA = new Page(List.of(
@@ -70,12 +94,19 @@ public class InvertedIndexTest {
 
         List<Page> result1 = index.lookUp("PRESIDENT!");
         List<Page> result2 = index.lookUp("president");
-        List<Page> result3 = index.lookUp("Predsident.");
+        List<Page> result3 = index.lookUp("Presiddent.");
 
         assertTrue(result1.size() == 1 && result1.contains(pageA));
         assertTrue(result2.size() == 1 && result1.contains(pageA));
         assertTrue(result3.size() == 1 && result1.contains(pageA));
     }
+
+
+/**
+ * Verifies that lookUp() can handle a multi-word search and 
+ * still return the page that contains the full sequence of words.
+ * Does not take normalization or multiple pages into account.
+ */   
 
     @Test 
     void lookUpMultipleWords(){
@@ -94,6 +125,14 @@ public class InvertedIndexTest {
         assertEquals(1, result.size());
     }
 
+
+ /**
+ * Verifies that lookUp() returns an empty list (not null)
+ * when searching for a word that appears in no pages.
+ * Does not take normalization, multiple pages or multiple 
+ * words into account.
+ */
+
     @Test 
     void lookUpReturnEmptyPageForUnknownWord(){
         Page pageA = new Page(List.of(
@@ -111,6 +150,14 @@ public class InvertedIndexTest {
         assertTrue(result.isEmpty());
         assertEquals(0, result.size());
     }
+
+
+    /**
+     * Verifies that lookUp() returns a page only once,
+     * even if the searched word appears multiple times within that page.
+     * Does not take normalization, multiple pages or multiple 
+     * words in one search into account.
+     */
 
     @Test
     void lookUpReturnsOnePageForRepeatedWord(){
