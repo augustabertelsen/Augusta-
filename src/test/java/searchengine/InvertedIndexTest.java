@@ -10,6 +10,23 @@ import org.junit.jupiter.api.Test;
 
 public class InvertedIndexTest {
 
+    @Test 
+    void lookUpSingleWordSinglePage(){
+        Page pageA = new Page(List.of(
+            "*PAGE:http://example.com/A",
+            "Title A",
+            "government, president"
+        ));
+
+        List<Page> allPages = Arrays.asList(pageA);
+        InvertedIndex index = new InvertedIndex(allPages);
+
+        List<Page> result = index.lookUp("government");
+
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(pageA));
+    }
+    
     @Test
     void lookUpNormalizedWord(){
         Page pageA = new Page(List.of(
@@ -45,7 +62,7 @@ public class InvertedIndexTest {
         Page pageC = new Page(List.of(
             "*PAGE:http://example.com/C",
             "Title C",
-            "fun", "laugh", "smile"
+            "fun", "laugh"
         ));
 
         List<Page> allPages = Arrays.asList(pageA, pageB, pageC);
@@ -58,6 +75,25 @@ public class InvertedIndexTest {
         assertFalse(result.contains(pageB));
         assertEquals(2, result.size());
     }
+
+    @Test 
+    void lookUpMultipleWords(){
+        Page pageA = new Page(List.of(
+            "*PAGE:http://example.com/A",
+            "Title A",
+            "walking the dog", "the president is in the goverment", "laughing a lot"
+        ));
+
+        List<Page> allPages = Arrays.asList(pageA);
+        InvertedIndex index = new InvertedIndex(allPages);
+
+        List<Page> result = index.lookUp("the president is in the goverment");
+
+        assertTrue(result.contains(pageA));
+        assertEquals(1, result.size());
+    }
+
+    
 
 
 
