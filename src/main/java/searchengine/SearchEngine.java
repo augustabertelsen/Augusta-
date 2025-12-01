@@ -18,11 +18,10 @@ public class SearchEngine {
         this.index = index;
     }
 
-    public byte[] handleSearch(HttpExchange io) { 
-        String[] searchWordArray = io.getRequestURI().getRawQuery().split("=");
+    public byte[] handleSearch(HttpExchange io) {
+        String rawQueery = io.getRequestURI().getRawQuery().split("=")[1];
+        String[] searchWordArray = rawQueery.split(" ");
         List<String> searchTerm = new ArrayList<String>(Arrays.asList(searchWordArray));
-    
-
         QueryHandler handler = new QueryHandler();
         List<List<String>> termList = handler.handleQuery(searchTerm);
 
