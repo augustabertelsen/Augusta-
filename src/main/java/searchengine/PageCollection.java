@@ -45,4 +45,14 @@ public class PageCollection {
     public List<Page> getPages() {
         return Collections.unmodifiableList(pages);
     }
+
+    /**
+     * Checks if a raw page contains both a title and at least one word of content.
+     * @param pageLines list of Strings representing the lines of the page (*PAGE line, title and word lines)
+     * @return true if the page has a title (line 1) and at least one word (line 2), false otherwise
+     */
+    private boolean isValidPage(List<String> pageLines) {
+        // Must have at least a *PAGE line, title line and one word (three lines total)
+        return pageLines.size() >= 3;
+    }
 }
