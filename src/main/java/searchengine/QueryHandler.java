@@ -10,17 +10,17 @@ public class QueryHandler {
 
     }
 
-    public List handleQuery(List<String> searchTerm) {
+    public List<List<String>> handleQuery(List<String> searchTerm) {
         List<List<String>> termList = new ArrayList<List<String>>();
-        List<String> searchT = new ArrayList();
-        searchT = searchTerm;
         List<String> list1 = new ArrayList<String>();
         termList.add(list1);
-        List currentList = list1;
+        List<String> currentList = list1;
 
-        for (String word : searchT) {
-            if (!word.equals("OR")) {
-                currentList.add(cleanSearchTerm(word));
+        for (int i = 0; i < searchTerm.size(); i++) {
+            String currentWord = searchTerm.get(i);
+
+            if (!currentWord.equals("OR")) {
+                currentList.add(cleanSearchTerm(currentWord));
 
             }
 
