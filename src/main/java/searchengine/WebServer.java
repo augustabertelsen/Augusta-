@@ -34,14 +34,13 @@ class WebServer {
         //create HttpServer with port + BACKLOG
         server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
 
-        
-        
+
         // The static routes (/, CSS, JS, favicon) just return files, so they don’t need QueryHandler -> uses getFile to get byte for respond 
         server.createContext("/", io -> respond(io, 200, "text/html", getFile("web/index.html")));
         server.createContext("/favicon.ico", io -> respond(io, 200, "image/x-icon", getFile("web/favicon.ico")));
         server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
         server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
-        
+
 
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
@@ -51,20 +50,30 @@ class WebServer {
     public void start() {
         server.start();
         String msg = " WebServer running on http://localhost:" + port + " ";
-        System.out.println("╭"+"─".repeat(msg.length())+"╮");
-        System.out.println("│"+msg+"│");
-        System.out.println("╰"+"─".repeat(msg.length())+"╯");
+        System.out.println("╭" + "─".repeat(msg.length()) + "╮");
+        System.out.println("│" + msg + "│");
+        System.out.println("╰" + "─".repeat(msg.length()) + "╯");
+    }
+
+    public void stop() {
+        if (server != null) {
+            server.stop(0);
+        }
+    }
+
+    public int getPort() {
+        return port;
     }
 
     // getFile() reads the file at the given filename and returns its contents as a byte[].
     // If the file can’t be read, it returns an empty byte array instead of crashing. 
 
-    private byte[] getFile(String filename){
-            // try/catch prevents the server from crashing if the file is missing
-            try { 
+    byte[] getFile(String filename) {
+        // try/catch prevents the server from crashing if the file is missing
+        try {
             // correctly loads a file into a byte[]  (Files and Paths are standard java object classes)
             return Files.readAllBytes(Paths.get(filename));
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             // safely returns an empty response instead of null
             return new byte[0];
@@ -72,33 +81,30 @@ class WebServer {
     }
     //CHANGE: Only the method signature changed
 
-    
 
     // respond() sets the correct HTTP headers and status code, then writes the given byte[] response to the client.
     // After sending the data, it safely closes the HttpExchange to complete the request.
 
     // The parameters:
-        // HttpExchange oi: the request + response object from the server
-        // int code: HTTP status number (200, 404, 500) -> standard? 
-        // String mime: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc. 
-        // byte[] response: the actual data that is sent back
+    // HttpExchange oi: the request + response object from the server
+    // int code: HTTP status number (200, 404, 500) -> standard?
+    // String mime: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc.
+    // byte[] response: the actual data that is sent back
 
-    private void respond(HttpExchange io,int code, String mime, byte[] response) {
+    private void respond(HttpExchange io, int code, String mime, byte[] response) {
         try (io) {
-        io.getResponseHeaders()
-            .set("Content-Type", String.format("%s; charset=%s", mime, CHARSET.name()));
-        io.sendResponseHeaders(code, response.length);
-        io.getResponseBody().write(response);
-            } catch (Exception e) {
-                // write catch block
-            }
+            io.getResponseHeaders()
+                    .set("Content-Type", String.format("%s; charset=%s", mime, CHARSET.name()));
+            io.sendResponseHeaders(code, response.length);
+            io.getResponseBody().write(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //CHANGES: now uses the code parameter instead of a hard-coded 200 when sending the HTTP status.
     //try-with-resources (try(io)) block so the HttpExchange is closed automatically and safely.
 
 }
-
-
 
 
 //OldWebServer code:
