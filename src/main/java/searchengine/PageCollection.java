@@ -29,10 +29,12 @@ public class PageCollection {
         var lastIndex = allLinesFromFile.size();
         for (var i = allLinesFromFile.size() - 1; i >= 0; --i) {
             if (allLinesFromFile.get(i).startsWith("*PAGE")) {
-                List<String> pageView = allLinesFromFile.subList(i, lastIndex);  //subList view: a window that points to the original list
-                List<String> pageCopy = new ArrayList<>(pageView); // create a new independent list containing only the page
-                Page page = new Page(pageCopy);
-                pages.add(page);
+                List<String> pageLinesView = allLinesFromFile.subList(i, lastIndex);  //subList view: a window that points to the original list
+                List<String> pageLines = new ArrayList<>(pageLinesView); // create a new independent list containing only the page
+                if (isValidPage(pageLines)) {
+                    Page page = new Page(pageLines);
+                    pages.add(page);
+                }
                 lastIndex = i;
             }
         }
@@ -44,5 +46,15 @@ public class PageCollection {
      */
     public List<Page> getPages() {
         return Collections.unmodifiableList(pages);
+    }
+
+    /**
+     * Checks if a raw page contains both a title and at least one word of content.
+     * @param pageLines list of Strings representing the lines of the page (*PAGE line, title and word lines)
+     * @return true if the page has a title (line 1) and at least one word (line 2), false otherwise
+     */
+    private boolean isValidPage(List<String> pageLines) {
+        // Must have at least a *PAGE line, title line and one word (three lines total)
+        return pageLines.size() >= 3;
     }
 }

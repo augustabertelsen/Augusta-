@@ -1,4 +1,5 @@
 package searchengine;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -40,9 +41,10 @@ public class SearchEngine {
      * @return an array of bytes.
      */
     public byte[] handleSearch(HttpExchange io) {
-        String rawQueery = io.getRequestURI().getRawQuery().split("=")[1];
-        String[] searchWordArray = rawQueery.split("+"); 
-        List<String> searchTerm = new ArrayList<String>(Arrays.asList(searchWordArray));
+        String rawQuery = io.getRequestURI().getRawQuery().split("=")[1];
+        String decodedQuery = URLDecoder.decode(rawQuery, StandardCharsets.UTF_8);
+        String[] searchWordArray = decodedQuery.split(" ");
+        List<String> searchTerm = new ArrayList<>(Arrays.asList(searchWordArray));
         QueryHandler handler = new QueryHandler();
         List<List<String>> termList = handler.handleQuery(searchTerm);
 

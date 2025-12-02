@@ -51,9 +51,7 @@ public class Application {
         InvertedIndex index = new InvertedIndex(collection.getPages());
         SearchEngine search = new SearchEngine(index);
         WebServer server = new WebServer(8080, search);
-
-
-        
+        server.start();
     }
     
     /**
