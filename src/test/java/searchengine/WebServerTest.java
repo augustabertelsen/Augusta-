@@ -24,14 +24,20 @@ class WebServerTest {
     @BeforeAll
     void setUp() {
         try {
+            PageCollection collection = new PageCollection("data/test-file.txt");
+            InvertedIndex index = new InvertedIndex(collection.getPages());
+            SearchEngine searchEngine = new SearchEngine(index);
+
             var rnd = new Random();
             while (server == null) {
                 try {
-                    server = new WebServer(rnd.nextInt(60000) + 1024, "data/test-file.txt");
+                    server = new WebServer(rnd.nextInt(60000) + 1024, searchEngine);
                 } catch (BindException e) {
                     // port in use. Try again
                 }
             }
+
+            server.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,13 +45,15 @@ class WebServerTest {
 
     @AfterAll
     void tearDown() {
-        server.server.stop(0);
-        server = null;
+        if (server != null) {
+            server.stop();
+            server = null;
+        }
     }
 
     @Test
     void lookupWebServer() {
-        String baseURL = String.format("http://localhost:%d/search?q=", server.server.getAddress().getPort());
+        String baseURL = String.format("http://localhost:%d/search?q=", server.getPort());
         assertEquals("[{\"url\": \"http://page1.com\", \"title\": \"title1\"}, {\"url\": \"http://page2.com\", \"title\": \"title2\"}]",
                 httpGet(baseURL + "word1"));
         assertEquals("[{\"url\": \"http://page1.com\", \"title\": \"title1\"}]",
