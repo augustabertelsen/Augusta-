@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import searchengine.QueryHandler;
 import searchengine.InvertedIndex;
-import searchengine.Page;
 import searchengine.TfScoring;
+import searchengine.Page;
+//import searchengine.TfScoring;
 
 public class TfScoringTest {
 

@@ -11,7 +11,7 @@ import searchengine.QueryHandler;
 import searchengine.TfIdfScoring;
 import searchengine.InvertedIndex;
 import searchengine.Page;
-import searchengine.TfScoring;
+//import searchengine.TfScoring;
 
 public class TfIdfScoringTest {
 
