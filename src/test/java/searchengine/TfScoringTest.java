@@ -7,7 +7,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
-import main.java.searchengine.QueryHandler;
+import searchengine.QueryHandler;
 import searchengine.InvertedIndex;
 import searchengine.Page;
 import searchengine.TfScoring;
