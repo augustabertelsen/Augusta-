@@ -49,7 +49,8 @@ public class Application {
         String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
         PageCollection collection = new PageCollection(dataFilePath);
         InvertedIndex index = new InvertedIndex(collection.getPages());
-        SearchEngine search = new SearchEngine(index);
+        Ranking rank = new Ranking(index, false);
+        SearchEngine search = new SearchEngine(index, rank);
         WebServer server = new WebServer(8080, search);
         server.start();
     }

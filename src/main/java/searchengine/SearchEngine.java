@@ -22,14 +22,16 @@ import searchengine.Page;
 public class SearchEngine {
 
     private InvertedIndex index;
+    private Ranking rank;
 
 /**
  * Creates a new SearchEngine with an InvertedIndex object which organises a set of files. 
  * @param index an InvertedIndex object which the class will use to find pages that match the search terms. 
  */
-    public SearchEngine(InvertedIndex index) {
+    public SearchEngine(InvertedIndex index, Ranking rank) {
 
         this.index = index;
+        this.rank = rank;
     }
 
     /**
@@ -48,9 +50,9 @@ public class SearchEngine {
         QueryHandler handler = new QueryHandler();
         List<List<String>> termList = handler.handleQuery(searchTerm);
 
-        List<Page> termP = search(termList);
-        // TODO: use scoring method to rank pages in termP based on termList (Task 5)
-        byte[] finalResult = finalResultBuilder(termP);
+        List<Page> resultPages = search(termList);
+        List<Page> resultPagesSortedByRank = rank.rankPages(resultPages, termList);
+        byte[] finalResult = finalResultBuilder(resultPagesSortedByRank);
         return finalResult;
     }
 
