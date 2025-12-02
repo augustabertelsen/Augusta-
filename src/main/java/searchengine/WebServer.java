@@ -56,6 +56,16 @@ class WebServer {
         System.out.println("╰"+"─".repeat(msg.length())+"╯");
     }
 
+    public void stop() {
+        if (server != null) {
+            server.stop(0);
+        }
+    }
+
+    public int getPort() {
+        return port;
+    }
+
     // getFile() reads the file at the given filename and returns its contents as a byte[].
     // If the file can’t be read, it returns an empty byte array instead of crashing. 
 
