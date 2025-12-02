@@ -2,6 +2,7 @@
 package searchengine;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import java.io.IOException;
@@ -74,5 +75,34 @@ class WebServerTest {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Test
+    void staticFileRoutes_areServed() {
+        String baseURL = String.format("http://localhost:%d", server.getPort());
+
+        String indexRequest = baseURL + "/";
+        String indexResponse = httpGet(indexRequest);
+        assertNotNull(indexResponse);
+
+        String cssRequest = baseURL + "/style.css";
+        String cssResponse = httpGet(cssRequest);
+        assertNotNull(cssResponse);
+
+        String jsRequest = baseURL + "/code.js";
+        String jsResponse = httpGet(jsRequest);
+        assertNotNull(jsResponse);
+
+        String iconRequest = baseURL + "/favicon.ico";
+        String iconResponse = httpGet(iconRequest);
+        assertNotNull(iconResponse);
+    }
+
+    @Test
+    void getFile_catchBlock_nonExistentFile() {
+        byte[] result = server.getFile("nonexistent/path/file.txt");
+        
+        assertNotNull(result);
+        assertEquals(0, result.length);
     }
 }
