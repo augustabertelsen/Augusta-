@@ -3,8 +3,6 @@ package searchengine;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Main entry point for the search engine application.
@@ -49,6 +47,10 @@ public class Application {
         String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
         PageCollection collection = new PageCollection(dataFilePath);
         InvertedIndex index = new InvertedIndex(collection.getPages());
+        
+        // ScoringMethod scoringMethod = new  TfScoring(parameters);
+        // ScoringMethod scoringMethod = new  TfIdfScoring(parameters);
+
         SearchEngine search = new SearchEngine(index);
         WebServer server = new WebServer(8080, search);
         server.start();
