@@ -26,8 +26,8 @@ class QueryHandlerTest {
         QueryHandler handler = new QueryHandler();
 
         assertTrue(handler.handlerQuery(testList).size() == 1);
-        //assertTrue(handler.handleQuery(testList)(0)(0).equals("dog"));
-        //assertTrue(handler.handleQuery(testList)(0)(1).equals("house"));
+        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
+        assertTrue(handler.handleQuery(testList).get(0).get(1).equals("house"));
     }
 
     /**
@@ -45,8 +45,8 @@ class QueryHandlerTest {
         QueryHandler handler = new QueryHandler();
 
         assertTrue(handler.handlerQuery(testList).size() == 2);
-        //assertTrue(handler.handleQuery(testList)(0)(0).equals("dog"));
-        //assertTrue(handler.handleQuery(testList)(1)(0).equals("house"));
+        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
+        assertTrue(handler.handleQuery(testList).get(1).get(0).equals("house"));
     }
 
 
