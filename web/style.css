@@ -1,7 +1,15 @@
+body{
+    background: #ffc6d0ff;
+}
+
 #urllist {
     color: #969696;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #e72ee5;
     border-radius: 3px;
+}
+
+h1{
+    color: #e72ee5;
 }
 
 input[type="text"] {
@@ -15,6 +23,16 @@ input[type="text"] {
 
 input[type="text"]:focus,
 input[type="text"].focus {
-    border: solid 1px #707070;
+    border: solid 1px #e72ee5;
     box-shadow: 0 0 5px 1px #969696;
+}
+
+button:hover{
+    color: white;
+    border-color: white;
+    background: #e72ee5;
+}
+
+a {
+    color: #e72ee5;
 }

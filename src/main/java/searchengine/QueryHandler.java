@@ -3,6 +3,8 @@ package searchengine;
 import java.util.ArrayList;
 import java.util.List;
 
+import searchengine.WordNormalizer;
+
 /**
  * This class is responsible for receiving a search term as input as a List<String>, 
  * 'cleaning' each String to convert capital letters to lowercase and removing 
@@ -37,14 +39,12 @@ public class QueryHandler {
         List<String> list1 = new ArrayList<String>();
         termList.add(list1);
         List<String> currentList = list1;
-        WordNormalizer normalizer = new WordNormalizer();
 
         for (int i = 0; i < searchTerm.size(); i++) {
             String currentWord = searchTerm.get(i);
 
             if (!currentWord.equals("OR")) {
-                currentList.add(normalizer.normalize(currentWord));
-
+                currentList.add(WordNormalizer.normalize(currentWord));
             }
 
             else {
