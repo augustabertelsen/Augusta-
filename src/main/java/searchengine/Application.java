@@ -31,14 +31,20 @@ public class Application {
         //2
         //To test current - whit inverted index, but not run webserver 
 
-        //String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
-        //PageCollection collection = new PageCollection(dataFilePath);
+        // String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
+        // PageCollection collection = new PageCollection(dataFilePath);
         // InvertedIndex index = new InvertedIndex(collection.getPages());
-        // SearchEngine search = new SearchEngine(index);
-        // List test = new ArrayList();
+        // Ranking rank = new Ranking(index, true);
+        // SearchEngine search = new SearchEngine(index, rank);
+        // List<String> test = new ArrayList<String>();
         // test.add("usa");
+        // test.add("OR");
+        // test.add("denmark");
         // QueryHandler handler = new QueryHandler();
         // List<List<String>> testtest = handler.handleQuery(test);
+        // List<Page> resultPages = search.search(testtest);
+        // List<Page> resultPagesSortedByRank = rank.rankPages(resultPages, testtest);
+        
         // List<Page> resultPagss = search.search(testtest);
         // search.finalResultBuilder(resultPagss);
 
@@ -47,11 +53,9 @@ public class Application {
         String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
         PageCollection collection = new PageCollection(dataFilePath);
         InvertedIndex index = new InvertedIndex(collection.getPages());
-        
-        // ScoringMethod scoringMethod = new  TfScoring(parameters);
-        // ScoringMethod scoringMethod = new  TfIdfScoring(parameters);
-
-        SearchEngine search = new SearchEngine(index);
+       // ranking can be switched between complexranking = true, and complexranking = false
+        Ranking rank = new Ranking(index, true);
+        SearchEngine search = new SearchEngine(index, rank);
         WebServer server = new WebServer(8080, search);
         server.start();
     }

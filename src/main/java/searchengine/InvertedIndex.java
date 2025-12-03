@@ -24,15 +24,18 @@ public class InvertedIndex {
     // Map: Key: search word, Value: the list of pages that contain that word
     // private final because it should never be reassigned but can still be updated
     private final Map<String, List<Page>> pagesContaining;
+    private int totalPageCount;
 
 
     public InvertedIndex(List<Page> allPages) {
+        totalPageCount = allPages.size();
         pagesContaining = new HashMap<>();
         buildIndex(allPages);
 
     }
 
     private void buildIndex(List<Page> allPages){
+        
         for(Page currentPage: allPages){
         addPageToIndex(currentPage);
         }
@@ -54,6 +57,10 @@ public class InvertedIndex {
                 pagesForWord.add(page);
              }
         }
+    }
+
+    public int getTotalPageCount(){
+        return totalPageCount;
     }
 
     public List<Page> lookUp(String word){

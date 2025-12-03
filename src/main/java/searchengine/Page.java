@@ -19,6 +19,7 @@ public class Page {
     private final String url;
     private final String title;
     private final List<String> words;
+    private double rankingScore = 0;
 
     /**
      * Creates a new page from raw page data.
@@ -36,6 +37,21 @@ public class Page {
             words.addAll(Arrays.asList(wordsCurrentLine));
         }
     }
+
+    public void assignRankingScore(double score){
+        if(this.rankingScore<score){
+        this.rankingScore = score;
+        }
+    }
+
+    public double getRankingScore(){
+        return rankingScore;
+    }
+
+    public void clearRankingScore(){
+        rankingScore = 0;
+    }
+
 
     /**
      * @return the page URL
