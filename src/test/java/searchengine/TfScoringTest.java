@@ -3,6 +3,7 @@ package searchengine;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 //import searchengine.TfScoring;
 

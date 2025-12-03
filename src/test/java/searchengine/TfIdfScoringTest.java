@@ -20,7 +20,6 @@ import searchengine.Page;
 public class TfIdfScoringTest {
 
     @BeforeAll
-
     void setUp() {
         Page pageA = new Page(List.of(
                 "*PAGE:http://example.com/A",
