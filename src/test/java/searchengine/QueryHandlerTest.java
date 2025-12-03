@@ -1,11 +1,8 @@
 package searchengine;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -19,13 +16,13 @@ class QueryHandlerTest {
  */
  @Test 
     void returnsTwoNonOrStrings() {
-        List<String> testList = new ArrayList<String>();
+        List<String> testList = new ArrayList<>();
         testList.add("dog");
         testList.add("house");
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handlerQuery(testList).size() == 1);
+        assertTrue(handler.handleQuery(testList).size() == 1);
         assertTrue(handler.handleQuery(testList).get(0).size() == 2);
         assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
         assertTrue(handler.handleQuery(testList).get(0).get(1).equals("house"));
@@ -38,14 +35,14 @@ class QueryHandlerTest {
  */
  @Test 
     void makesANewListWhenEncountersOR() {
-        List<String> testList = new ArrayList<String>();
+        List<String> testList = new ArrayList<>();
         testList.add("dog");
-        termList.add("OR");
+        testList.add("OR");
         testList.add("house");
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handlerQuery(testList).size() == 2);
+        assertTrue(handler.handleQuery(testList).size() == 2);
         assertTrue(handler.handleQuery(testList).get(0).size == 1);
         assertTrue(handler.handleQuery(testList).get(1).size == 1);
         assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
@@ -58,7 +55,7 @@ class QueryHandlerTest {
  */
  @Test 
     void returnsCleanString() {
-        List<String> testList = new ArrayList<String>();
+        List<String> testList = new ArrayList<>();
         testList.add("CAT! ");
 
         QueryHandler handler = new QueryHandler();
@@ -73,8 +70,10 @@ class QueryHandlerTest {
  * the method returns a list containing firstly a list of all the strings which appear before the "OR" and 
  * secondly a list of all the strings which appear after the "OR". 
  */
+
+@Test
     void returnsListOfListsOfMultipleStrings() {
-        List<String> testList = new ArrayList<String>();
+        List<String> testList = new ArrayList<>();
         testList.add("dog");
         testList.add("house");
         testList.add("OR");
@@ -95,6 +94,7 @@ class QueryHandlerTest {
  * the method returns multiple lists which include all the terms in the parameterised list, divided into lists 
  * depending on where the "OR" terms occur. 
  */
+    @Test
     void returnsListOfThreeListsOfSingleStrings() {
         List<String> testList = new ArrayList<String>();
         testList.add("dog");
