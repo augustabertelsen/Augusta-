@@ -29,7 +29,8 @@ class WebServerTest {
         try {
             PageCollection collection = new PageCollection("data/test-file.txt");
             InvertedIndex index = new InvertedIndex(collection.getPages());
-            SearchEngine searchEngine = new SearchEngine(index);
+            Ranking rank = new Ranking(index, true);
+            SearchEngine searchEngine = new SearchEngine(index, rank);
 
             var rnd = new Random();
             while (server == null) {
