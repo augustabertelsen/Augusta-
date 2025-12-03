@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import.org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.Test;
 
 import searchengine.QueryHandler;
@@ -15,9 +18,10 @@ import searchengine.Page;
 
 public class TfIdfScoringTest {
 
-    @BeforeAll 
+@BeforeAll
 
-    void setUp(){
+    public static void setup() {
+
         Page pageA = new Page(List.of(
             "*PAGE:http://example.com/A",
             "Title A",
@@ -31,13 +35,11 @@ public class TfIdfScoringTest {
         Page pageC = new Page(List.of(
             "*PAGE:http://example.com/C",
             "Title C",
-            "fun", "laugh"
-        ));
+            "fun", "laugh"));
 
         List<Page> allPages = Arrays.asList(pageA, pageB, pageC);
         InvertedIndex index = new InvertedIndex(allPages);
-        TfIdfScoring scorer = new TfIdfScoring(); }
-
+        TfIdfScoring scorer = new TfIdfScoring();}
         
     /**
      * When the scoreSingleWord() method is paramaterized with a word, a page, an index and the total
@@ -48,7 +50,7 @@ public class TfIdfScoringTest {
      */
 
         @Test
-        void returnsCorrectlyWhenOneMatchAndTwoFrequencies(){
+        public void returnsCorrectlyWhenOneMatchAndTwoFrequencies() {
 
             assertTrue(scorer.scoreSingleWord("dog", pageA, index, 3) == 1.5);}
 
@@ -59,7 +61,7 @@ public class TfIdfScoringTest {
      */
 
         @Test
-        void returnsCorrectlyWhenOneMatchAndOneFrequency(){
+        public void returnsCorrectlyWhenOneMatchAndOneFrequency(){
 
             assertTrue(scorer.scoreSingleWord("denmark", pageB, index, 3) == 3.0);}
 
@@ -69,7 +71,7 @@ public class TfIdfScoringTest {
      */
 
         @Test
-        void returnsCorrectlyWhenNoMatchAndOneFrequency(){
+        public void returnsCorrectlyWhenNoMatchAndOneFrequency(){
 
             assertTrue(scorer.scoreSingleWord("king", pageC, index, 3) == 0.0);}
 
@@ -79,15 +81,8 @@ public class TfIdfScoringTest {
      */
 
         @Test
-        void returnsCorrectlyWhenNoMatchAndNoFrequency(){
+        public void returnsCorrectlyWhenNoMatchAndNoFrequency(){
 
             assertTrue(scorer.scoreSingleWord("queen", pageA, index, 3) == 0.0);}
-
-        
-
-        
-
-
-
     
 }
