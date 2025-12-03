@@ -1,42 +1,39 @@
 
 package searchengine;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import searchengine.QueryHandler;
-import searchengine.TfIdfScoring;
-import searchengine.InvertedIndex;
-import searchengine.Page;
-//import searchengine.TfScoring;
 
 public class TfIdfScoringTest {
+    static TfIdfScoring scorer;
+    static InvertedIndex index;
+    static Page pageA, pageB, pageC;
+    static List<Page> allPages;
 
     @BeforeAll
-    void setUp() {
-        Page pageA = new Page(List.of(
+    static void setUp() {
+        pageA = new Page(List.of(
                 "*PAGE:http://example.com/A",
                 "Title A",
                 "dog", "president", "laugh"));
-        Page pageB = new Page(List.of(
+        pageB = new Page(List.of(
                 "*PAGE:http://example.com/B",
                 "Title B",
                 "king", "denmark", "dog"));
-        Page pageC = new Page(List.of(
+        pageC = new Page(List.of(
                 "*PAGE:http://example.com/C",
                 "Title C",
                 "fun", "laugh"));
 
-        List<Page> allPages = Arrays.asList(pageA, pageB, pageC);
-        InvertedIndex index = new InvertedIndex(allPages);
-        TfIdfScoring scorer = new TfIdfScoring();
+        allPages = Arrays.asList(pageA, pageB, pageC);
+        index = new InvertedIndex(allPages);
+        scorer = new TfIdfScoring();
     }
 
     /**
@@ -53,8 +50,7 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenOneMatchAndTwoFrequencies() {
-
-        assertTrue(scorer.scoreSingleWord("dog", pageA, index, 3) == 1.5);
+        assertEquals(1.5, scorer.scoreSingleWord("dog", pageA, index, allPages.size()));
     }
 
     /**
@@ -67,8 +63,7 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenOneMatchAndOneFrequency() {
-
-        assertTrue(scorer.scoreSingleWord("denmark", pageB, index, 3) == 3.0);
+        assertEquals(3.0, scorer.scoreSingleWord("denmark", pageB, index, allPages.size()));
     }
 
     /**
@@ -80,8 +75,7 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenNoMatchAndOneFrequency() {
-
-        assertTrue(scorer.scoreSingleWord("king", pageC, index, 3) == 0.0);
+        assertEquals(0.0, scorer.scoreSingleWord("king", pageC, index, allPages.size()));
     }
 
     /**
@@ -93,8 +87,7 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenNoMatchAndNoFrequency() {
-
-        assertTrue(scorer.scoreSingleWord("queen", pageA, index, 3) == 0.0);
+        assertEquals(0.0, scorer.scoreSingleWord("queen", pageA, index, allPages.size()));
     }
 
 }
