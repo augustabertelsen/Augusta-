@@ -44,14 +44,18 @@ public class SearchEngine {
         String rawQuery = io.getRequestURI().getRawQuery().split("=")[1];
         String decodedQuery = URLDecoder.decode(rawQuery, StandardCharsets.UTF_8);
         String[] searchWordArray = decodedQuery.split(" ");
-        List<String> searchTerm = new ArrayList<>(Arrays.asList(searchWordArray));
+        List<String> nonEmptySearchWords = new ArrayList<>();
+        for (String searchTerm : searchWordArray){
+            if (!searchTerm.isEmpty()){
+                nonEmptySearchWords.add(searchTerm);
+            }
+        }
         QueryHandler handler = new QueryHandler();
-        List<List<String>> termList = handler.handleQuery(searchTerm);
+        List<List<String>> termList = handler.handleQuery(nonEmptySearchWords);
 
         List<Page> resultPages = search(termList);
         List<Page> resultPagesSortedByRank = rank.rankPages(resultPages, termList);
-        byte[] finalResult = finalResultBuilder(resultPagesSortedByRank);
-        return finalResult;
+        return finalResultBuilder(resultPagesSortedByRank);
     }
 
     /**
