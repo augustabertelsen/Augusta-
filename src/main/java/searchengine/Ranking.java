@@ -2,6 +2,7 @@ package searchengine;
 
 import java.util.List;
 import java.util.Comparator;
+import java.util.Collections;
 
 public class Ranking {
     private ScoringMethod scoring;
@@ -11,10 +12,11 @@ public class Ranking {
     public Ranking(InvertedIndex index, Boolean complexScoring) {
         this.index = index;
         totalPageCount = index.getTotalPageCount();
-        if (complexScoring = true) {
+        if (complexScoring == true) {
             ScoringMethod scoring = new TfIdfScoring();
             this.scoring = scoring;
-        } else {
+        } else{
+       
             ScoringMethod scoring = new TfScoring();
             this.scoring = scoring;
         }
@@ -52,6 +54,8 @@ public class Ranking {
         resultPages.sort(Comparator
             .comparing(Page::getRankingScore)
         );
+        Collections.reverse(resultPages);
+        
 
         for(int i = 0; i< resultPages.size(); i++ ){
             resultPages.get(i).clearRankingScore();

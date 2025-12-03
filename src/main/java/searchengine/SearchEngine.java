@@ -8,8 +8,6 @@ import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import searchengine.Page;
-
 /**
  * This class is responsible for accepting a query from the server, splitting it 
  * into a list of strings and calling the QueryHandler class on that list. SearchEngine

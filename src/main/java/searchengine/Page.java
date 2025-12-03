@@ -39,8 +39,8 @@ public class Page {
     }
 
     public void assignRankingScore(double score){
-        if(rankingScore<score){
-        rankingScore = score;
+        if(this.rankingScore<score){
+        this.rankingScore = score;
         }
     }
 
