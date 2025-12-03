@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 
 public class SearchEngineTest {
 
-    // Finds the correct pages for one word search
-
+    /**
+     * Tests that a single-word query returns pages containing that word
+     * and does not return pages that do not contain it.
+     */
     @Test
     void searchSingleWordMatchesPages() {
         Page pageA = new Page(List.of(
@@ -34,8 +36,10 @@ public class SearchEngineTest {
         assertFalse(result.contains(pageB));
     }
 
-    // search_multiple_words_and_groups – AND/OR‑grupper giver forventede sider
-
+    /**
+     * Tests that a query with multiple words in the same group is treated
+     * as an AND-query, so only pages containing all those words are returned.
+     */
     @Test
     void searchMultipleWords_and() {
         Page pageA = new Page(List.of(
@@ -63,6 +67,10 @@ public class SearchEngineTest {
 
     }
 
+    /**
+     * Tests that multiple OR-groups are combined correctly, so pages
+     * matching any of the groups (dog OR cat) are returned.
+     */
     @Test
     void searchMultipleWords_or() {
         Page pageA = new Page(List.of(
@@ -93,6 +101,10 @@ public class SearchEngineTest {
         assertTrue(result.contains(pageC));
     }
 
+    /**
+     * Tests that combining AND inside groups and OR between groups produces
+     * exactly the pages that satisfy at least one full group of terms.
+     */
     @Test
     void searchMultipleWords_and_or() {
         Page pageA = new Page(List.of(
@@ -123,6 +135,10 @@ public class SearchEngineTest {
         assertFalse(result.contains(pageC));
     }
 
+    /**
+     * Tests that searching for a word that does not appear in any indexed page
+     * results in an empty result list.
+     */
     @Test
     void searchNoMatchReturnsEmptyList() {
         Page pageA = new Page(List.of(
@@ -142,18 +158,20 @@ public class SearchEngineTest {
 
     // @Test
     // void handleSearchHandlesHTTP() {
-    //     List<Page> allPages = new ArrayList<>();
-    //     SearchEngine searchEngine = new SearchEngine(new InvertedIndex(allPages),
-    //             new Ranking(new InvertedIndex(allPages), false));
-        
-    //     HttpExchange exchange = new HttpExchange();
+    // List<Page> allPages = new ArrayList<>();
+    // SearchEngine searchEngine = new SearchEngine(new InvertedIndex(allPages),
+    // new Ranking(new InvertedIndex(allPages), false));
+
+    // HttpExchange exchange = new HttpExchange();
 
     // }
 
-
     // handleSearchUsesRankingOrder – Ranking to result give same answer
 
-
+    /**
+     * Tests that finalResultBuilder creates a JSON array with the correct
+     * structure, order, and page data (URL and title for each Page).
+     */
     @Test
     void finalResultBuilderJsonFormat() {
         Page pageA = new Page(List.of(
@@ -164,7 +182,7 @@ public class SearchEngineTest {
                 "*PAGE:http://example.com/B",
                 "Title B",
                 "second"));
-        
+
         List<Page> allPages = List.of(pageA, pageB);
         SearchEngine searchEngine = new SearchEngine(new InvertedIndex(allPages),
                 new Ranking(new InvertedIndex(allPages), false));
@@ -175,8 +193,8 @@ public class SearchEngineTest {
         assertTrue(json.startsWith("["));
         assertTrue(json.endsWith("]"));
 
-        String jsonBody = json.substring(1, json.length()-1);
-        String[]pageObjects = jsonBody.split("},\\s*\\{");
+        String jsonBody = json.substring(1, json.length() - 1);
+        String[] pageObjects = jsonBody.split("},\\s*\\{");
 
         String fristPageObject = "{" + pageObjects[0] + "}";
         String secondPageObject = "{" + pageObjects[1] + "}";
