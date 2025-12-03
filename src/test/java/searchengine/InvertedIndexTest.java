@@ -1,6 +1,5 @@
 package searchengine;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,23 +10,21 @@ import org.junit.jupiter.api.Test;
 
 public class InvertedIndexTest {
 
+    /**
+     * Verifies that looking up a simple, lowercase word with no punctuation
+     * returns exactly the single page that contains that word.
+     * Ensures basic matching works when no normalization, multiple pages,
+     * multiple search words challenges are present.
+     */
 
-/**
- * Verifies that looking up a simple, lowercase word with no punctuation
- * returns exactly the single page that contains that word.
- * Ensures basic matching works when no normalization, multiple pages, 
- * multiple search words challenges are present.
- */
-
-    @Test 
-    void lookUpSingleWordSinglePage(){
+    @Test
+    void lookUpSingleWordSinglePage() {
         Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "government, president"
-        ));
+                "*PAGE:http://example.com/A",
+                "Title A",
+                "government, president"));
 
-        List<Page> allPages = Arrays.asList(pageA);
+        List<Page> allPages = List.of(pageA);
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result = index.lookUp("government");
@@ -35,34 +32,30 @@ public class InvertedIndexTest {
         assertTrue(result.size() == 1);
         assertTrue(result.contains(pageA));
     }
-    
 
-/**
- * Verifies that when searching for one word across multiple pages,
- * lookUp returns only the pages that contain that word.
- * Confirms correct filtering and excludes pages without the word.
- * Does not take normalization or multiple word search into account.
- */ 
+    /**
+     * Verifies that when searching for one word across multiple pages,
+     * lookUp returns only the pages that contain that word.
+     * Confirms correct filtering and excludes pages without the word.
+     * Does not take normalization or multiple word search into account.
+     */
 
-    @Test 
-    void lookUpWordInMultiplePages(){
+    @Test
+    void lookUpWordInMultiplePages() {
         Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "dog", "president", "laugh"
-        ));
+                "*PAGE:http://example.com/A",
+                "Title A",
+                "dog", "president", "laugh"));
         Page pageB = new Page(List.of(
-            "*PAGE:http://example.com/B",
-            "Title B",
-            "king", "denmark", "dog"
-        ));
+                "*PAGE:http://example.com/B",
+                "Title B",
+                "king", "denmark", "dog"));
         Page pageC = new Page(List.of(
-            "*PAGE:http://example.com/C",
-            "Title C",
-            "fun", "laugh"
-        ));
+                "*PAGE:http://example.com/C",
+                "Title C",
+                "fun", "laugh"));
 
-        List<Page> allPages = Arrays.asList(pageA, pageB, pageC);
+        List<Page> allPages = List.of(pageA, pageB, pageC);
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result = index.lookUp("laugh");
@@ -73,23 +66,21 @@ public class InvertedIndexTest {
         assertEquals(2, result.size());
     }
 
-
- /**
- * Verifies that lookUp() correctly normalizes the search word
- * (case, punctuation) and still returns the page containing 
- * the matching normalized term.
- * Does not tage multiple words or multiple pages into account.
-*/
+    /**
+     * Verifies that lookUp() correctly normalizes the search word
+     * (case, punctuation) and still returns the page containing
+     * the matching normalized term.
+     * Does not tage multiple words or multiple pages into account.
+     */
 
     @Test
-    void lookUpNormalizedWord(){
+    void lookUpNormalizedWord() {
         Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "Government, President, USA"
-        ));
+                "*PAGE:http://example.com/A",
+                "Title A",
+                "Government, President, USA"));
 
-        List<Page> allPages = Arrays.asList(pageA);
+        List<Page> allPages = List.of(pageA);
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result1 = index.lookUp("PRESIDENT!");
@@ -101,22 +92,20 @@ public class InvertedIndexTest {
         assertTrue(result3.size() == 1 && result1.contains(pageA));
     }
 
+    /**
+     * Verifies that lookUp() can handle a multi-word search and
+     * still return the page that contains the full sequence of words.
+     * Does not take normalization or multiple pages into account.
+     */
 
-/**
- * Verifies that lookUp() can handle a multi-word search and 
- * still return the page that contains the full sequence of words.
- * Does not take normalization or multiple pages into account.
- */   
-
-    @Test 
-    void lookUpMultipleWords(){
+    @Test
+    void lookUpMultipleWords() {
         Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "walking the dog", "the president is in the goverment", "laughing a lot"
-        ));
+                "*PAGE:http://example.com/A",
+                "Title A",
+                "walking the dog", "the president is in the goverment", "laughing a lot"));
 
-        List<Page> allPages = Arrays.asList(pageA);
+        List<Page> allPages = List.of(pageA);
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result = index.lookUp("the president is in the goverment");
@@ -125,23 +114,21 @@ public class InvertedIndexTest {
         assertEquals(1, result.size());
     }
 
+    /**
+     * Verifies that lookUp() returns an empty list (not null)
+     * when searching for a word that appears in no pages.
+     * Does not take normalization, multiple pages or multiple
+     * words into account.
+     */
 
- /**
- * Verifies that lookUp() returns an empty list (not null)
- * when searching for a word that appears in no pages.
- * Does not take normalization, multiple pages or multiple 
- * words into account.
- */
-
-    @Test 
-    void lookUpReturnEmptyPageForUnknownWord(){
+    @Test
+    void lookUpReturnEmptyPageForUnknownWord() {
         Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "government"
-        ));
+                "*PAGE:http://example.com/A",
+                "Title A",
+                "government"));
 
-        List<Page> allPages = Arrays.asList(pageA);
+        List<Page> allPages = List.of(pageA);
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result = index.lookUp("laugh");
@@ -151,23 +138,21 @@ public class InvertedIndexTest {
         assertEquals(0, result.size());
     }
 
-
     /**
      * Verifies that lookUp() returns a page only once,
      * even if the searched word appears multiple times within that page.
-     * Does not take normalization, multiple pages or multiple 
+     * Does not take normalization, multiple pages or multiple
      * words in one search into account.
      */
 
     @Test
-    void lookUpReturnsOnePageForRepeatedWord(){
+    void lookUpReturnsOnePageForRepeatedWord() {
         Page pageA = new Page(List.of(
-            "*PAGE:http://example.com/A",
-            "Title A",
-            "government", "government", "president"
-        ));
+                "*PAGE:http://example.com/A",
+                "Title A",
+                "government", "government", "president"));
 
-        List<Page> allPages = Arrays.asList(pageA);
+        List<Page> allPages = List.of(pageA);
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result = index.lookUp("government");
@@ -175,7 +160,5 @@ public class InvertedIndexTest {
         assertTrue(result.contains(pageA));
         assertEquals(1, result.size());
     }
-
-
 
 }

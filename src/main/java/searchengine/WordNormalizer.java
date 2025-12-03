@@ -13,10 +13,10 @@ package searchengine;
 
 public class WordNormalizer {
 
-    // private empty constructor because it prevents anyone from creating an instance of
-// a "utility class" that only provides static methods.
-    WordNormalizer() {
-    }
+   
+// all methods are static -> class does not need a constructor 
+    // WordNormalizer() {
+    // }
 
 
 // Declared static, it belongs to the class itself, not to any particular object.
