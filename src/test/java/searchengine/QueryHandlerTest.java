@@ -43,8 +43,8 @@ class QueryHandlerTest {
         QueryHandler handler = new QueryHandler();
 
         assertTrue(handler.handleQuery(testList).size() == 2);
-        assertTrue(handler.handleQuery(testList).get(0).size == 1);
-        assertTrue(handler.handleQuery(testList).get(1).size == 1);
+        assertTrue(handler.handleQuery(testList).get(0).size() == 1);
+        assertTrue(handler.handleQuery(testList).get(1).size() == 1);
         assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
         assertTrue(handler.handleQuery(testList).get(1).get(0).equals("house"));
     }
@@ -60,7 +60,7 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handlerQuery(testList).size() == 1);
+        assertTrue(handler.handleQuery(testList).size() == 1);
         assertTrue(handler.handleQuery(testList).get(0).size() == 1);
         assertTrue(handler.handleQuery(testList).get(0).get(0).equals("cat"));
     }
@@ -81,7 +81,7 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handlerQuery(testList).size() == 2);
+        assertTrue(handler.handleQuery(testList).size() == 2);
         assertTrue(handler.handleQuery(testList).get(0).size() == 2);
         assertTrue(handler.handleQuery(testList).get(1).size() == 1);
         assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
@@ -96,7 +96,7 @@ class QueryHandlerTest {
  */
     @Test
     void returnsListOfThreeListsOfSingleStrings() {
-        List<String> testList = new ArrayList<String>();
+        List<String> testList = new ArrayList<>();
         testList.add("dog");
         testList.add("OR");
         testList.add("cat");
@@ -105,7 +105,7 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handlerQuery(testList).size() == 3);
+        assertTrue(handler.handleQuery(testList).size() == 3);
         assertTrue(handler.handleQuery(testList).get(0).size() == 1);
         assertTrue(handler.handleQuery(testList).get(1).size() == 1);
         assertTrue(handler.handleQuery(testList).get(2).size() == 1);
