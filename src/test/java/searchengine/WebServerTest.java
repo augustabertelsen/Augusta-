@@ -15,8 +15,10 @@ import java.util.Random;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class WebServerTest {
@@ -56,7 +58,8 @@ class WebServerTest {
     @Test
     void lookupWebServer() {
         String baseURL = String.format("http://localhost:%d/search?q=", server.getPort());
-        assertEquals("[{\"url\": \"http://page1.com\", \"title\": \"title1\"}, {\"url\": \"http://page2.com\", \"title\": \"title2\"}]",
+        assertEquals(
+                "[{\"url\": \"http://page1.com\", \"title\": \"title1\"}, {\"url\": \"http://page2.com\", \"title\": \"title2\"}]",
                 httpGet(baseURL + "word1"));
         assertEquals("[{\"url\": \"http://page1.com\", \"title\": \"title1\"}]",
                 httpGet(baseURL + "word2"));
@@ -102,7 +105,7 @@ class WebServerTest {
     @Test
     void getFile_catchBlock_nonExistentFile() {
         byte[] result = server.getFile("nonexistent/path/file.txt");
-        
+
         assertNotNull(result);
         assertEquals(0, result.length);
     }

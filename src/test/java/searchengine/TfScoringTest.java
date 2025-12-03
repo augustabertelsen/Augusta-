@@ -5,15 +5,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-
 //import searchengine.TfScoring;
 
 public class TfScoringTest {
 
     /**
-     * Verifies that, when a new object of type TfScoringTest is instantiated with parameters for the word being scored
-     * and the page being searched for that word, the method scoreSingleWord() is called in the constructor and returns
-     * a double representing the number of times the given word appears in the given page when there is one match.
+     * Verifies that, when a new object of type TfScoringTest is instantiated with
+     * parameters for the word being scored
+     * and the page being searched for that word, the method scoreSingleWord() is
+     * called in the constructor and returns
+     * a double representing the number of times the given word appears in the given
+     * page when there is one match.
      */
     @Test
     void returnsWordCountWhenOneMatch() {
@@ -29,9 +31,12 @@ public class TfScoringTest {
     }
 
     /**
-     * Verifies that, when a new object of type TfScoringTest is instantiated with parameters for the word being scored
-     * and the page being searched for that word, the method scoreSingleWord() is called in the constructor and returns
-     * a double representing the number of times the given word appears in the given page when there are multiple matches.
+     * Verifies that, when a new object of type TfScoringTest is instantiated with
+     * parameters for the word being scored
+     * and the page being searched for that word, the method scoreSingleWord() is
+     * called in the constructor and returns
+     * a double representing the number of times the given word appears in the given
+     * page when there are multiple matches.
      */
     @Test
     void returnsWordCountWhenTwoMatches() {
@@ -47,9 +52,12 @@ public class TfScoringTest {
     }
 
     /**
-     * Verifies that, when a new object of type TfScoringTest is instantiated with parameters for the word being scored
-     * and the page being searched for that word, the method scoreSingleWord() is called in the constructor and returns
-     * a double representing the number of times the given word appears in the given page when there are no matches.
+     * Verifies that, when a new object of type TfScoringTest is instantiated with
+     * parameters for the word being scored
+     * and the page being searched for that word, the method scoreSingleWord() is
+     * called in the constructor and returns
+     * a double representing the number of times the given word appears in the given
+     * page when there are no matches.
      */
     @Test
     void returnsWordCountWhenNoMatches() {
