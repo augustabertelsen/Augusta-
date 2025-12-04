@@ -15,13 +15,14 @@ public class RankingTest {
     static InvertedIndex index;
     static Page pageA, pageB, pageC;
     static List<Page> allPages;
+    static List<List<String>> termList;
 
     @BeforeAll
     static void setUp() {
         pageA = new Page(List.of(
                 "*PAGE:http://example.com/A",
                 "Title A",
-                "dog", "president", "laugh"));
+                "dog", "dog", "laugh"));
         pageB = new Page(List.of(
                 "*PAGE:http://example.com/B",
                 "Title B",
@@ -33,6 +34,17 @@ public class RankingTest {
 
         allPages = Arrays.asList(pageA, pageB, pageC);
         index = new InvertedIndex(allPages);
+
+        List<List<String>> termList = new ArrayList<>();
+        List<String> list1 = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
+        list1.add("dog");
+        list1.add("laugh");
+        list2.add("king");
+        list2.add("denmark");
+        
+        termList.add(list1);
+        termList.add(list2);
     }
 
     @Test 
@@ -70,7 +82,7 @@ public class RankingTest {
         pageB.assignRankingScore(2.0);
         pageC.assignRankingScore(5.0);
 
-        Ranking ranker = new Ranking(index, true);
+        Ranking ranker = new Ranking(index, false);
 
         ranker.clearRankingScore(allPages);
 
@@ -80,8 +92,25 @@ public class RankingTest {
     }
 
     @Test 
+    void assignsRankingScoresCorrectly() {
 
+        Ranking ranker = new Ranking(index, false);
+        ranker.rankPages(allPages, termList);
 
+        assertEquals(3.0, pageA.getRankingScore());
+        assertEquals(2.0, pageB.getRankingScore());
+        assertEquals(0.0, pageC.getRankingScore());
+    }
+
+    @Test 
+    void returnsSortedPages() {
+        Ranking ranker = new Ranking(index, false);
+        List<Page> correctPageList = new ArrayList();
+        correctPageList.add(pageA);
+        correctPageList.add(pageB);
+        correctPageList.add(pageC);
+
+        assertEquals(correctPageList, ranker.getPageListSortedByranking(allPages, termList));}
 
 
 }
