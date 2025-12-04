@@ -2,7 +2,6 @@ package searchengine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -80,10 +79,17 @@ public class Page {
     }
 
     /**
-     * @return an unmodifiable list of all words in the page content
+     * @return an unmodifiable list of all words in page content.
      */
     public List<String> getWords() {
-        return Collections.unmodifiableList(words);
+        return List.copyOf(words);
     }
-
+    /**
+     * @return an unmodifiable list of all words from both title and page content.
+     */
+    public List<String> getTotalWords() {
+        List<String> totalWords = new ArrayList<>(Arrays.asList(title.split("\\s+")));
+        totalWords.addAll(words);
+        return List.copyOf(totalWords);
+    }
 }
