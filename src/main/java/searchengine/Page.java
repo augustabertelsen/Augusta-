@@ -38,17 +38,29 @@ public class Page {
         }
     }
 
-    public void assignRankingScore(double score){
-        if(this.rankingScore<score){
-        this.rankingScore = score;
+    /**
+     * Assigns a ranking score to the Page if the provided score is greater than the
+     * Page's current ranking score.
+     *
+     * @param score the new ranking score to be assigned to the Page
+     */
+    public void assignRankingScoreIfGreaterThanCurrent(double score) {
+        if (this.rankingScore < score) {
+            this.rankingScore = score;
         }
     }
 
-    public double getRankingScore(){
+    /**
+     * @return the ranking score of the Page.
+     */
+    public double getRankingScore() {
         return rankingScore;
     }
 
-    public void clearRankingScore(){
+    /**
+     * Sets the ranking score of the page to 0.
+     */
+    public void clearRankingScore() {
         rankingScore = 0;
     }
 

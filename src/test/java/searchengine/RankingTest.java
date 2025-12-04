@@ -58,9 +58,9 @@ public class RankingTest {
     @Test
     void sortsListByRank() {
 
-        pageA.assignRankingScore(3.0);
-        pageB.assignRankingScore(2.0);
-        pageC.assignRankingScore(5.0);
+        pageA.assignRankingScoreIfGreaterThanCurrent(3.0);
+        pageB.assignRankingScoreIfGreaterThanCurrent(2.0);
+        pageC.assignRankingScoreIfGreaterThanCurrent(5.0);
 
         List<Page> correctOrderList = new ArrayList<>();
         correctOrderList.add(pageC);
@@ -74,9 +74,9 @@ public class RankingTest {
     @Test
     void clearsRankingScore() {
 
-        pageA.assignRankingScore(3.0);
-        pageB.assignRankingScore(2.0);
-        pageC.assignRankingScore(5.0);
+        pageA.assignRankingScoreIfGreaterThanCurrent(3.0);
+        pageB.assignRankingScoreIfGreaterThanCurrent(2.0);
+        pageC.assignRankingScoreIfGreaterThanCurrent(5.0);
 
         Ranking ranker = new Ranking(index, false);
 

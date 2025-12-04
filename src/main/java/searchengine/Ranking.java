@@ -78,7 +78,7 @@ public class Ranking {
                 }
 
                 if (scoreForORGroup > 0) {
-                    pageResult.assignRankingScore(scoreForORGroup);
+                    pageResult.assignRankingScoreIfGreaterThanCurrent(scoreForORGroup);
                 }
 
             }
