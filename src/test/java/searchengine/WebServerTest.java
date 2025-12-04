@@ -3,7 +3,7 @@ package searchengine;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.TestInstance.Lifecycle;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.BindException;
@@ -15,7 +15,6 @@ import java.util.Random;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -58,9 +57,18 @@ class WebServerTest {
     @Test
     void lookupWebServer() {
         String baseURL = String.format("http://localhost:%d/search?q=", server.getPort());
-        assertEquals(
-                "[{\"url\": \"http://page1.com\", \"title\": \"title1\"}, {\"url\": \"http://page2.com\", \"title\": \"title2\"}]",
-                httpGet(baseURL + "word1"));
+        // Since word1 appears in more than one page, the order of the response will change based on the ranking implementation.
+        // This should not concern the WebServer test as we are just testing that we are getting valid responses from the webserver,
+        // and not that the ranking system is putting the search result in the correct order.
+        // This is why we do assertTrue on word1Response.Contains(...) instead of asserting the whole response
+        String word1Response = httpGet(baseURL + "word1");
+        assertTrue(word1Response.contains("\"url\": \"http://page1.com\""));
+        assertTrue(word1Response.contains("\"title\": \"title1\""));
+        assertTrue(word1Response.contains("\"url\": \"http://page2.com\""));
+        assertTrue(word1Response.contains("\"title\": \"title2\""));
+        
+        // word2, word3, and word4 don't appear in more than 1 page,
+        // so we can do a full assertEquals here instead of the contains approach above
         assertEquals("[{\"url\": \"http://page1.com\", \"title\": \"title1\"}]",
                 httpGet(baseURL + "word2"));
         assertEquals("[{\"url\": \"http://page2.com\", \"title\": \"title2\"}]",
