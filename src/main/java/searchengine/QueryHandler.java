@@ -3,8 +3,6 @@ package searchengine;
 import java.util.ArrayList;
 import java.util.List;
 
-import searchengine.WordNormalizer;
-
 /**
  * This class is responsible for receiving a search term as input as a List<String>, 
  * 'cleaning' each String to convert capital letters to lowercase and removing 
