@@ -40,7 +40,7 @@ public class InvertedIndex {
     }
 
     private void addPageToIndex(Page page) {
-        List<String> words = page.getWords();
+        List<String> words = page.getTotalWords();
         for (String rawWord : words) {
             String normalized = WordNormalizer.normalize(rawWord);
             if (normalized.isEmpty()) {
@@ -48,8 +48,7 @@ public class InvertedIndex {
             }
             List<Page> pagesForWord = pagesContaining.get(normalized);
             if (pagesForWord == null) {
-                pagesForWord = new ArrayList<>(); // VS reconmended ArrayList<>() instead of ArrayList<Page>() ->
-                                                  // redundant
+                pagesForWord = new ArrayList<>(); 
                 pagesContaining.put(normalized, pagesForWord);
             }
             if (!pagesForWord.contains(page)) {

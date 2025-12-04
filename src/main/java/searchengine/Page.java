@@ -2,7 +2,6 @@ package searchengine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,7 +23,8 @@ public class Page {
     /**
      * Creates a new page from raw page data.
      *
-     * @param rawPage list of strings where first line is URL, second is title, and rest is content
+     * @param rawPage list of strings where first line is URL, second is title, and
+     *                rest is content
      */
     public Page(List<String> rawPage) {
         url = rawPage.get(URL_LINE_INDEX).substring(URL_FIRST_LETTER_INDEX);
@@ -38,20 +38,19 @@ public class Page {
         }
     }
 
-    public void assignRankingScore(double score){
-        if(this.rankingScore<score){
-        this.rankingScore = score;
+    public void assignRankingScore(double score) {
+        if (this.rankingScore < score) {
+            this.rankingScore = score;
         }
     }
 
-    public double getRankingScore(){
+    public double getRankingScore() {
         return rankingScore;
     }
 
-    public void clearRankingScore(){
+    public void clearRankingScore() {
         rankingScore = 0;
     }
-
 
     /**
      * @return the page URL
@@ -68,10 +67,11 @@ public class Page {
     }
 
     /**
-     * @return an unmodifiable list of all words in the page content
+     * @return an unmodifiable list of all words from both title and page content.
      */
-    public List<String> getWords() {
-        return Collections.unmodifiableList(words);
+    public List<String> getTotalWords() {
+        List<String> totalWords = new ArrayList<>(Arrays.asList(title.split("\\s+")));
+        totalWords.addAll(words);
+        return List.copyOf(totalWords);
     }
-
 }

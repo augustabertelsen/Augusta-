@@ -38,7 +38,7 @@ public class TfIdfScoring implements ScoringMethod {
 
     @Override
     public double scoreSingleWord(String word, Page page, InvertedIndex index, int totalPageCount) {
-        List<String> wordsOnPage = page.getWords();
+        List<String> wordsOnPage = page.getTotalWords();
         double tf = 0;
         for (String w : wordsOnPage) {
             if (w.equals(word)) {
