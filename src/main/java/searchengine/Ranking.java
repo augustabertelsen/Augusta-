@@ -63,15 +63,11 @@ public class Ranking {
      */
     public void rankPages(List<Page> resultPages, List<List<String>> termList) {
 
-        for (int currentPage = 0; currentPage < resultPages.size(); currentPage++) {
-            Page pageResult = resultPages.get(currentPage);
-
-            for (int currentList = 0; currentList < termList.size(); currentList++) {
-                List<String> listOfORGroup = termList.get(currentList);
+        for (Page pageResult : resultPages) {
+            for (List<String> wordsInORGroup : termList) {
                 double scoreForORGroup = 0;
 
-                for (int currentWord = 0; currentWord < listOfORGroup.size(); currentWord++) {
-                    String searchTerm = listOfORGroup.get(currentWord);
+                for (String searchTerm : wordsInORGroup) {
                     double score = scoring.scoreSingleWord(searchTerm, pageResult, this.index, this.totalPageCount);
                     if (score > 0) {
                         scoreForORGroup += score;
@@ -111,8 +107,8 @@ public class Ranking {
      * @param resultPages the list of pages to clear the ranking score of.
      */
     public void clearRankingScore(List<Page> resultPages) {
-        for (int i = 0; i < resultPages.size(); i++) {
-            resultPages.get(i).clearRankingScore();
+        for (Page resultPage : resultPages) {
+            resultPage.clearRankingScore();
         }
     }
 
