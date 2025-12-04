@@ -31,7 +31,6 @@ public class InvertedIndex {
     }
 
     private void buildIndex(List<Page> allPages) {
-
         for (Page currentPage : allPages) {
             addPageToIndex(currentPage);
         }
@@ -46,8 +45,7 @@ public class InvertedIndex {
             }
             List<Page> pagesForWord = pagesContaining.get(normalized);
             if (pagesForWord == null) {
-                pagesForWord = new ArrayList<>(); // VS reconmended ArrayList<>() instead of ArrayList<Page>() ->
-                                                  // redundant
+                pagesForWord = new ArrayList<>();
                 pagesContaining.put(normalized, pagesForWord);
             }
             if (!pagesForWord.contains(page)) {
@@ -71,39 +69,4 @@ public class InvertedIndex {
         }
         return new ArrayList<>(pagesForWord);
     }
-
 }
-
-// for (Page currentPage : allPages) {
-// List<String> words = currentPage.getWords();
-// for (String word : words) {
-// }
-// // Creates a new list for this word because it hasn’t been seen before
-// // + adds the current page to that list + stores it in the map.
-// if (!pagesContaining.containsKey(word)) {
-// List<Page> newPages = new ArrayList<>();
-// newPages.add(currentPage);
-// pagesContaining.put(word, newPages);
-// }
-
-// // Retrieves the list of pages already associated with this word + adds the
-// current page to that list.
-// // Ensures that the word maps to all pages that contain it, not just the
-// first one.
-// else {
-// List<Page> existingPages = pagesContaining.get(word);
-// existingPages.add(currentPage);
-// }
-// }
-
-// // If the word exists -> return list of its pages
-// // If not -> return an empty list -> can loop safely without null-checks
-// public List<Page> lookUp(String word) {
-// if (pagesContaining.containsKey(word)) {
-// return new ArrayList<>(pagesContaining.get(word)); // make sure to return
-// copy of lists so the originals cant be modified by other classes
-// }
-// return new ArrayList<>();
-// }
-
-// // for more words use method retain all
