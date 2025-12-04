@@ -4,11 +4,28 @@ import java.util.List;
 import java.util.Comparator;
 import java.util.Collections;
 
+/**
+ * The Ranking Class implements one of two types of scoring depending on what
+ * the user chooses.
+ * It is given a List<Page> that it ranks. It sorts the list after ranking,
+ * so the highest ranked page comes first and so fourthe before.
+ * Before finaly returning the List<Page> sorted by rank,
+ * it clears the ranking from alle the pages that where rank to be ready for the
+ * next search.
+ */
 public class Ranking {
     private ScoringMethod scoring;
     private InvertedIndex index;
     private int totalPageCount;
 
+    /**
+     * Creates a new Ranking object.
+     * @param index an InvertedIndex object which is used for scoring 
+     * and for getting the totaltalPageCount which is also needed for scoring
+     * @param complexScoring false = creates an object of the simpler type of ScoringMethod TFsoring
+     * true = creates an object of the more complex ScoringMethod TfIdfScoring.
+     * The choosen SoringMethod is added to the field scoring. 
+     */
     public Ranking(InvertedIndex index, Boolean complexScoring) {
         this.index = index;
         totalPageCount = index.getTotalPageCount();

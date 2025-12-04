@@ -54,7 +54,7 @@ public class SearchEngine {
         List<List<String>> termList = handler.handleQuery(nonEmptySearchWords);
 
         List<Page> resultPages = search(termList);
-        List<Page> resultPagesSortedByRank = rank.rankPages(resultPages, termList);
+        List<Page> resultPagesSortedByRank = rank.getPageListSortedByranking(resultPages, termList);
         return finalResultBuilder(resultPagesSortedByRank);
     }
 
