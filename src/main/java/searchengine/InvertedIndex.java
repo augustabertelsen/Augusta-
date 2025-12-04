@@ -1,6 +1,11 @@
 
 package searchengine;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Builds and stores a fast lookup structure from normalized words to the pages that
  * contain them. All title and content words from each {@link Page} are passed through
@@ -8,11 +13,6 @@ package searchengine;
  * The search engine can then use {@link #lookUp(String)} to find matching pages
  * without scanning every page on each query.
  */
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class InvertedIndex {
     private final Map<String, List<Page>> pagesContaining;

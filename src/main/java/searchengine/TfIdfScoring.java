@@ -1,39 +1,31 @@
-/**
- * A ScoringMethod that uses TF-IDF (term frequency – inverse document frequency).
- * This class gives a score to one word on one page.
- * The score becomes larger when:
- *   the word appears many times on the page (high term frequency), and
- *   the word appears in few pages in total (high inverse document frequency).
- * This means the score is high for words that are important for this page,
- * but not very common in the whole collection.
- */
 
 package searchengine;
 
 import java.util.List;
 
-// TF: how many times the word appears on this page
-// IDF: how rare the word is across all pages
+/**
+ * A {@link ScoringMethod} implementation that uses TF‑IDF
+ * (term frequency - inverse document frequency).
+ * Words that occur many times on a page but in few pages overall
+ * receive higher scores.
+ */
 
 public class TfIdfScoring implements ScoringMethod {
 
     /**
-     * Calculates the TF-IDF score for one word on one page.
-     * First it counts how many times {@code word} appears in {@code page}.
-     * Then it finds how many pages in {@code index} contain {@code word}.
-     * Using the total number of pages {@code totalPageCount}, it calculates
-     * an inverse document frequency value.
-     * The final score is the term frequency multiplied by this inverse document
-     * frequency.
-     * If the word does not appear in the page, or in any page in the index,
-     * this method returns {@code 0.0}.
+     * Calculates the TF‑IDF score for one word on one page.
+     * Counts how often {@code word} appears on {@code page} (TF),
+     * finds how many pages in {@code index} contain the word (DF),
+     * computes an IDF value from {@code totalPageCount} and DF,
+     * and returns {@code TF * IDF}. If the word is missing from the
+     * page or the index, {@code 0.0} is returned.
      *
-     * @param word           the (already normalized) query word
-     * @param page           the Page to score
-     * @param index          the InvertedIndex used to count how many pages contain
+     * @param word           the query word
+     * @param page           the page to score
+     * @param index          the inverted index used to count how many pages contain
      *                       the word
      * @param totalPageCount the total number of pages in the collection
-     * @return the TF-IDF score for this word on this page
+     * @return the TF‑IDF score for this word on this page
      */
 
     @Override

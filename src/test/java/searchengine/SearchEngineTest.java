@@ -17,6 +17,11 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
 
+/**
+ * Unit tests for {@link SearchEngine}, covering search logic,
+ * ranking integration, and JSON result building.
+ */
+
 public class SearchEngineTest {
 
         /**

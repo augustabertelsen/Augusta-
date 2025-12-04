@@ -13,7 +13,8 @@ public interface ScoringMethod {
      *
      * @param word           the query word
      * @param page           the page to score
-     * @param index          the inverted index 
+     * @param index          the inverted index used to count how many pages contain
+     *                       the word
      * @param totalPageCount the total number of pages in the collection
      * @return the score for this (word, page) pair
      */
