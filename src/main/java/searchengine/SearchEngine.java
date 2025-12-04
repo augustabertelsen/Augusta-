@@ -38,8 +38,7 @@ public class SearchEngine {
      * @param io the request from the server. 
      * @return an array of bytes.
      */
-    public byte[] handleSearch(HttpExchange io) {
-        String rawQuery = io.getRequestURI().getRawQuery().split("=")[1];
+    public byte[] handleSearch(String rawQuery) {
         String decodedQuery = URLDecoder.decode(rawQuery, StandardCharsets.UTF_8);
         String[] searchWordArray = decodedQuery.split(" ");
         List<String> nonEmptySearchWords = new ArrayList<>();

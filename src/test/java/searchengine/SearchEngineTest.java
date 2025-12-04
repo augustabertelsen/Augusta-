@@ -238,31 +238,7 @@ public class SearchEngineTest {
                 Ranking ranking = new Ranking(index, false);
                 SearchEngine searchEngine = new SearchEngine(index, ranking);
 
-                 HttpExchange exchange = new HttpExchange() {
-                 @Override
-                public URI getRequestURI() {
-                        return URI.create("http://localhost/search?q=dog");
-                }
-
-                @Override public Headers getRequestHeaders() { return new Headers(); }
-                @Override public Headers getResponseHeaders() { return new Headers(); }
-                @Override public String getRequestMethod() { return "GET"; }
-                @Override public HttpContext getHttpContext() { return null; }
-                @Override public void close() { }
-                @Override public InputStream getRequestBody() { return InputStream.nullInputStream(); }
-                @Override public OutputStream getResponseBody() { return OutputStream.nullOutputStream(); }
-                @Override public void sendResponseHeaders(int rCode, long responseLength) { }
-                @Override public InetSocketAddress getRemoteAddress() { return null; }
-                @Override public int getResponseCode() { return 200; }
-                @Override public InetSocketAddress getLocalAddress() { return null; }
-                @Override public String getProtocol() { return "HTTP/1.1"; }
-                @Override public Object getAttribute(String name) { return null; }
-                @Override public void setAttribute(String name, Object value) { }
-                @Override public void setStreams(InputStream i, OutputStream o) { }
-                @Override public HttpPrincipal getPrincipal() { return null; }
-                };
-
-                byte[] bytes = searchEngine.handleSearch(exchange);
+                byte[] bytes = searchEngine.handleSearch("dog");
                 String json = new String(bytes, StandardCharsets.UTF_8);
 
                 assertTrue(json.startsWith("["));
