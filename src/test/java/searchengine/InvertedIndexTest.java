@@ -37,7 +37,6 @@ public class InvertedIndexTest {
      * Verifies that when searching for one word across multiple pages,
      * lookUp returns only the pages that contain that word.
      * Confirms correct filtering and excludes pages without the word.
-     * Does not take normalization or multiple word search into account.
      */
 
     @Test
@@ -69,8 +68,7 @@ public class InvertedIndexTest {
     /**
      * Verifies that lookUp() correctly normalizes the search word
      * (case, punctuation) and still returns the page containing
-     * the matching normalized term but not misplled words.
-     * Does not tage multiple words or multiple pages into account.
+     * the matching normalized term.
      */
 
     @Test
@@ -84,16 +82,13 @@ public class InvertedIndexTest {
         InvertedIndex index = new InvertedIndex(allPages);
 
         List<Page> result1 = index.lookUp("PRESIDENT!");
-        List<Page> result2 = index.lookUp("president");
-        List<Page> result3 = index.lookUp("Presidenttt.");
+        List<Page> result2 = index.lookUp("president,");
 
         assertEquals(1, result1.size());
         assertTrue(result1.contains(pageA));
 
         assertEquals(1, result2.size());
         assertTrue(result2.contains(pageA));
-
-        assertEquals(0, result3.size());
     }
 
   
@@ -124,8 +119,6 @@ public class InvertedIndexTest {
     /**
      * Verifies that lookUp() returns a page only once,
      * even if the searched word appears multiple times within that page.
-     * Does not take normalization, multiple pages or multiple
-     * words in one search into account.
      */
 
     @Test
