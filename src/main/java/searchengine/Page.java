@@ -67,6 +67,12 @@ public class Page {
     }
 
     /**
+     * @return an unmodifiable list of all words in page content.
+     */
+    public List<String> getWords() {
+        return List.copyOf(words);
+    }
+    /**
      * @return an unmodifiable list of all words from both title and page content.
      */
     public List<String> getTotalWords() {

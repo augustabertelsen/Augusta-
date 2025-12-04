@@ -206,4 +206,28 @@ public class SearchEngineTest {
         assertTrue(secondPageObject.contains(pageA.getTitle()));
     }
 
+
+
+      /**
+     * Verifies that lookUp() can handle a multi-word search and
+     * still return the page that contains the full sequence of words.
+     * Does not take normalization or multiple pages into account.
+     */
+
+//     @Test
+//     void lookUpMultipleWords() {
+//         Page pageA = new Page(List.of(
+//                 "*PAGE:http://example.com/A",
+//                 "Title A",
+//                 "walking the dog", "the president is in the goverment", "laughing a lot"));
+
+//         List<Page> allPages = List.of(pageA);
+//         InvertedIndex index = new InvertedIndex(allPages);
+
+//         List<Page> result = index.lookUp("the president is in the goverment");
+
+//         assertTrue(result.contains(pageA));
+//         assertEquals(1, result.size());
+//     }
+
 }

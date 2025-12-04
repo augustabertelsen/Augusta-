@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class InvertedIndex {
-
-    // Map: Key: search word, Value: the list of pages that contain that word
-    // private final because it should never be reassigned but can still be updated
     private final Map<String, List<Page>> pagesContaining;
     private final int totalPageCount;
 
@@ -74,37 +71,3 @@ public class InvertedIndex {
     }
 
 }
-
-// for (Page currentPage : allPages) {
-// List<String> words = currentPage.getWords();
-// for (String word : words) {
-// }
-// // Creates a new list for this word because it hasn’t been seen before
-// // + adds the current page to that list + stores it in the map.
-// if (!pagesContaining.containsKey(word)) {
-// List<Page> newPages = new ArrayList<>();
-// newPages.add(currentPage);
-// pagesContaining.put(word, newPages);
-// }
-
-// // Retrieves the list of pages already associated with this word + adds the
-// current page to that list.
-// // Ensures that the word maps to all pages that contain it, not just the
-// first one.
-// else {
-// List<Page> existingPages = pagesContaining.get(word);
-// existingPages.add(currentPage);
-// }
-// }
-
-// // If the word exists -> return list of its pages
-// // If not -> return an empty list -> can loop safely without null-checks
-// public List<Page> lookUp(String word) {
-// if (pagesContaining.containsKey(word)) {
-// return new ArrayList<>(pagesContaining.get(word)); // make sure to return
-// copy of lists so the originals cant be modified by other classes
-// }
-// return new ArrayList<>();
-// }
-
-// // for more words use method retain all
