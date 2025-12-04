@@ -1,3 +1,9 @@
+package searchengine;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Builds and stores a fast lookup structure that maps each normalized word
@@ -7,17 +13,9 @@
  * the input and returns all pages that contain the word(s), avoiding the need
  * to scan every page on each search.
  *
- * Input:  a list of Page objects (allPages).  
+ * Input:  a list of Page objects (allPages).
  * Output: a list of pages containing the normalized search word(s).
  */
-
-package searchengine;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class InvertedIndex {
 
     // Map: Key: search word, Value: the list of pages that contain that word
