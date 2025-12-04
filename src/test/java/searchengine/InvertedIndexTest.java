@@ -69,7 +69,7 @@ public class InvertedIndexTest {
     /**
      * Verifies that lookUp() correctly normalizes the search word
      * (case, punctuation) and still returns the page containing
-     * the matching normalized term.
+     * the matching normalized term but not misplled words.
      * Does not tage multiple words or multiple pages into account.
      */
 
@@ -85,11 +85,15 @@ public class InvertedIndexTest {
 
         List<Page> result1 = index.lookUp("PRESIDENT!");
         List<Page> result2 = index.lookUp("president");
-        List<Page> result3 = index.lookUp("Presiddent.");
+        List<Page> result3 = index.lookUp("Presidenttt.");
 
-        assertTrue(result1.size() == 1 && result1.contains(pageA));
-        assertTrue(result2.size() == 1 && result1.contains(pageA));
-        assertTrue(result3.size() == 1 && result1.contains(pageA));
+        assertEquals(1, result1.size());
+        assertTrue(result1.contains(pageA));
+
+        assertEquals(1, result2.size());
+        assertTrue(result2.contains(pageA));
+
+        assertEquals(0, result3.size());
     }
 
   
