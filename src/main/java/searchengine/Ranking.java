@@ -92,4 +92,9 @@ public class Ranking {
         }
     }
 
+    public ScoringMethod getScoringMethod() {
+
+        return scoring;
+    }
+
 }
