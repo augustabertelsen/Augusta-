@@ -15,14 +15,23 @@ public class Ranking {
         if (complexScoring == true) {
             ScoringMethod scoring = new TfIdfScoring();
             this.scoring = scoring;
-        } else{
-       
+        } else {
+
             ScoringMethod scoring = new TfScoring();
             this.scoring = scoring;
         }
     }
 
-    public List<Page> rankPages(List<Page> resultPages, List<List<String>> termList) {
+    public List<Page> getPageListSortedByranking(List<Page> resultPages, List<List<String>> termList) {
+
+        rankPages(resultPages, termList);
+        List<Page> listSortedByRank = sortListByRank(resultPages);
+        clearRankingScore(resultPages);
+
+        return listSortedByRank;
+    }
+
+    public void rankPages(List<Page> resultPages, List<List<String>> termList) {
 
         for (int currentPage = 0; currentPage < resultPages.size(); currentPage++) {
             Page pageResult = resultPages.get(currentPage);
@@ -51,19 +60,19 @@ public class Ranking {
 
         }
 
-        resultPages.sort(Comparator
-            .comparing(Page::getRankingScore)
-        );
-        Collections.reverse(resultPages);
-        
+    }
 
-        for(int i = 0; i< resultPages.size(); i++ ){
+    public List<Page> sortListByRank(List<Page> resultPages) {
+        resultPages.sort(Comparator
+                .comparing(Page::getRankingScore));
+        Collections.reverse(resultPages);
+        return resultPages;
+    }
+
+    public void clearRankingScore(List<Page> resultPages) {
+        for (int i = 0; i < resultPages.size(); i++) {
             resultPages.get(i).clearRankingScore();
         }
-
-        return resultPages;
-        
-
     }
 
 }
