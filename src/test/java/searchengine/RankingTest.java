@@ -34,17 +34,14 @@ public class RankingTest {
 
         allPages = Arrays.asList(pageA, pageB, pageC);
         index = new InvertedIndex(allPages);
-
-        List<List<String>> termList = new ArrayList<>();
         List<String> list1 = new ArrayList<>();
         List<String> list2 = new ArrayList<>();
         list1.add("dog");
         list1.add("laugh");
         list2.add("king");
         list2.add("denmark");
-        
-        termList.add(list1);
-        termList.add(list2);
+        termList = new ArrayList<>(Arrays.asList(list1, list2));
+
     }
 
     @Test 
@@ -112,5 +109,6 @@ public class RankingTest {
 
         assertEquals(correctPageList, ranker.getPageListSortedByranking(allPages, termList));}
 
+    //To write: test for if two OR groups appear on the same page. 
 
 }

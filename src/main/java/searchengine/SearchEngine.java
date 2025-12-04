@@ -1,9 +1,7 @@
 package searchengine;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -70,24 +68,17 @@ public class SearchEngine {
 
         List<String> jsonStrings = new ArrayList<String>();
 
-    // Loop through termPages and build small JSON objects from each Page.
-    // OBS!!! change name, and unmethod
     for (Page page : termPages) {
             String url = page.getUrl();
             String title = page.getTitle();
             String json = String.format("{\"url\": \"%s\", \"title\": \"%s\"}", url, title);
 
-            //temporary storage before structure
             jsonStrings.add(json);
         }
 
-    // CHANGED: Kept name 'result', but now build it using a StringBuilder first.
     StringBuilder resultBuilder = new StringBuilder();
-
-    // CHANGED: Start JSON array with '['.
     resultBuilder.append("[");
 
-    // CHANGED: Copy old behavior: join JSON strings with ", ".
     for(
     int i = 0;i<jsonStrings.size();i++)
     {
@@ -97,15 +88,10 @@ public class SearchEngine {
         }
     }
 
-    // CHANGED: Close JSON array with ']'.
     resultBuilder.append("]");
 
-    // CHANGED: Turn builder into final String named 'result' (same name as old
-    // code).
     String result = resultBuilder.toString();
 
-    // CHANGED: Old code overwrote result with bytes (wrong type).
-    // New: convert String result to byte[] once and return it.
     return result.getBytes(StandardCharsets.UTF_8);
 }
     /**
@@ -118,10 +104,9 @@ public class SearchEngine {
      * @return a list of pages which correspond to one of these search terms. 
      */
     public List<Page> search(List<List<String>> termList) {
-        // Create result list to collect matching pages.
+        
         List<Page> result = new ArrayList<Page>();
 
-        // loop through the list of list of string aka termlist
         if (!termList.isEmpty()) {
 
             for (int i = 0; i < termList.size(); i++) {
@@ -149,7 +134,6 @@ public class SearchEngine {
                 if (!listWithListOfPagesForEachWord.isEmpty()) {
 
                     List<Page> listResult = new ArrayList<Page>();
-                    // FOR CHARLIE: added get, also in the next part.
                     listResult = listWithListOfPagesForEachWord.get(0);
 
                     for (int iii = 1; iii < listWithListOfPagesForEachWord.size(); iii++) {

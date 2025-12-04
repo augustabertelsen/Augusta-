@@ -1,6 +1,9 @@
 package searchengine;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.beans.Transient;
+
 import org.junit.jupiter.api.Test;
 
 public class WordNormalizerTest {
@@ -43,5 +46,24 @@ public class WordNormalizerTest {
         assertTrue(WordNormalizer.normalize(testWord).equals(""));
     }
 
-    
+    /**
+     * Verifies that a space (" ") returns an empty string.
+     */
+
+    @Test
+    void returnsEmptyStringWhenCalledOnSpace() {
+        String testWord = " ";
+
+        assertTrue(WordNormalizer.normalize(testWord).equals(""));
+    }
+
+    /** 
+     * Verifies that a single punctuation mark returns an empty String.
+     */
+
+    @Test
+    void returnsEmptyStringWhenCalledOnPunctuationOnly() {
+        String testWord = "?";
+        assertTrue(WordNormalizer.normalize(testWord).equals(""));
+    }
 }
