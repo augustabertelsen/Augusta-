@@ -1,4 +1,6 @@
 
+package searchengine;
+
 /**
  * Builds and stores a fast lookup structure from normalized words to the pages that
  * contain them. All title and content words from each {@link Page} are passed through
@@ -6,8 +8,6 @@
  * The search engine can then use {@link #lookUp(String)} to find matching pages
  * without scanning every page on each query.
  */
-
-package searchengine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
