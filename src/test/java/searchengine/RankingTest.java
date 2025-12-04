@@ -1,6 +1,5 @@
 package searchengine;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -107,7 +106,7 @@ public class RankingTest {
         correctPageList.add(pageB);
         correctPageList.add(pageC);
 
-        assertEquals(correctPageList, ranker.getPageListSortedByranking(allPages, termList));}
+        assertEquals(correctPageList, ranker.getPageListSortedByRanking(allPages, termList));}
 
     //To write: test for if two OR groups appear on the same page. 
 

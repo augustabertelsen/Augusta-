@@ -20,34 +20,33 @@ public class Ranking {
 
     /**
      * Creates a new Ranking object.
+     *
      * @param index an InvertedIndex object which is added to the field index.
-     * The method getTotalPagecount() is used on the index and the result is added to the field totalPagecould.
+     *                       The method getTotalPageCount() is used on the index and the result is added to the field totalPageCount.
      * @param complexScoring which is a Boolean, if it is set to false,
-     * it creates an object of the simpler type of ScoringMethod TFsoring.
-     * If it set to true et creates an object of the more complex ScoringMethod TfIdfScoring.
-     * The chosen SoringMethod is added to the field scoring. 
+     *                       it creates an object of the simpler type of ScoringMethod TFscoring.
+     *                       If it set to true it creates an object of the more complex ScoringMethod TfIdfScoring.
+     *                       The chosen SoringMethod is added to the field scoring.
      */
     public Ranking(InvertedIndex index, Boolean complexScoring) {
         this.index = index;
         totalPageCount = index.getTotalPageCount();
         if (complexScoring == true) {
-            ScoringMethod scoring = new TfIdfScoring();
-            this.scoring = scoring;
+            scoring = new TfIdfScoring();
         } else {
-
-            ScoringMethod scoring = new TfScoring();
-            this.scoring = scoring;
+            scoring = new TfScoring();
         }
     }
 
     /**
-     * The getPageListSortedByranking takes:
-     * @param resultPage
-     * @param termlist
-     * It applies the methods rankPages(), sortListByRank(), and clearRankingScore(),
+     * The getPageListSortedByRanking method ranks a list of pages,
+     * sorts it based on the ranking, and finally clears the ranking score for the pages.
+     *
+     * @param resultPages the pages to sort by ranking
+     * @param termList the OR-groups of search terms to base the ranking socre of for each page
      * @return a list of pages sorted by the rankingscore, high to low.
      */
-    public List<Page> getPageListSortedByranking(List<Page> resultPages, List<List<String>> termList) {
+    public List<Page> getPageListSortedByRanking(List<Page> resultPages, List<List<String>> termList) {
 
         rankPages(resultPages, termList);
         List<Page> listSortedByRank = sortListByRank(resultPages);
@@ -56,12 +55,11 @@ public class Ranking {
         return listSortedByRank;
     }
 
-     /**
-     * The rankPages takes:
-     * @param resultPage
-     * @param termList
-     * It rank each page according to the ranking score of the OR-group
-     * If not all words in an OR-group is present in at page, no ranking is added for the OR-group.
+    /**
+     * The rankPages method ranks each page according to the ranking score of the OR-group
+     * If not all words in an OR-group is present in a page, no ranking is added for the OR-group.
+     * @param resultPages the pages to rank
+     * @param termList the OR-groups of search terms to base the ranking socre of for each page
      */
     public void rankPages(List<Page> resultPages, List<List<String>> termList) {
 
@@ -81,7 +79,6 @@ public class Ranking {
                         scoreForORGroup = 0;
                         break;
                     }
-
                 }
 
                 if (scoreForORGroup > 0) {
@@ -94,11 +91,11 @@ public class Ranking {
 
     }
 
-     /**
-     * The mehod sortListByRank takes:
-     * @param resultPages 
-     * It sort the pages by rankingscore and then reverse that
-     * @reurn List<Page> sorted by rankingScore from high to low.
+    /**
+     * The method sortListByRank takes:
+     *
+     * @param resultPages It sorts the pages by rankingscore and then reverses that
+     * @return List<Page> sorted by rankingScore from high to low.
      */
     public List<Page> sortListByRank(List<Page> resultPages) {
         resultPages.sort(Comparator
@@ -107,10 +104,11 @@ public class Ranking {
         return resultPages;
     }
 
-     /**
-     * The method clearRankingScore takes: 
-     * @param resultpage
-     * It clears the rankingScore for all pages in the list, by setting it to 0.
+    /**
+     * The method clearRankingScore takes a list of pages,
+     * and clears the rankingScore for all pages in the list, by setting it to 0.
+     *
+     * @param resultPages the list of pages to clear the ranking score of.
      */
     public void clearRankingScore(List<Page> resultPages) {
         for (int i = 0; i < resultPages.size(); i++) {
@@ -119,7 +117,6 @@ public class Ranking {
     }
 
     public ScoringMethod getScoringMethod() {
-
         return scoring;
     }
 
