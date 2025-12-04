@@ -8,9 +8,9 @@ import java.util.Collections;
  * The Ranking Class implements one of two types of scoring depending on what
  * the user chooses.
  * It is given a List<Page> that it ranks. It sorts the list after ranking,
- * so the highest ranked page comes first and so fourthe before.
- * Before finaly returning the List<Page> sorted by rank,
- * it clears the ranking from alle the pages that where rank to be ready for the
+ * so the highest ranked page comes first and so forth before.
+ * Before finally returning the List<Page> sorted by rank,
+ * it clears the ranking from all the pages that where rank to be ready for the
  * next search.
  */
 public class Ranking {
@@ -20,11 +20,12 @@ public class Ranking {
 
     /**
      * Creates a new Ranking object.
-     * @param index an InvertedIndex object which is used for scoring 
-     * and for getting the totaltalPageCount which is also needed for scoring
-     * @param complexScoring false = creates an object of the simpler type of ScoringMethod TFsoring
-     * true = creates an object of the more complex ScoringMethod TfIdfScoring.
-     * The choosen SoringMethod is added to the field scoring. 
+     * @param index an InvertedIndex object which is added to the field index.
+     * The method getTotalPagecount() is used on the index and the result is added to the field totalPagecould.
+     * @param complexScoring which is a Boolean, if it is set to false,
+     * it creates an object of the simpler type of ScoringMethod TFsoring.
+     * If it set to true et creates an object of the more complex ScoringMethod TfIdfScoring.
+     * The chosen SoringMethod is added to the field scoring. 
      */
     public Ranking(InvertedIndex index, Boolean complexScoring) {
         this.index = index;
@@ -39,6 +40,13 @@ public class Ranking {
         }
     }
 
+    /**
+     * The getPageListSortedByranking takes:
+     * @param resultPage
+     * @param termlist
+     * It applies the methods rankPages(), sortListByRank(), and clearRankingScore(),
+     * @return a list of pages sorted by the rankingscore, high to low.
+     */
     public List<Page> getPageListSortedByranking(List<Page> resultPages, List<List<String>> termList) {
 
         rankPages(resultPages, termList);
@@ -48,6 +56,13 @@ public class Ranking {
         return listSortedByRank;
     }
 
+     /**
+     * The rankPages takes:
+     * @param resultPage
+     * @param termList
+     * It rank each page according to the ranking score of the OR-group
+     * If not all words in an OR-group is present in at page, no ranking is added for the OR-group.
+     */
     public void rankPages(List<Page> resultPages, List<List<String>> termList) {
 
         for (int currentPage = 0; currentPage < resultPages.size(); currentPage++) {
@@ -79,6 +94,12 @@ public class Ranking {
 
     }
 
+     /**
+     * The mehod sortListByRank takes:
+     * @param resultPages 
+     * It sort the pages by rankingscore and then reverse that
+     * @reurn List<Page> sorted by rankingScore from high to low.
+     */
     public List<Page> sortListByRank(List<Page> resultPages) {
         resultPages.sort(Comparator
                 .comparing(Page::getRankingScore));
@@ -86,6 +107,11 @@ public class Ranking {
         return resultPages;
     }
 
+     /**
+     * The method clearRankingScore takes: 
+     * @param resultpage
+     * It clears the rankingScore for all pages in the list, by setting it to 0.
+     */
     public void clearRankingScore(List<Page> resultPages) {
         for (int i = 0; i < resultPages.size(); i++) {
             resultPages.get(i).clearRankingScore();
