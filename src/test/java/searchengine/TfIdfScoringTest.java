@@ -49,7 +49,12 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenOneMatchAndTwoFrequencies() {
-        assertEquals(1.5, scorer.scoreSingleWord("dog", pageA, index, allPages.size()));
+        String wordToTest = "dog";
+        double wordOccurrencesInPageA = 1;
+        double countOfPagesContainingWord = 2;
+        
+        double expectedScore = wordOccurrencesInPageA * Math.log(allPages.size() / countOfPagesContainingWord);
+        assertEquals(expectedScore, scorer.scoreSingleWord(wordToTest, pageA, index, allPages.size()));
     }
 
     /**
@@ -62,7 +67,12 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenOneMatchAndOneFrequency() {
-        assertEquals(3.0, scorer.scoreSingleWord("denmark", pageB, index, allPages.size()));
+        String wordToTest = "denmark";
+        double wordOccurrencesInPageB = 1;
+        double countOfPagesContainingWord = 1;
+        
+        double expectedScore = wordOccurrencesInPageB * Math.log(allPages.size() / countOfPagesContainingWord);
+        assertEquals(expectedScore, scorer.scoreSingleWord(wordToTest, pageB, index, allPages.size()));
     }
 
     /**
@@ -98,7 +108,12 @@ public class TfIdfScoringTest {
 
     @Test
     void returnsCorrectlyWhenTwoMatchAndOneFrequency() {
-        assertEquals(6.0, scorer.scoreSingleWord("fun", pageC, index, allPages.size()));
+        String wordToTest = "fun";
+        double wordOccurrencesInPageC = 2;
+        double countOfPagesContainingWord = 1;
+
+        double expectedScore = wordOccurrencesInPageC * Math.log(allPages.size() / countOfPagesContainingWord);
+        assertEquals(expectedScore, scorer.scoreSingleWord(wordToTest, pageC, index, allPages.size()));
     }
 
 
