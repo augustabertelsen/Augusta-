@@ -28,7 +28,7 @@ public class TfIdfScoringTest {
         pageC = new Page(List.of(
                 "*PAGE:http://example.com/C",
                 "Title C",
-                "fun", "laugh"));
+                "fun", "laugh", "fun"));
 
         allPages = Arrays.asList(pageA, pageB, pageC);
         index = new InvertedIndex(allPages);
@@ -88,5 +88,18 @@ public class TfIdfScoringTest {
     void returnsCorrectlyWhenNoMatchAndNoFrequency() {
         assertEquals(0.0, scorer.scoreSingleWord("queen", pageA, index, allPages.size()));
     }
+
+     /**
+     * Verifies that the method returns correctly when there are two instances of the
+     * given word on
+     * the given page and no other instances of that word on any other page in the
+     * collection.
+     */
+
+    @Test
+    void returnsCorrectlyWhenTwoMatchAndOneFrequency() {
+        assertEquals(6.0, scorer.scoreSingleWord("fun", pageC, index, allPages.size()));
+    }
+
 
 }
