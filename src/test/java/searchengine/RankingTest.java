@@ -102,7 +102,7 @@ public class RankingTest {
     @Test 
     void returnsSortedPages() {
         Ranking ranker = new Ranking(index, false);
-        List<Page> correctPageList = new ArrayList();
+        List<Page> correctPageList = new ArrayList<Page>();
         correctPageList.add(pageA);
         correctPageList.add(pageB);
         correctPageList.add(pageC);
