@@ -22,12 +22,10 @@ class WebServer {
 
     private HttpServer server;
     private SearchEngine search;
-    private final int port;
 
     public WebServer(int port, SearchEngine search) throws IOException {
         //store handler
         this.search = search;
-        this.port = port;
 
         //HttpServer setup 
 
@@ -49,7 +47,7 @@ class WebServer {
 
     public void start() {
         server.start();
-        String msg = " WebServer running on http://localhost:" + port + " ";
+        String msg = " WebServer running on http://localhost:" + server.getAddress().getPort() + " ";
         System.out.println("╭" + "─".repeat(msg.length()) + "╮");
         System.out.println("│" + msg + "│");
         System.out.println("╰" + "─".repeat(msg.length()) + "╯");
@@ -62,7 +60,7 @@ class WebServer {
     }
 
     public int getPort() {
-        return port;
+        return server.getAddress().getPort();
     }
 
     // getFile() reads the file at the given filename and returns its contents as a byte[].
