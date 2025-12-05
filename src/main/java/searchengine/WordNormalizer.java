@@ -3,7 +3,9 @@ package searchengine;
 /**
  * Cleans a single search term so it can be used consistently.
  * Converts the input to lowercase, trims whitespace, and removes trailing
- * punctuation.
+ * punctuation, ensuring the same word is represented uniformly across user
+ * queries and page contents. Returns a cleaned string or an empty string if
+ * the input is null or becomes empty.
  * <p>
  * Used by: QueryHandler and InvertedIndex.
  */
