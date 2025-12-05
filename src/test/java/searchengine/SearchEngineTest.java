@@ -1,9 +1,5 @@
 package searchengine;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -11,11 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpPrincipal;
 
 /**
  * Unit tests for {@link SearchEngine}, covering search logic,
@@ -182,7 +173,8 @@ public class SearchEngineTest {
         }
 
         /**
-         * Verifies that finalResultBuilder produces a JSON array string with the expected
+         * Verifies that finalResultBuilder produces a JSON array string with the
+         * expected
          * structure and that each array element contains the correct URL and title
          * for the corresponding Page in order.
          */
@@ -224,8 +216,9 @@ public class SearchEngineTest {
         }
 
         /**
-        * Verifies that handleSearch reads the HTTP query parameter, performs a search,
-         * and returns JSON bytes containing the matching Page's URL and title.
+         * Verifies that handleSearch reads the raw query String from the HTTP exchange,
+         * performs a search, and returns JSON bytes containing the matching Page's URL
+         * and title.
          */
         @Test
         void handleSearchReturnsJSONforHTTPQuery() {
