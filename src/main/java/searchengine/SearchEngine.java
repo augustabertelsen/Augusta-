@@ -4,8 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.net.httpserver.HttpExchange;
-
 /**
  * This class is responsible for accepting a query from the server, splitting it 
  * into a list of strings and calling the QueryHandler class on that list. SearchEngine
@@ -17,8 +15,8 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class SearchEngine {
 
-    private InvertedIndex index;
-    private Ranking rank;
+    private final InvertedIndex index;
+    private final Ranking rank;
 
 /**
  * Creates a new SearchEngine with an InvertedIndex object which organises a set of files. 
@@ -35,11 +33,10 @@ public class SearchEngine {
      * handleQuery() method of QueryHandler can then be called upon. The List<List<String>> 
      * returned by this method then has the search() method called upon it, and the resulting 
      * List<Page> has the finalResultBuilder() method called upon it, which produces an array of bytes.  
-     * @param io the request from the server. 
+     * @param rawQuery String request from the HttpExchange from the Server.  
      * @return an array of bytes.
      */
-    public byte[] handleSearch(HttpExchange io) {
-        String rawQuery = io.getRequestURI().getRawQuery().split("=")[1];
+    public byte[] handleSearch(String rawQuery) {
         String decodedQuery = URLDecoder.decode(rawQuery, StandardCharsets.UTF_8);
         String[] searchWordArray = decodedQuery.split(" ");
         List<String> nonEmptySearchWords = new ArrayList<>();
@@ -66,7 +63,7 @@ public class SearchEngine {
 
     public byte[] finalResultBuilder(List<Page>termPages){ 
 
-        List<String> jsonStrings = new ArrayList<String>();
+        List<String> jsonStrings = new ArrayList<>();
 
     for (Page page : termPages) {
             String url = page.getUrl();
@@ -105,13 +102,13 @@ public class SearchEngine {
      */
     public List<Page> search(List<List<String>> termList) {
         
-        List<Page> result = new ArrayList<Page>();
+        List<Page> result = new ArrayList<>();
 
         if (!termList.isEmpty()) {
 
             for (int i = 0; i < termList.size(); i++) {
                 List<String> currentList = termList.get(i);
-                List<List<Page>> listWithListOfPagesForEachWord = new ArrayList<List<Page>>();
+                List<List<Page>> listWithListOfPagesForEachWord = new ArrayList<>();
 
                 if (!currentList.isEmpty()) {
                     List<Page> pagesWithWord = new ArrayList<Page>();
@@ -133,12 +130,10 @@ public class SearchEngine {
 
                 if (!listWithListOfPagesForEachWord.isEmpty()) {
 
-                    List<Page> listResult = new ArrayList<Page>();
-                    listResult = listWithListOfPagesForEachWord.get(0);
+                    List<Page> listResult = listWithListOfPagesForEachWord.get(0);
 
                     for (int iii = 1; iii < listWithListOfPagesForEachWord.size(); iii++) {
-                        List<Page> currentListOfPages = new ArrayList<Page>();
-                        currentListOfPages = listWithListOfPagesForEachWord.get(iii);
+                        List<Page> currentListOfPages = listWithListOfPagesForEachWord.get(iii);
 
                         listResult.retainAll(currentListOfPages);
                     }

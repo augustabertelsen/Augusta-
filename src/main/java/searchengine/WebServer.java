@@ -44,7 +44,7 @@ class WebServer {
 
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
-        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io)));
+        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io.getRequestURI().getRawQuery().split("=")[1])));
     }
 
     public void start() {
