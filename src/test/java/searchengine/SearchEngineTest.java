@@ -1,9 +1,5 @@
 package searchengine;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -11,11 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpPrincipal;
 
 /**
  * Unit tests for {@link SearchEngine}, covering search logic,
@@ -182,7 +173,8 @@ public class SearchEngineTest {
         }
 
         /**
-         * Verifies that finalResultBuilder produces a JSON array string with the expected
+         * Verifies that finalResultBuilder produces a JSON array string with the
+         * expected
          * structure and that each array element contains the correct URL and title
          * for the corresponding Page in order.
          */
@@ -224,8 +216,9 @@ public class SearchEngineTest {
         }
 
         /**
-        * Verifies that handleSearch reads the HTTP query parameter, performs a search,
-         * and returns JSON bytes containing the matching Page's URL and title.
+         * Verifies that handleSearch reads the raw query String from the HTTP exchange,
+         * performs a search, and returns JSON bytes containing the matching Page's URL
+         * and title.
          */
         @Test
         void handleSearchReturnsJSONforHTTPQuery() {
@@ -238,31 +231,7 @@ public class SearchEngineTest {
                 Ranking ranking = new Ranking(index, false);
                 SearchEngine searchEngine = new SearchEngine(index, ranking);
 
-                 HttpExchange exchange = new HttpExchange() {
-                 @Override
-                public URI getRequestURI() {
-                        return URI.create("http://localhost/search?q=dog");
-                }
-
-                @Override public Headers getRequestHeaders() { return new Headers(); }
-                @Override public Headers getResponseHeaders() { return new Headers(); }
-                @Override public String getRequestMethod() { return "GET"; }
-                @Override public HttpContext getHttpContext() { return null; }
-                @Override public void close() { }
-                @Override public InputStream getRequestBody() { return InputStream.nullInputStream(); }
-                @Override public OutputStream getResponseBody() { return OutputStream.nullOutputStream(); }
-                @Override public void sendResponseHeaders(int rCode, long responseLength) { }
-                @Override public InetSocketAddress getRemoteAddress() { return null; }
-                @Override public int getResponseCode() { return 200; }
-                @Override public InetSocketAddress getLocalAddress() { return null; }
-                @Override public String getProtocol() { return "HTTP/1.1"; }
-                @Override public Object getAttribute(String name) { return null; }
-                @Override public void setAttribute(String name, Object value) { }
-                @Override public void setStreams(InputStream i, OutputStream o) { }
-                @Override public HttpPrincipal getPrincipal() { return null; }
-                };
-
-                byte[] bytes = searchEngine.handleSearch(exchange);
+                byte[] bytes = searchEngine.handleSearch("dog");
                 String json = new String(bytes, StandardCharsets.UTF_8);
 
                 assertTrue(json.startsWith("["));

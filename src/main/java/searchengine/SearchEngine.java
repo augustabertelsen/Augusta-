@@ -5,8 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.net.httpserver.HttpExchange;
-
 /**
  * This class is responsible for accepting a query from the server, splitting it
  * into a list of strings and calling the QueryHandler class on that list. SearchEngine
@@ -18,8 +16,8 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class SearchEngine {
 
-    private InvertedIndex index;
-    private Ranking rank;
+    private final InvertedIndex index;
+    private final Ranking rank;
 
     /**
      * Creates a new SearchEngine with an InvertedIndex object which organises a set of files.
@@ -33,16 +31,14 @@ public class SearchEngine {
     }
 
     /**
-     * Extracts the search terms from the raw query and adds them to an array list, which the
-     * handleQuery() method of QueryHandler can then be called upon. The List<List<String>>
-     * returned by this method then has the search() method called upon it, and the resulting
-     * List<Page> has the finalResultBuilder() method called upon it, which produces an array of bytes.
-     *
-     * @param io the request from the server.
+     * Extracts the search terms from the raw query and adds them to an array list, which the 
+     * handleQuery() method of QueryHandler can then be called upon. The List<List<String>> 
+     * returned by this method then has the search() method called upon it, and the resulting 
+     * List<Page> has the finalResultBuilder() method called upon it, which produces an array of bytes.  
+     * @param rawQuery String request from the HttpExchange from the Server.
      * @return an array of bytes.
      */
-    public byte[] handleSearch(HttpExchange io) {
-        String rawQuery = io.getRequestURI().getRawQuery().split("=")[1];
+    public byte[] handleSearch(String rawQuery) {
         String decodedQuery = URLDecoder.decode(rawQuery, StandardCharsets.UTF_8);
         String[] searchWordArray = decodedQuery.split(" ");
         List<String> nonEmptySearchWords = new ArrayList<>();
@@ -70,7 +66,7 @@ public class SearchEngine {
 
     public byte[] finalResultBuilder(List<Page> termPages) {
 
-        List<String> jsonStrings = new ArrayList<String>();
+        List<String> jsonStrings = new ArrayList<>();
 
         for (Page page : termPages) {
             String url = page.getUrl();

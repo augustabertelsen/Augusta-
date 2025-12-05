@@ -1,3 +1,8 @@
+// Starts the HTTP server, sets up routes, 
+// serves static files, and forwards /search requests to QueryHandler. 
+// It never searches, loads data, builds JSON, or interacts with PageCollection or InvertedIndex.
+
+
 package searchengine;
 
 import java.io.IOException;
@@ -43,7 +48,9 @@ class WebServer {
         server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
         server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
 
-        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io)));
+        // /search is not a file,it triggers real search logic.
+        // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
+        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(extractRawQuery(io))));
     }
 
     /**
@@ -106,6 +113,17 @@ class WebServer {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Extracts the raw query (containing search term) from the HttpExchange.
+     * For example the request http://localhost:8080/search?q=dog+walk will return the String "dog+walk"
+     * @param io HttpExchange containing the search request
+     * @return String containing the raw query value after the "q=" parameter
+     */
+    private String extractRawQuery(HttpExchange io){
+        return io.getRequestURI().getRawQuery().split("=")[1];
+    }
+
 }
 
 
