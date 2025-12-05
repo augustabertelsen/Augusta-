@@ -44,7 +44,7 @@ class WebServer {
 
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
-        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(io.getRequestURI().getRawQuery().split("=")[1])));
+        server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(extractRawQuery(io))));
     }
 
     public void start() {
@@ -103,6 +103,16 @@ class WebServer {
     }
     //CHANGES: now uses the code parameter instead of a hard-coded 200 when sending the HTTP status.
     //try-with-resources (try(io)) block so the HttpExchange is closed automatically and safely.
+
+    /**
+     * Extracts the raw query (containing search term) from the HttpExchange.
+     * For example the request http://localhost:8080/search?q=dog+walk will return the String "dog+walk"
+     * @param io HttpExchange containing the search request
+     * @return String containing the raw query value after the "q=" parameter
+     */
+    private String extractRawQuery(HttpExchange io){
+        return io.getRequestURI().getRawQuery().split("=")[1];
+    }
 
 }
 
