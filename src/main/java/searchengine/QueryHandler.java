@@ -33,20 +33,16 @@ public class QueryHandler {
      */
 
     public List<List<String>> handleQuery(List<String> searchTerm) {
-        List<List<String>> termList = new ArrayList<List<String>>();
-        List<String> orGroupList = new ArrayList<String>();
+        List<List<String>> termList = new ArrayList<>();
+        List<String> orGroupList = new ArrayList<>();
         termList.add(orGroupList);
         List<String> currentList = orGroupList;
 
-        for (int i = 0; i < searchTerm.size(); i++) {
-            String currentWord = searchTerm.get(i);
-
+        for (String currentWord : searchTerm) {
             if (!currentWord.equals("OR")) {
                 currentList.add(WordNormalizer.normalize(currentWord));
-            }
-
-            else {
-                List<String> listORGroup = new ArrayList<String>();
+            } else {
+                List<String> listORGroup = new ArrayList<>();
                 termList.add(listORGroup);
                 currentList = listORGroup;
             }
