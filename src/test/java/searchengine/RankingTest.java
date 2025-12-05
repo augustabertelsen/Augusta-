@@ -1,6 +1,5 @@
 package searchengine;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,9 +58,9 @@ public class RankingTest {
     @Test
     void sortsListByRank() {
 
-        pageA.assignRankingScore(3.0);
-        pageB.assignRankingScore(2.0);
-        pageC.assignRankingScore(5.0);
+        pageA.assignRankingScoreIfGreaterThanCurrent(3.0);
+        pageB.assignRankingScoreIfGreaterThanCurrent(2.0);
+        pageC.assignRankingScoreIfGreaterThanCurrent(5.0);
 
         List<Page> correctOrderList = new ArrayList<>();
         correctOrderList.add(pageC);
@@ -75,9 +74,9 @@ public class RankingTest {
     @Test
     void clearsRankingScore() {
 
-        pageA.assignRankingScore(3.0);
-        pageB.assignRankingScore(2.0);
-        pageC.assignRankingScore(5.0);
+        pageA.assignRankingScoreIfGreaterThanCurrent(3.0);
+        pageB.assignRankingScoreIfGreaterThanCurrent(2.0);
+        pageC.assignRankingScoreIfGreaterThanCurrent(5.0);
 
         Ranking ranker = new Ranking(index, false);
 
@@ -107,7 +106,7 @@ public class RankingTest {
         correctPageList.add(pageB);
         correctPageList.add(pageC);
 
-        assertEquals(correctPageList, ranker.sortPagesByranking(allPages, termList));}
+        assertEquals(correctPageList, ranker.sortPagesByRanking(allPages, termList));}
 
     //To write: test for if two OR groups appear on the same page. 
 

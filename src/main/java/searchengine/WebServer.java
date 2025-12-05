@@ -1,11 +1,7 @@
-// Starts the HTTP server, sets up routes, 
-// serves static files, and forwards /search requests to QueryHandler. 
-// It never searches, loads data, builds JSON, or interacts with PageCollection or InvertedIndex.
-
-
 package searchengine;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -15,25 +11,29 @@ import java.nio.file.Paths;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-
+/**
+ * A web server that hosts the search engine UI and handles HTTP requests.
+ * <p>
+ * This server provides static routes for providing files to the UI (HTML, CSS, JS, favicon)
+ * and a /search route that provides results from the SearchEngine class.
+ */
 class WebServer {
     private static final int BACKLOG = 0;
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
-    private HttpServer server;
-    private SearchEngine search;
-    private final int port;
+    private final HttpServer server;
 
-    public WebServer(int port, SearchEngine search) throws IOException {
-        //store handler
-        this.search = search;
-        this.port = port;
+    /**
+     * Creates a new WebServer that listens on the specified port and uses the provided SearchEngine.
+     *
+     * @param port   the port number on which the server will listen
+     * @param search the SearchEngine object to handle search requests
+     * @throws IOException   if an I/O error occurs when creating the HttpServer
+     * @throws BindException if the port is already in use
+     */
+    public WebServer(int port, SearchEngine search) throws IOException, BindException {
 
-        //HttpServer setup 
-
-        //create HttpServer with port + BACKLOG
         server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
-
 
         // The static routes (/, CSS, JS, favicon) just return files, so they don’t need QueryHandler -> uses getFile to get byte for respond 
         server.createContext("/", io -> respond(io, 200, "text/html", getFile("web/index.html")));
@@ -41,56 +41,61 @@ class WebServer {
         server.createContext("/code.js", io -> respond(io, 200, "application/javascript", getFile("web/code.js")));
         server.createContext("/style.css", io -> respond(io, 200, "text/css", getFile("web/style.css")));
 
-
         // /search is not a file,it triggers real search logic.
         // Only QueryHandler knows how to process a query and return JSON, so only /search uses it.
         server.createContext("/search", io -> respond(io, 200, "application/json", search.handleSearch(extractRawQuery(io))));
     }
 
+    /**
+     * Starts the web server and displays a formatted message with the server URL.
+     */
     public void start() {
         server.start();
-        String msg = " WebServer running on http://localhost:" + port + " ";
+        String msg = " WebServer running on http://localhost:" + server.getAddress().getPort() + " ";
         System.out.println("╭" + "─".repeat(msg.length()) + "╮");
         System.out.println("│" + msg + "│");
         System.out.println("╰" + "─".repeat(msg.length()) + "╯");
     }
 
+    /**
+     * Stops the web server if the server object is not null.
+     */
     public void stop() {
         if (server != null) {
             server.stop(0);
         }
     }
 
+    /**
+     * @return the port number this server is running on
+     */
     public int getPort() {
-        return port;
+        return server.getAddress().getPort();
     }
 
-    // getFile() reads the file at the given filename and returns its contents as a byte[].
-    // If the file can’t be read, it returns an empty byte array instead of crashing. 
-
+    /**
+     * Reads a file from the filesystem and returns its contents as a byte array.
+     *
+     * @param filename the path to the file to be read
+     * @return the file contents as a byte array, or an empty array if the file cannot be read
+     */
     byte[] getFile(String filename) {
-        // try/catch prevents the server from crashing if the file is missing
         try {
-            // correctly loads a file into a byte[]  (Files and Paths are standard java object classes)
             return Files.readAllBytes(Paths.get(filename));
         } catch (IOException e) {
             e.printStackTrace();
-            // safely returns an empty response instead of null
             return new byte[0];
         }
     }
-    //CHANGE: Only the method signature changed
 
-
-    // respond() sets the correct HTTP headers and status code, then writes the given byte[] response to the client.
-    // After sending the data, it safely closes the HttpExchange to complete the request.
-
-    // The parameters:
-    // HttpExchange oi: the request + response object from the server
-    // int code: HTTP status number (200, 404, 500) -> standard?
-    // String mime: A MIME type is a short text label that tells the browser what format the response data is in. "text/html", "application/json", etc.
-    // byte[] response: the actual data that is sent back
-
+    /**
+     * Sends a HTTP response with the specified status code, content type, and response body.
+     *
+     * @param io       the HttpExchange to send the response through
+     * @param code     the HTTP status code to send
+     * @param mime     the MIME type of the response content
+     * @param response the response data as a byte array to put in the body
+     */
     private void respond(HttpExchange io, int code, String mime, byte[] response) {
         try (io) {
             io.getResponseHeaders()
@@ -101,16 +106,15 @@ class WebServer {
             e.printStackTrace();
         }
     }
-    //CHANGES: now uses the code parameter instead of a hard-coded 200 when sending the HTTP status.
-    //try-with-resources (try(io)) block so the HttpExchange is closed automatically and safely.
 
     /**
      * Extracts the raw query (containing search term) from the HttpExchange.
      * For example the request http://localhost:8080/search?q=dog+walk will return the String "dog+walk"
+     *
      * @param io HttpExchange containing the search request
      * @return String containing the raw query value after the "q=" parameter
      */
-    private String extractRawQuery(HttpExchange io){
+    private String extractRawQuery(HttpExchange io) {
         return io.getRequestURI().getRawQuery().split("=")[1];
     }
 

@@ -139,5 +139,4 @@ public class InvertedIndexTest {
                 assertTrue(result.contains(pageA));
                 assertEquals(1, result.size());
         }
-
 }

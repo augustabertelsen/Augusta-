@@ -3,18 +3,20 @@ package searchengine;
 import java.util.List;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 class QueryHandlerTest {
 
- 
-/**
- * Verifies that, when the handleQuery() method is called on a list of two Strings
- * neither of which is "OR", the method returns a List which contains one List<String>
- * which contains the two initial strings. 
- */
- @Test 
+
+    /**
+     * Verifies that, when the handleQuery() method is called on a list of two Strings
+     * neither of which is "OR", the method returns a List which contains one List<String>
+     * which contains the two initial strings.
+     */
+    @Test
     void returnsTwoNonOrStrings() {
         List<String> testList = new ArrayList<>();
         testList.add("dog");
@@ -22,18 +24,19 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handleQuery(testList).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(0).size() == 2);
-        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
-        assertTrue(handler.handleQuery(testList).get(0).get(1).equals("house"));
+        List<List<String>> handledQuery = handler.handleQuery(testList);
+        assertEquals(1, handledQuery.size());
+        assertEquals(2, handledQuery.get(0).size());
+        assertEquals("dog", handledQuery.get(0).get(0));
+        assertEquals("house", handledQuery.get(0).get(1));
     }
 
     /**
- * Verifies that, when the handleQuery() method is called on a list of three Strings
- * the second of which is "OR", the method returns a List of two Lists: one which contains 
- * the first string and another which contains the second. 
- */
- @Test 
+     * Verifies that, when the handleQuery() method is called on a list of three Strings
+     * the second of which is "OR", the method returns a List of two Lists: one which contains
+     * the first string and another which contains the second.
+     */
+    @Test
     void makesANewListWhenEncountersOR() {
         List<String> testList = new ArrayList<>();
         testList.add("dog");
@@ -42,36 +45,38 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handleQuery(testList).size() == 2);
-        assertTrue(handler.handleQuery(testList).get(0).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(1).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
-        assertTrue(handler.handleQuery(testList).get(1).get(0).equals("house"));
+        List<List<String>> handledQuery = handler.handleQuery(testList);
+        assertEquals(2, handledQuery.size());
+        assertEquals(1, handledQuery.get(0).size());
+        assertEquals(1, handledQuery.get(1).size());
+        assertEquals("dog", handledQuery.get(0).get(0));
+        assertEquals("house", handledQuery.get(1).get(0));
     }
 
     /**
- * Verifies that, when the handleQuery() method is called on a list containing a string which has capital letters, 
- * punctuation marks or a trailing space, that these are removed before the method adds the string to a new list. 
- */
- @Test 
+     * Verifies that, when the handleQuery() method is called on a list containing a string which has capital letters,
+     * punctuation marks or a trailing space, that these are removed before the method adds the string to a new list.
+     */
+    @Test
     void returnsCleanString() {
         List<String> testList = new ArrayList<>();
         testList.add("CAT! ");
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handleQuery(testList).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(0).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("cat"));
+        List<List<String>> handledQuery = handler.handleQuery(testList);
+        assertEquals(1, handledQuery.size());
+        assertEquals(1, handledQuery.get(0).size());
+        assertEquals("cat", handledQuery.get(0).get(0));
     }
 
     /**
- * Verifies that, when the handleQuery() method is called on a list of more than two strings divided by a single "OR", 
- * the method returns a list containing firstly a list of all the strings which appear before the "OR" and 
- * secondly a list of all the strings which appear after the "OR". 
- */
+     * Verifies that, when the handleQuery() method is called on a list of more than two strings divided by a single "OR",
+     * the method returns a list containing firstly a list of all the strings which appear before the "OR" and
+     * secondly a list of all the strings which appear after the "OR".
+     */
 
-@Test
+    @Test
     void returnsListOfListsOfMultipleStrings() {
         List<String> testList = new ArrayList<>();
         testList.add("dog");
@@ -81,19 +86,20 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handleQuery(testList).size() == 2);
-        assertTrue(handler.handleQuery(testList).get(0).size() == 2);
-        assertTrue(handler.handleQuery(testList).get(1).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
-        assertTrue(handler.handleQuery(testList).get(0).get(1).equals("house"));
-        assertTrue(handler.handleQuery(testList).get(1).get(0).equals("kennel"));
+        List<List<String>> handledQuery = handler.handleQuery(testList);
+        assertEquals(2, handledQuery.size());
+        assertEquals(2, handledQuery.get(0).size());
+        assertEquals(1, handledQuery.get(1).size());
+        assertEquals("dog", handledQuery.get(0).get(0));
+        assertEquals("house", handledQuery.get(0).get(1));
+        assertEquals("kennel", handledQuery.get(1).get(0));
     }
 
-     /**
- * Verifies that, when the handleQuery() method is called on a list of strings divided by multiple "OR" terms, 
- * the method returns multiple lists which include all the terms in the parameterised list, divided into lists 
- * depending on where the "OR" terms occur. 
- */
+    /**
+     * Verifies that, when the handleQuery() method is called on a list of strings divided by multiple "OR" terms,
+     * the method returns multiple lists which include all the terms in the parameterised list, divided into lists
+     * depending on where the "OR" terms occur.
+     */
     @Test
     void returnsListOfThreeListsOfSingleStrings() {
         List<String> testList = new ArrayList<>();
@@ -105,14 +111,13 @@ class QueryHandlerTest {
 
         QueryHandler handler = new QueryHandler();
 
-        assertTrue(handler.handleQuery(testList).size() == 3);
-        assertTrue(handler.handleQuery(testList).get(0).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(1).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(2).size() == 1);
-        assertTrue(handler.handleQuery(testList).get(0).get(0).equals("dog"));
-        assertTrue(handler.handleQuery(testList).get(1).get(0).equals("cat"));
-        assertTrue(handler.handleQuery(testList).get(2).get(0).equals("mouse"));
+        List<List<String>> handledQuery = handler.handleQuery(testList);
+        assertEquals(3, handledQuery.size());
+        assertEquals(1, handledQuery.get(0).size());
+        assertEquals(1, handledQuery.get(1).size());
+        assertEquals(1, handledQuery.get(2).size());
+        assertEquals("dog", handledQuery.get(0).get(0));
+        assertEquals("cat", handledQuery.get(1).get(0));
+        assertEquals("mouse", handledQuery.get(2).get(0));
     }
-
-
 }

@@ -1,3 +1,4 @@
+package searchengine;
 
 /**
  * Cleans a single search term so it can be used consistently.
@@ -8,21 +9,14 @@
  * <p>
  * Used by: QueryHandler and InvertedIndex.
  */
-
-package searchengine;
-
 public class WordNormalizer {
 
-   
-// all methods are static -> class does not need a constructor 
-    // WordNormalizer() {
-    // }
-
-
-// Declared static, it belongs to the class itself, not to any particular object.
-// Static methods can be called as WordNormalizer.normalize(...) without creating a new WordNormalizer().
-// -> String normalized = WordNormalizer.normalize(word);
-
+    /**
+     * Normalizes a search term by converting to lowercase, trimming whitespace, and removing trailing punctuation.
+     *
+     * @param searchTerm the search term to normalize
+     * @return the normalized search term, or an empty string if input is null or becomes empty
+     */
     public static String normalize(String searchTerm) {
         if (searchTerm == null) {
             return "";
@@ -39,8 +33,5 @@ public class WordNormalizer {
         } else {
             return cleanSearchTerm;
         }
-
     }
-
-
 }
