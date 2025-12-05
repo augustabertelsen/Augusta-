@@ -21,8 +21,7 @@ class WebServer {
     private static final int BACKLOG = 0;
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
-    private HttpServer server;
-    private SearchEngine search;
+    private final HttpServer server;
 
     /**
      * Creates a new WebServer that listens on the specified port and uses the provided SearchEngine.
@@ -33,7 +32,6 @@ class WebServer {
      * @throws BindException if the port is already in use
      */
     public WebServer(int port, SearchEngine search) throws IOException, BindException {
-        this.search = search;
 
         server = HttpServer.create(new InetSocketAddress(port), BACKLOG);
 
