@@ -1,8 +1,3 @@
-// Starts the HTTP server, sets up routes, 
-// serves static files, and forwards /search requests to QueryHandler. 
-// It never searches, loads data, builds JSON, or interacts with PageCollection or InvertedIndex.
-
-
 package searchengine;
 
 import java.io.IOException;
@@ -32,9 +27,9 @@ class WebServer {
     /**
      * Creates a new WebServer that listens on the specified port and uses the provided SearchEngine.
      *
-     * @param port the port number on which the server will listen
+     * @param port   the port number on which the server will listen
      * @param search the SearchEngine object to handle search requests
-     * @throws IOException if an I/O error occurs when creating the HttpServer
+     * @throws IOException   if an I/O error occurs when creating the HttpServer
      * @throws BindException if the port is already in use
      */
     public WebServer(int port, SearchEngine search) throws IOException, BindException {
@@ -98,9 +93,9 @@ class WebServer {
     /**
      * Sends a HTTP response with the specified status code, content type, and response body.
      *
-     * @param io the HttpExchange to send the response through
-     * @param code the HTTP status code to send
-     * @param mime the MIME type of the response content
+     * @param io       the HttpExchange to send the response through
+     * @param code     the HTTP status code to send
+     * @param mime     the MIME type of the response content
      * @param response the response data as a byte array to put in the body
      */
     private void respond(HttpExchange io, int code, String mime, byte[] response) {
@@ -117,10 +112,11 @@ class WebServer {
     /**
      * Extracts the raw query (containing search term) from the HttpExchange.
      * For example the request http://localhost:8080/search?q=dog+walk will return the String "dog+walk"
+     *
      * @param io HttpExchange containing the search request
      * @return String containing the raw query value after the "q=" parameter
      */
-    private String extractRawQuery(HttpExchange io){
+    private String extractRawQuery(HttpExchange io) {
         return io.getRequestURI().getRawQuery().split("=")[1];
     }
 
