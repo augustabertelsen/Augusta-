@@ -41,13 +41,13 @@ public class Ranking {
     }
 
     /**
-     * The getPageListSortedByranking takes:
+     * The sortPagesByranking takes:
      * @param resultPage
      * @param termlist
      * It applies the methods rankPages(), sortListByRank(), and clearRankingScore(),
      * @return a list of pages sorted by the rankingscore, high to low.
      */
-    public List<Page> getPageListSortedByranking(List<Page> resultPages, List<List<String>> termList) {
+    public List<Page> sortPagesByranking(List<Page> resultPages, List<List<String>> termList) {
 
         rankPages(resultPages, termList);
         List<Page> listSortedByRank = sortListByRank(resultPages);
