@@ -46,7 +46,7 @@ public class Ranking {
      * @param termList the OR-groups of search terms to base the ranking socre of for each page
      * @return a list of pages sorted by the rankingscore, high to low.
      */
-    public List<Page> sortPagesByranking(List<Page> resultPages, List<List<String>> termList) {
+    public List<Page> sortPagesByRanking(List<Page> resultPages, List<List<String>> termList) {
 
         rankPages(resultPages, termList);
         List<Page> listSortedByRank = sortListByRank(resultPages);

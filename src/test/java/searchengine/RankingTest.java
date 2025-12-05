@@ -106,7 +106,7 @@ public class RankingTest {
         correctPageList.add(pageB);
         correctPageList.add(pageC);
 
-        assertEquals(correctPageList, ranker.sortPagesByranking(allPages, termList));}
+        assertEquals(correctPageList, ranker.sortPagesByRanking(allPages, termList));}
 
     //To write: test for if two OR groups appear on the same page. 
 
