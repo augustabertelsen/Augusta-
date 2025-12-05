@@ -56,6 +56,14 @@ public class Ranking {
         return listSortedByRank;
     }
 
+    /**
+    * @return the ScoringMethod contained in the field scoring
+    */
+     public ScoringMethod getScoringMethod() {
+
+        return scoring;
+    }
+
      /**
      * The rankPages takes:
      * @param resultPage
@@ -116,11 +124,6 @@ public class Ranking {
         for (int i = 0; i < resultPages.size(); i++) {
             resultPages.get(i).clearRankingScore();
         }
-    }
-
-    public ScoringMethod getScoringMethod() {
-
-        return scoring;
     }
 
 }
