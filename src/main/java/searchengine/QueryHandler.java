@@ -43,7 +43,7 @@ public class QueryHandler {
         for (String currentWord : searchTerm) {
             if (!currentWord.equals("OR")) {
                 String normaliZedWord = WordNormalizer.normalize(currentWord);
-                if (normaliZedWord.length()>0 && Character.isLetterOrDigit(normaliZedWord.charAt(0))) {
+                if (normaliZedWord.length()>0 || Character.isLetterOrDigit(normaliZedWord.charAt(0))) {
                     currentList.add(normaliZedWord);
                 }
             } else {
