@@ -42,9 +42,9 @@ public class QueryHandler {
 
         for (String currentWord : searchTerm) {
             if (!currentWord.equals("OR")) {
-                String normaliZedWord = WordNormalizer.normalize(currentWord);
-                if (normaliZedWord.length()>0 || Character.isLetterOrDigit(normaliZedWord.charAt(0))) {
-                    currentList.add(normaliZedWord);
+                String normalizedWord = WordNormalizer.normalize(currentWord);
+                if (!normalizedWord.isEmpty() && Character.isLetterOrDigit(normalizedWord.charAt(0))) {
+                    currentList.add(normalizedWord);
                 }
             } else {
                 List<String> listORGroup = new ArrayList<>();
