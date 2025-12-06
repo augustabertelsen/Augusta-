@@ -14,15 +14,6 @@ import java.util.List;
 public class QueryHandler {
 
     /**
-     * Creates a new QueryHandler. No parameters are required to instantiate a new
-     * object of QueryHandler.
-     */
-
-    public QueryHandler() {
-
-    }
-
-    /**
      * Processes a search query by splitting it into OR groups. Each
      * String in the parameterised List<String> is normalized using WordNormalizer.normalize() and added
      * to the current group. However, if that word is "OR", a new List<String> is created and added to the
