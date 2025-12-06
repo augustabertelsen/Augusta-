@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class is responsible for receiving a search term as input as a
- * List<String>,
- * 'cleaning' each String to convert capital letters to lowercase and removing
- * punctuation and trailing spaces, adding each string to a list, creating a new
- * list if it comes across a string that is equal to "OR", and returning a
- * List<List<String>>.
+ * This class is responsible for processing search queries by splitting them into OR groups.
+ * It receives a search query as a List<String>, normalizes each term using WordNormalizer,
+ * and organizes the terms into separate lists based on "OR" delimiters. Returns a
+ * List<List<String>> where each inner list represents terms that should be ANDed together,
+ * and the outer list represents OR groups.
  */
 
 public class QueryHandler {
@@ -24,14 +23,15 @@ public class QueryHandler {
     }
 
     /**
-     * Creates a new List<String>, which is added to a List<List<String>>. Each
-     * String in the paramaterised List<String> is passed through the 'cleanSearchTerm()' method and added.
-     * However, if that word is "OR", a new List<String> is created and added to the List<List<String>>. All
-     * subsequent words are added to this new List<String>, until there are no more words to examine or another
-     * "OR" is hit, in which case a new List<String> is made as before.
+     * Processes a search query by splitting it into OR groups. Each
+     * String in the parameterised List<String> is normalized using WordNormalizer.normalize() and added
+     * to the current group. However, if that word is "OR", a new List<String> is created and added to the
+     * List<List<String>>. All subsequent words are added to this new List<String>, until there are no more
+     * words to examine or another "OR" is encountered, in which case a new List<String> is created as before.
+     * Only normalized words that are non-empty and start with a letter or digit are included.
      * @param searchTerm a List<String> which is created by the SearchEngine class.
-     * @return a List<List<String>> comprised of a list of lists including every
-     * non-OR String in the paramaterised searchTerm list, divided into lists according to where the method found the "OR" terms.
+     * @return a List<List<String>> comprised of lists of normalized search terms, with each inner list
+     * representing an OR group, divided according to where "OR" words were found.
      */
 
     public List<List<String>> handleQuery(List<String> searchTerm) {
