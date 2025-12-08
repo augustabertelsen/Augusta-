@@ -2,8 +2,6 @@ package searchengine;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.beans.Transient;
-
 import org.junit.jupiter.api.Test;
 
 public class WordNormalizerTest {
