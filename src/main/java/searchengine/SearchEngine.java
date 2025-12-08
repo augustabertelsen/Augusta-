@@ -132,9 +132,9 @@ public class SearchEngine {
                 List<Page> listResult;
                 listResult = listWithListOfPagesForEachWord.get(0);
 
-                for (int iii = 1; iii < listWithListOfPagesForEachWord.size(); iii++) {
+                for (int i = 1; i < listWithListOfPagesForEachWord.size(); i++) {
                     List<Page> currentListOfPages;
-                    currentListOfPages = listWithListOfPagesForEachWord.get(iii);
+                    currentListOfPages = listWithListOfPagesForEachWord.get(i);
 
                     listResult.retainAll(currentListOfPages);
                 }
