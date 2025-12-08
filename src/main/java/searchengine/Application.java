@@ -22,7 +22,6 @@ public class Application {
         String dataFilePath = Files.readString(Paths.get("config.txt")).strip();
         PageCollection collection = new PageCollection(dataFilePath);
         InvertedIndex index = new InvertedIndex(collection.getPages());
-       // ranking can be switched between complexScoring = true, and complexScoring = false
         Ranking rank = new Ranking(index, true);
         SearchEngine search = new SearchEngine(index, rank);
         WebServer server = new WebServer(8080, search);
