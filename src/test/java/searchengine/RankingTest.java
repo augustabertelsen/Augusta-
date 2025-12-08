@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 public class RankingTest {
@@ -43,17 +45,19 @@ public class RankingTest {
 
     }
 
-    @Test 
+    @Test
     void createsComplexScoringMethodWhenTrue() {
 
-    Ranking ranker = new Ranking(index, true);
-    assertTrue(ranker.getScoringMethod() instanceof TfIdfScoring); }
+        Ranking ranker = new Ranking(index, true);
+        assertTrue(ranker.getScoringMethod() instanceof TfIdfScoring);
+    }
 
-    @Test 
+    @Test
     void createsSimpleScoringMethodWhenFalse() {
 
-    Ranking ranker = new Ranking(index, false);
-    assertTrue(ranker.getScoringMethod() instanceof TfScoring); }
+        Ranking ranker = new Ranking(index, false);
+        assertTrue(ranker.getScoringMethod() instanceof TfScoring);
+    }
 
     @Test
     void sortsListByRank() {
@@ -87,7 +91,7 @@ public class RankingTest {
         assertEquals(0.0, pageC.getRankingScore());
     }
 
-    @Test 
+    @Test
     void assignsRankingScoresCorrectly() {
 
         Ranking ranker = new Ranking(index, false);
@@ -98,7 +102,7 @@ public class RankingTest {
         assertEquals(0.0, pageC.getRankingScore());
     }
 
-    @Test 
+    @Test
     void returnsSortedPages() {
         Ranking ranker = new Ranking(index, false);
         List<Page> correctPageList = new ArrayList<Page>();
@@ -106,8 +110,6 @@ public class RankingTest {
         correctPageList.add(pageB);
         correctPageList.add(pageC);
 
-        assertEquals(correctPageList, ranker.sortPagesByRanking(allPages, termList));}
-
-    //To write: test for if two OR groups appear on the same page. 
-
+        assertEquals(correctPageList, ranker.sortPagesByRanking(allPages, termList));
+    }
 }
